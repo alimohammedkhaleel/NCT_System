@@ -1,0 +1,124 @@
+.dashboard {
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+  color: #0f172a;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 2.5vw, 2.7rem);
+  color: #0a2472;
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.4rem;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12);
+}
+
+.stat-icon {
+  min-width: 4rem;
+  min-height: 4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #ffffff;
+}
+
+.stat-content h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+}
+
+.stat-content p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.chart-container {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.chart-container h3 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: #0a2472;
+}
+
+.dashboard-loading {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #0f172a;
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 8px solid rgba(10, 36, 114, 0.15);
+  border-top-color: #0a2472;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+  .stats-grid,
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    padding: 1.25rem;
+  }
+}

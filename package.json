@@ -1,0 +1,60 @@
+{
+  "name": "nctu-erp-system",
+  "version": "1.0.0",
+  "description": "NCTU ERP System - جامعة القاهرة الجديدة التكنولوجية",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client/frontend && npm install",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client/frontend && npm run dev",
+    "build": "cd client/frontend && npm run build",
+    "test": "npm run test:server && npm run test:client",
+    "test:server": "cd server && npm test",
+    "test:client": "cd client/frontend && npm run lint",
+    "lint": "npm run lint:server && npm run lint:client",
+    "lint:server": "cd server && npm run lint",
+    "lint:client": "cd client/frontend && npm run lint",
+    "setup:db": "mysql -u root -p < database/nctu_erp.sql",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "clean": "npm run clean:server && npm run clean:client",
+    "clean:server": "cd server && rm -rf node_modules package-lock.json",
+    "clean:client": "cd client/frontend && rm -rf node_modules package-lock.json dist"
+  },
+  "keywords": [
+    "erp",
+    "university",
+    "education",
+    "react",
+    "nodejs",
+    "mysql",
+    "gsap",
+    "framer-motion"
+  ],
+  "author": "NCTU Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.0",
+    "gsap": "^3.14.2",
+    "react-router-dom": "^7.14.0",
+    "zustand": "^5.0.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/nctu-erp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/nctu-erp/issues"
+  },
+  "homepage": "https://github.com/your-username/nctu-erp#readme"
+}
