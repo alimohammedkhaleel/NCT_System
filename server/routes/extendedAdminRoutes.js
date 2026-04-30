@@ -136,6 +136,31 @@ router.delete(
 );
 
 /**
+ * Get courses assigned to a professor
+ * GET /api/admin/professors/:id/courses
+ */
+router.get('/professors/:id/courses', async (req, res) => {
+  try {
+    const { ProfessorCourse, Course, AcademicYear, Semester, Specialty } = require('../config/models');
+    const assignments = await ProfessorCourse.findAll({
+      where: { professor_id: req.params.id },
+      include: [{
+        model: Course,
+        attributes: ['id', 'course_code', 'course_name', 'arabic_name', 'specialty_id', 'academic_year_id', 'semester_id'],
+        include: [
+          { model: Specialty, attributes: ['id', 'name', 'arabic_name', 'code'] },
+          { model: AcademicYear, attributes: ['id', 'year_number'] },
+          { model: Semester, attributes: ['id', 'semester_name'] }
+        ]
+      }]
+    });
+    res.json({ success: true, data: assignments });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/**
  * Assign course to professor
  * POST /api/admin/professors/:id/courses
  * Body: { course_id, academic_year_id, semester_id, is_primary }

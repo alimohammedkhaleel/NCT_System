@@ -14,23 +14,68 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.id);
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      if (!decoded || !decoded.id) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token payload'
+        });
+      }
 
-    if (!user || !user.is_active) {
-      return res.status(401).json({
+      const user = await User.findByPk(decoded.id, {
+        attributes: { exclude: ['password_hash'] }
+      });
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      if (!user.is_active) {
+        return res.status(401).json({
+          success: false,
+          message: 'User account is inactive'
+        });
+      }
+
+      // Single Session Check: Compare token version with DB version
+      // If version mismatch, it means a newer login occurred elsewhere
+      if (decoded.token_version !== undefined && user.token_version !== undefined) {
+        if (decoded.token_version !== user.token_version) {
+          return res.status(401).json({
+            success: false,
+            message: 'تم تسجيل الدخول من مكان آخر، يرجى إعادة تسجيل الدخول'
+          });
+        }
+      }
+
+      // Attach user object to request
+      req.user = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        full_name: user.full_name,
+        role: user.role,
+        is_active: user.is_active
+      };
+      
+      next();
+    } catch (jwtError) {
+      console.error('JWT verification error:', jwtError);
+      return res.status(403).json({
         success: false,
-        message: 'Invalid or inactive user'
+        message: 'Invalid or expired token'
       });
     }
-
-    req.user = user;
-    next();
   } catch (error) {
     console.error('Authentication error:', error);
-    return res.status(403).json({
+    return res.status(500).json({
       success: false,
-      message: 'Invalid or expired token'
+      message: 'Authentication failed'
     });
   }
 };

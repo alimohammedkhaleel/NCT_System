@@ -1,0 +1,167 @@
+/* BranchSelector Component Styles */
+/* Uses the NCTU ERP purple theme from index.css */
+
+.branchSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Label */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.8));
+  font-weight: 500;
+}
+
+.labelAr {
+  font-size: 0.95rem;
+  color: var(--white, #ffffff);
+}
+
+.labelEn {
+  font-size: 0.8rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+}
+
+.required {
+  color: var(--error-color, #ef4444);
+  font-size: 1rem;
+  margin-right: 2px;
+}
+
+/* Options Container */
+.options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Individual Option Button */
+.option {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--glass-bg, rgba(17, 1, 23, 0.5));
+  border: 1.5px solid var(--glass-border, rgba(179, 110, 255, 0.3));
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--white-dim, rgba(255, 255, 255, 0.8));
+  text-align: right;
+  direction: rtl;
+  position: relative;
+  overflow: hidden;
+}
+
+.option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary, linear-gradient(135deg, #7e39b6, #b36eff));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: inherit;
+}
+
+.option:hover:not(.disabled) {
+  border-color: var(--purple-primary, #b36eff);
+  color: var(--white, #ffffff);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.25);
+}
+
+.option:hover:not(.disabled)::before {
+  opacity: 0.08;
+}
+
+/* Selected State */
+.option.selected {
+  border-color: var(--purple-primary, #b36eff);
+  background: rgba(179, 110, 255, 0.15);
+  color: var(--white, #ffffff);
+  box-shadow: 0 0 0 1px var(--purple-primary, #b36eff),
+              0 4px 16px rgba(179, 110, 255, 0.3);
+}
+
+.option.selected::before {
+  opacity: 0.12;
+}
+
+/* Disabled State */
+.option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Option Icon */
+.optionIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* Option Text */
+.optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  z-index: 1;
+}
+
+.optionAr {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.optionEn {
+  font-size: 0.75rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+}
+
+.option.selected .optionEn {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Checkmark */
+.checkmark {
+  font-size: 1rem;
+  color: var(--purple-primary, #b36eff);
+  font-weight: bold;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+/* Error Message */
+.error {
+  display: block;
+  color: var(--error-color, #ef4444);
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .options {
+    flex-direction: column;
+  }
+
+  .option {
+    min-width: unset;
+  }
+}

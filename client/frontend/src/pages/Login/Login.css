@@ -1,0 +1,446 @@
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--body-page, #0b0213);
+  padding: 40px 20px;
+}
+
+/* Dynamic Background Orbs */
+.login-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 20s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--purple-primary);
+  top: -10%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--primary-color);
+  bottom: -10%;
+  right: -10%;
+  animation-delay: -5s;
+}
+
+.blob-3 {
+  width: 600px;
+  height: 600px;
+  background: var(--purple-deep);
+  top: 40%;
+  left: 40%;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -50px) scale(1.1); }
+  100% { transform: translate(-30px, 40px) scale(0.9); }
+}
+
+/* Saturn Ring - Diagonal Orbit (Top-Left to Bottom-Right) */
+.saturn-ring-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Diagonal tilt to go from top-left to bottom-right */
+  transform: translate(-50%, -50%) perspective(1200px) rotateX(70deg) rotateY(25deg) rotateZ(-30deg);
+  width: 800px;
+  height: 800px;
+  pointer-events: none;
+  z-index: 5;
+  transform-style: preserve-3d;
+}
+
+.saturn-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(12, 210, 255, 0.5);
+  box-shadow: 
+    0 0 20px rgba(12, 210, 255, 0.4),
+    inset 0 0 20px rgba(12, 210, 255, 0.4),
+    0 0 60px rgba(12, 210, 255, 0.1),
+    inset 0 0 60px rgba(12, 210, 255, 0.1);
+  animation: rotateRing 25s linear infinite;
+  transform-style: preserve-3d;
+}
+
+.saturn-ring::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  right: -40px;
+  bottom: -40px;
+  border-radius: 50%;
+  border: 2px dashed rgba(251, 170, 240, 0.8);
+  animation: rotateRingReverse 35s linear infinite;
+  box-shadow: 
+    0 0 15px rgba(251, 170, 240, 0.4),
+    inset 0 0 15px rgba(251, 170, 240, 0.4);
+}
+
+.saturn-ring::after {
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  border-radius: 50%;
+  border: 4px dotted rgba(179, 110, 255, 0.8);
+  animation: rotateRing 18s linear infinite;
+  box-shadow: 
+    0 0 25px rgba(179, 110, 255, 0.5),
+    inset 0 0 25px rgba(179, 110, 255, 0.5);
+}
+
+/* Inner Core Glowing Orb mimicking the planet center */
+.saturn-ring-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(-70deg) rotateY(-25deg) rotateZ(30deg); /* Counter rotate to face camera */
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(179,110,255,0.15) 0%, rgba(17,1,23,0) 70%);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+@keyframes rotateRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateRingReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* Form wrapper */
+.login-form-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 460px;
+  /* Floating animation */
+  animation: formFloat 6s ease-in-out infinite;
+}
+
+@keyframes formFloat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* High-end Glassmorphism (Matching Admin Dashboard style) */
+.login-form {
+  background: rgba(17, 1, 23, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 25px 30px;
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.5),
+    0 4px 15px rgba(179, 110, 255, 0.4), 
+    0 2px 5px rgba(179, 110, 255, 0.3);
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Glass Highlight reflection */
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: glassShine 8s infinite;
+}
+
+@keyframes glassShine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.login-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #0cd2ff 0%, #ffb2e6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(12, 210, 255, 0.3);
+}
+
+.login-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.login-description {
+  font-size: 0.95rem;
+  color: var(--white-dim);
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  color: var(--white);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  color: var(--white);
+  padding: 1rem 1.25rem 1rem 3rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-input:focus {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--purple-light);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 15px rgba(179, 110, 255, 0.4);
+  outline: none;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--purple-light);
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 5px var(--glow-purple));
+}
+
+.password-toggle {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--purple-light);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+}
+
+/* Tabs */
+.login-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.4rem;
+  border-radius: 12px;
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.8rem;
+  background: transparent;
+  border: none;
+  color: var(--white-dim);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  background: var(--gradient-primary);
+  color: var(--white);
+  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.4);
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--white-dim) !important;
+  font-size: 0.9rem !important;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.forgot-code-link {
+  background: none;
+  border: none;
+  color: var(--purple-light);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.forgot-code-link:hover {
+  color: var(--white);
+  text-shadow: 0 0 8px var(--glow-purple);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1.1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 12px;
+  color: var(--white);
+  margin-top: 1rem;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(179, 110, 255, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(179, 110, 255, 0.6);
+}
+
+/* Footer */
+.login-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(179, 110, 255, 0.2);
+  text-align: center;
+}
+
+.footer-text, .footer-subtext {
+  color: var(--white-dim);
+  font-size: 0.85rem;
+  margin: 0.3rem 0;
+}
+
+.footer-link {
+  color: var(--purple-light);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.footer-link:hover {
+  color: var(--white);
+  text-shadow: 0 0 8px var(--glow-purple);
+}
+
+/* Error message styling */
+.error-message {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 0.8rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.field-error {
+  color: #fca5a5;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+.form-input.error {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+
+
+@media (max-width: 768px) {
+  .saturn-ring-container {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .login-form {
+    padding: 2rem 1.5rem;
+  }
+}
+

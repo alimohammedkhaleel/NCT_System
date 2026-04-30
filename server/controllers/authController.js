@@ -15,7 +15,8 @@ const generateToken = (user) => {
     {
       id: user.id,
       username: user.username,
-      role: user.role
+      role: user.role,
+      token_version: user.token_version || 1
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE || '7d' }
@@ -28,7 +29,8 @@ const generateRefreshToken = (user) => {
     {
       id: user.id,
       username: user.username,
-      role: user.role
+      role: user.role,
+      token_version: user.token_version || 1
     },
     process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_REFRESH_EXPIRE || '30d' }
@@ -107,9 +109,9 @@ const register = async (req, res) => {
       }
       
       // Generate student code
-      const yearCode = new Date().getFullYear().toString().slice(-2);
-      const randomCode = Math.floor(100000 + Math.random() * 900000);
-      const student_code = `NCTU-${yearCode}-${randomCode}`;
+      const year = new Date().getFullYear();
+      const random = Math.floor(1000 + Math.random() * 9000);
+      const student_code = `${year}${random}`;
 
       await Student.create({
         user_id: user.id,
@@ -216,12 +218,14 @@ const login = async (req, res) => {
       });
     }
 
-    // Update last login
+    // Update last login and increment token_version to invalidate previous sessions
     try {
-      await user.update({ last_login: new Date() });
+      await user.update({ 
+        last_login: new Date(),
+        token_version: (user.token_version || 0) + 1
+      });
     } catch (updateError) {
-      console.error('Last login update error:', updateError);
-      // Don't fail if we can't update last_login
+      console.error('Login update error:', updateError);
     }
 
     // Generate tokens
@@ -260,33 +264,176 @@ const login = async (req, res) => {
   }
 };
 
+// @desc    Student login with student_code and national_id
+// @route   POST /api/auth/student-login
+// @access  Public
+const studentLogin = async (req, res) => {
+  try {
+    const { student_code, national_id } = req.body;
+
+    // Validate input
+    if (!student_code || !national_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'يرجى إدخال كود الطالب والرقم القومي'
+      });
+    }
+
+    // Find student by student_code and national_id
+    const student = await Student.findOne({
+      where: { 
+        student_code,
+        national_id
+      },
+      include: [{
+        model: User,
+        attributes: ['id', 'username', 'email', 'full_name', 'role', 'phone', 'profile_picture', 'is_active']
+      }]
+    });
+
+    if (!student || !student.User) {
+      return res.status(401).json({
+        success: false,
+        message: 'كود الطالب أو الرقم القومي غير صحيح'
+      });
+    }
+
+    const user = student.User;
+
+    if (!user.is_active) {
+      return res.status(401).json({
+        success: false,
+        message: 'حسابك غير نشط، يرجى التواصل مع الإدارة'
+      });
+    }
+
+    // Update last login and increment token_version
+    try {
+      await user.update({ 
+        last_login: new Date(),
+        token_version: (user.token_version || 0) + 1
+      });
+    } catch (updateError) {
+      console.error('Last login update error:', updateError);
+    }
+
+    // Generate tokens
+    const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+    refreshTokenStore.set(refreshToken, user.id);
+
+    // Prepare user data
+    const userData = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      full_name: user.full_name,
+      role: user.role,
+      phone: user.phone,
+      profile_picture: user.profile_picture,
+      last_login: user.last_login,
+      student_code: student.student_code,
+      specialty_id: student.specialty_id,
+      current_year: student.current_year,
+      academic_status: student.academic_status
+    };
+
+    res.json({
+      success: true,
+      message: 'تم تسجيل الدخول بنجاح',
+      data: {
+        user: userData,
+        token,
+        refreshToken
+      }
+    });
+
+  } catch (error) {
+    console.error('Student login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'حدث خطأ أثناء تسجيل الدخول'
+    });
+  }
+};
+
 // @desc    Get current user profile
 // @route   GET /api/auth/profile
 // @access  Private
 const getProfile = async (req, res) => {
   try {
+    // Validate that req.user exists (should be set by authenticateToken middleware)
+    if (!req.user || !req.user.id) {
+      console.error('getProfile: req.user is missing or invalid', req.user);
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated'
+      });
+    }
+
+    console.log(`getProfile: Fetching profile for user ID ${req.user.id}, role: ${req.user.role}`);
+
     const user = await User.findByPk(req.user.id, {
-      include: [
-        {
-          model: Student,
-          as: 'student',
-          required: false,
-          attributes: ['id', 'student_code', 'national_id', 'specialty_id', 'current_year', 'academic_status', 'enrollment_date', 'graduation_date', 'qr_secret', 'total_paid', 'total_due']
-        },
-        {
-          model: Professor,
-          as: 'professor',
-          required: false,
-          attributes: ['id', 'professor_code', 'department', 'specialization', 'is_active']
-        }
-      ]
+      attributes: { exclude: ['password_hash'] }
     });
 
     if (!user) {
+      console.error(`getProfile: User not found with ID ${req.user.id}`);
       return res.status(404).json({
         success: false,
         message: 'User not found'
       });
+    }
+
+    console.log(`getProfile: User found - ${user.username} (${user.role})`);
+
+    // Fetch student/professor separately to avoid alias issues
+    let studentData = null;
+    let professorData = null;
+
+    if (user.role === 'student') {
+      try {
+        console.log(`getProfile: Fetching student data for user_id ${user.id}`);
+        const studentRecord = await Student.findOne({
+          where: { user_id: user.id },
+          attributes: ['id', 'student_code', 'national_id', 'specialty_id', 'current_year', 'academic_status', 'enrollment_date', 'total_paid', 'total_due'],
+          include: [{
+            model: Specialty,
+            attributes: ['id', 'code', 'name', 'arabic_name'],
+            required: false
+          }]
+        });
+        
+        if (studentRecord) {
+          studentData = studentRecord.toJSON();
+          console.log(`getProfile: Student data found - code: ${studentData.student_code}`);
+        } else {
+          console.warn(`getProfile: No student record found for user_id ${user.id}`);
+        }
+      } catch (studentError) {
+        console.error('getProfile: Error fetching student data:', studentError.message);
+        console.error('getProfile: Student error stack:', studentError.stack);
+        // Continue without student data - don't fail the entire request
+      }
+    } else if (user.role === 'professor') {
+      try {
+        console.log(`getProfile: Fetching professor data for user_id ${user.id}`);
+        const professorRecord = await Professor.findOne({
+          where: { user_id: user.id },
+          attributes: ['id', 'professor_code', 'department', 'specialization', 'is_active']
+        });
+        
+        if (professorRecord) {
+          professorData = professorRecord.toJSON();
+          console.log(`getProfile: Professor data found - code: ${professorData.professor_code}`);
+        } else {
+          console.warn(`getProfile: No professor record found for user_id ${user.id}`);
+        }
+      } catch (professorError) {
+        console.error('getProfile: Error fetching professor data:', professorError.message);
+        console.error('getProfile: Professor error stack:', professorError.stack);
+        // Continue without professor data - don't fail the entire request
+      }
     }
 
     const userData = {
@@ -298,40 +445,31 @@ const getProfile = async (req, res) => {
       phone: user.phone,
       national_id: user.national_id,
       profile_picture: user.profile_picture,
+      profile_image: user.profile_image,
       last_login: user.last_login,
       is_active: user.is_active,
-      student: user.student ? {
-        id: user.student.id,
-        student_code: user.student.student_code,
-        national_id: user.student.national_id,
-        specialty_id: user.student.specialty_id,
-        current_year: user.student.current_year,
-        academic_status: user.student.academic_status,
-        enrollment_date: user.student.enrollment_date,
-        graduation_date: user.student.graduation_date,
-        qr_secret: user.student.qr_secret,
-        total_paid: user.student.total_paid,
-        total_due: user.student.total_due
-      } : null,
-      professor: user.professor ? {
-        id: user.professor.id,
-        professor_code: user.professor.professor_code,
-        department: user.professor.department,
-        specialization: user.professor.specialization,
-        is_active: user.professor.is_active
-      } : null
+      student: studentData,
+      professor: professorData
     };
 
+    console.log(`getProfile: Successfully returning profile for ${user.username}`);
     res.json({
       success: true,
       data: userData
     });
 
   } catch (error) {
-    console.error('Get profile error:', error);
+    console.error('getProfile: Unexpected error:', error.message);
+    console.error('getProfile: Error stack:', error.stack);
+    console.error('getProfile: Error details:', {
+      name: error.name,
+      message: error.message,
+      sql: error.sql || 'N/A'
+    });
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: 'Server error while fetching profile',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
@@ -562,13 +700,255 @@ const logout = async (req, res) => {
   }
 };
 
+// @desc    Retrieve student code by national ID
+// @route   POST /api/auth/retrieve-student-code
+// @access  Public
+const retrieveStudentCode = async (req, res) => {
+  try {
+    const { national_id } = req.body;
+
+    // Validate input
+    if (!national_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'يرجى إدخال الرقم القومي'
+      });
+    }
+
+    // Validate national ID format (14 digits)
+    if (!/^\d{14}$/.test(national_id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'الرقم القومي يجب أن يكون 14 رقماً بالضبط'
+      });
+    }
+
+    // Find student by national_id
+    const student = await Student.findOne({
+      where: { national_id },
+      attributes: ['student_code', 'national_id'],
+      include: [{
+        model: User,
+        attributes: ['full_name']
+      }]
+    });
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: 'الرقم القومي غير مسجل في النظام'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'تم العثور على كود الطالب بنجاح',
+      data: {
+        student_code: student.student_code,
+        full_name: student.User?.full_name
+      }
+    });
+
+  } catch (error) {
+    console.error('Retrieve student code error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'حدث خطأ أثناء البحث عن كود الطالب'
+    });
+  }
+};
+
+// @desc    Verify QR Code and return student info
+// @route   POST /api/auth/verify-qr
+// @access  Public
+const verifyQRCode = async (req, res) => {
+  try {
+    const { qr_secret } = req.body;
+
+    if (!qr_secret) {
+      return res.status(400).json({
+        success: false,
+        message: 'qr_secret is required'
+      });
+    }
+
+    const StudentQRCode = require('../models/StudentQRCode');
+    const qrCode = await StudentQRCode.findOne({
+      where: { qr_secret },
+      include: [{
+        model: Student,
+        include: [{ model: User, attributes: ['full_name'] }],
+        attributes: ['student_code']
+      }]
+    });
+
+    if (!qrCode) {
+      return res.status(404).json({
+        success: false,
+        message: 'QR Code غير موجود'
+      });
+    }
+
+    if (!qrCode.is_active) {
+      return res.status(400).json({
+        success: false,
+        message: 'QR Code غير نشط أو منتهي الصلاحية'
+      });
+    }
+
+    // Check expiry if expires_at exists
+    if (qrCode.expires_at && new Date(qrCode.expires_at) < new Date()) {
+      await qrCode.update({ is_active: false });
+      return res.status(400).json({
+        success: false,
+        message: 'QR Code منتهي الصلاحية'
+      });
+    }
+
+    // Increment scan count and update scanned_at
+    await qrCode.update({
+      scan_count: (qrCode.scan_count || 0) + 1,
+      scanned_at: new Date()
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        student_code: qrCode.Student?.student_code,
+        full_name: qrCode.Student?.User?.full_name,
+        is_active: qrCode.is_active
+      },
+      message: 'تم التحقق من QR Code بنجاح'
+    });
+  } catch (error) {
+    console.error('verifyQRCode error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+};
+
 module.exports = {
   login,
+  studentLogin,
   register,
   getProfile,
   updateProfile,
   changePassword,
   logout,
   refreshAccessToken,
-  verifyToken
+  verifyToken,
+  verifyQRCode
+};
+
+// @desc    Upload avatar
+// @route   POST /api/auth/upload-avatar
+// @access  Private
+const uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please upload an image file'
+      });
+    }
+
+    const userId = req.user.id;
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Delete old avatar if exists
+    if (user.profile_image) {
+      const fs = require('fs');
+      const path = require('path');
+      const oldImagePath = path.join(__dirname, '..', user.profile_image);
+      
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+    }
+
+    // Update user with new avatar path
+    const avatarPath = `/uploads/avatars/${req.file.filename}`;
+    await user.update({ profile_image: avatarPath });
+
+    res.json({
+      success: true,
+      message: 'Avatar uploaded successfully',
+      data: {
+        profile_image: avatarPath
+      }
+    });
+  } catch (error) {
+    console.error('Upload avatar error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during avatar upload'
+    });
+  }
+};
+
+// @desc    Delete avatar
+// @route   DELETE /api/auth/avatar
+// @access  Private
+const deleteAvatar = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Delete avatar file if exists
+    if (user.profile_image) {
+      const fs = require('fs');
+      const path = require('path');
+      const imagePath = path.join(__dirname, '..', user.profile_image);
+      
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    // Update user to remove avatar
+    await user.update({ profile_image: null });
+
+    res.json({
+      success: true,
+      message: 'Avatar deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete avatar error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during avatar deletion'
+    });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  studentLogin,
+  logout,
+  getProfile,
+  updateProfile,
+  changePassword,
+  refreshAccessToken,
+  verifyToken,
+  retrieveStudentCode,
+  verifyQRCode,
+  uploadAvatar,
+  deleteAvatar
 };

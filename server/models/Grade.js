@@ -16,6 +16,11 @@ const Grade = sequelize.define('Grade', {
       key: 'id'
     }
   },
+  student_branch_at_creation: {
+    type: DataTypes.ENUM('Software', 'Network'),
+    allowNull: true,
+    comment: 'فرع الطالب وقت إنشاء الدرجة (للحفظ التاريخي - لا يتغير حتى لو تغير فرع الطالب)'
+  },
   course_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -133,6 +138,27 @@ const Grade = sequelize.define('Grade', {
     allowNull: true,
     comment: 'تاريخ الاعتماد'
   },
+  // Publishing fields - for controlling when grades are visible to students
+  is_published: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+    comment: 'هل تم نشر الدرجة للطالب'
+  },
+  published_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    comment: 'تاريخ النشر'
+  },
+  published_by: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'users',
+      key: 'id'
+    },
+    comment: 'الأدمن الذي نشر الدرجة'
+  },
   notes: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -153,39 +179,67 @@ const Grade = sequelize.define('Grade', {
     { fields: ['student_id', 'course_id', 'academic_year_id', 'semester_id'], unique: true },
     { fields: ['status'] },
     { fields: ['professor_submitted_by'] },
-    { fields: ['admin_approved_by'] }
+    { fields: ['admin_approved_by'] },
+    { fields: ['is_published'] },
+    { fields: ['student_branch_at_creation'] }
   ]
 });
 
 // Calculate totals and determine grade before save
 Grade.beforeSave(async (grade) => {
-  // تحويل الرموز إلى درجات
+  // جلب إعدادات المادة من CourseGradeConfig
+  const CourseGradeConfig = require('./CourseGradeConfig');
+  
+  let config = null;
+  if (grade.course_id) {
+    config = await CourseGradeConfig.findOne({
+      where: { course_id: grade.course_id }
+    });
+  }
+  
+  // استخدام القيم الافتراضية إذا لم توجد إعدادات
+  const ass1Max = config?.ass1_max || 30;
+  const ass2Max = config?.ass2_max || 30;
+  const finalMax = config?.final_max || 150;
+  const pValue = config?.p_value || 30;
+  const mValue = config?.m_value || 21;
+  const dValue = config?.d_value || 15;
+  
+  // تحويل التقديرات (P/M/D) إلى درجات رقمية (computed values)
   const assignmentScores = {
-    'D': 30,
-    'M': 21,
-    'P': 15
+    'D': parseFloat(dValue),
+    'M': parseFloat(mValue),
+    'P': parseFloat(pValue)
   };
-
-  // حساب درجات الواجبات
-  if (!grade.assignment1_score || grade.assignment1_score === 0) {
-    grade.assignment1_score = assignmentScores[grade.assignment1_grade] || 0;
-  }
-
-  if (!grade.assignment2_score || grade.assignment2_score === 0) {
-    grade.assignment2_score = assignmentScores[grade.assignment2_grade] || 0;
-  }
-
-  // حساب المجموع
-  grade.total_score = (grade.assignment1_score || 0) + (grade.assignment2_score || 0) + (grade.final_exam_score || 0);
-
-  // حساب النسبة المئوية (من 210)
-  if (grade.total_score > 0) {
-    grade.total_percentage = (grade.total_score / 210) * 100;
-  }
-
-  // تحديد النتيجة و GPA
+  
+  // حساب assignment scores تلقائياً من التقديرات
+  grade.assignment1_score = assignmentScores[grade.assignment1_grade] || 0;
+  grade.assignment2_score = assignmentScores[grade.assignment2_grade] || 0;
+  
+  // حساب المجموع (مجموع مباشر بدون نسب)
+  grade.total_score = parseFloat(grade.assignment1_score || 0) + 
+                      parseFloat(grade.assignment2_score || 0) + 
+                      parseFloat(grade.final_exam_score || 0);
+  
+  // حساب النسبة المئوية
+  const maxTotal = parseFloat(ass1Max) + parseFloat(ass2Max) + parseFloat(finalMax);
+  grade.total_percentage = maxTotal > 0 ? (grade.total_score / maxTotal) * 100 : 0;
+  
+  // تحديد النتيجة والـ GPA
   const percentage = grade.total_percentage;
-  if (percentage >= 85) {
+  const finalExamPct = parseFloat(finalMax) > 0 ? (parseFloat(grade.final_exam_score || 0) / parseFloat(finalMax)) * 100 : 0;
+  
+  // شرط الرسوب لائحة: الامتحان النهائي أقل من 60% (شرط أساسي للنجاح)
+  // يُطبَّق فقط إذا كانت هناك درجات مُدخَلة فعلاً
+  const hasAnyGrade = grade.assignment1_grade || grade.assignment2_grade || parseFloat(grade.final_exam_score || 0) > 0;
+  const failedFinalExam = hasAnyGrade && finalExamPct < 60;
+
+  if (failedFinalExam) {
+    // راسب لائحة - لم يتجاوز 60% في الامتحان النهائي
+    grade.final_result = 'Fail';
+    grade.grade_point = 0.0;
+    grade.letter_grade = 'F';
+  } else if (percentage >= 85) {
     grade.final_result = 'Distinction';
     grade.grade_point = 4.0;
     grade.letter_grade = 'A';
@@ -198,6 +252,7 @@ Grade.beforeSave(async (grade) => {
     grade.grade_point = 2.0;
     grade.letter_grade = 'C';
   } else if (percentage >= 30) {
+    // Refer: اجتاز شرط النهائي (≥60%) لكن المجموع الكلي بين 30-49%
     grade.final_result = 'Refer';
     grade.grade_point = 1.0;
     grade.letter_grade = 'D';
@@ -205,6 +260,23 @@ Grade.beforeSave(async (grade) => {
     grade.final_result = 'Fail';
     grade.grade_point = 0.0;
     grade.letter_grade = 'F';
+  }
+
+  // Capture student branch at creation time for historical tracking
+  // Only set on new records and only if not already set
+  if (grade.isNewRecord && grade.student_id && !grade.student_branch_at_creation) {
+    try {
+      const Student = require('./Student');
+      const student = await Student.findByPk(grade.student_id, {
+        attributes: ['id', 'branch']
+      });
+      if (student && student.branch) {
+        grade.student_branch_at_creation = student.branch;
+      }
+    } catch (err) {
+      // Non-critical: log but don't fail the save
+      console.warn('Could not capture student branch at grade creation:', err.message);
+    }
   }
 });
 

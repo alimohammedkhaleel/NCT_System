@@ -40,9 +40,9 @@ const createCourse = async (courseData, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'create',
-      entity_type: 'Course',
+      entity: 'Course',
       entity_id: course.id,
-      description: `Created course ${course.course_code}`
+      details: JSON.stringify({ description: `Created course ${course.course_code}` })
     });
     
     return course;
@@ -72,9 +72,9 @@ const updateCourse = async (courseId, updateData, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'update',
-      entity_type: 'Course',
+      entity: 'Course',
       entity_id: course.id,
-      description: `Updated course ${course.course_code}`
+      details: JSON.stringify({ description: `Updated course ${course.course_code}` })
     });
     
     return course;
@@ -115,9 +115,9 @@ const softDeleteCourse = async (courseId, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'delete',
-      entity_type: 'Course',
+      entity: 'Course',
       entity_id: course.id,
-      description: `Archived course ${course.course_code}`
+      details: JSON.stringify({ description: `Archived course ${course.course_code}` })
     });
     
     return course;

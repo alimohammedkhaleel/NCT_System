@@ -160,7 +160,7 @@ class ExtendedAdminController {
    */
   async createProfessor(req, res) {
     try {
-      const { username, email, password, full_name, phone, department, specialization } = req.body;
+      const { username, email, password, full_name, phone, national_id, department, specialization, specialty_id } = req.body;
       const userId = req.user.id;
 
       const professor = await ProfessorService.createProfessor(
@@ -170,8 +170,10 @@ class ExtendedAdminController {
           password,
           full_name,
           phone,
+          national_id,
           department,
-          specialization
+          specialization,
+          specialty_id
         },
         userId
       );

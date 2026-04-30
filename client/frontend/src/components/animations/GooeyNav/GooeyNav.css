@@ -1,0 +1,53 @@
+.gooey-nav {
+  position: relative;
+  padding: 1rem;
+}
+
+.gooey-nav-items {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gooey-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 2px solid var(--purple-primary);
+  border-radius: var(--radius-lg);
+  color: var(--white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  z-index: 1;
+}
+
+.gooey-nav-item:hover {
+  color: var(--purple-very-dark);
+}
+
+.gooey-nav-item.active {
+  color: var(--purple-very-dark);
+}
+
+.gooey-nav-blob {
+  position: absolute;
+  inset: 0;
+  background: var(--purple-primary);
+  border-radius: var(--radius-lg);
+  z-index: -1;
+  box-shadow: var(--shadow-glow);
+}
+
+.gooey-nav-icon {
+  font-size: 1.2rem;
+}
+
+.gooey-nav-label {
+  white-space: nowrap;
+}

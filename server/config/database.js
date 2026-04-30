@@ -12,6 +12,9 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
+    dialectOptions: {
+      charset: 'utf8mb4'
+    },
     logging: process.env.NODE_ENV === 'development' ? console.log : false,
     pool: {
       max: 5,
@@ -22,7 +25,8 @@ const sequelize = new Sequelize(
     define: {
       timestamps: true,
       underscored: true,
-      paranoid: false
+      paranoid: false,
+      charset: 'utf8mb4'
     }
   }
 );

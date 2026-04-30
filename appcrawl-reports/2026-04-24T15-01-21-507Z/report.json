@@ -1,0 +1,727 @@
+{
+  "timestamp": "2026-04-24T15:05:41.888Z",
+  "duration": 259,
+  "mode": "explore",
+  "instruction": null,
+  "bundleId": "http://localhost:5173",
+  "model": "gemini-2.0-flash-exp",
+  "summary": {
+    "screensVisited": 2,
+    "totalActions": 100,
+    "issuesFound": 0,
+    "testResult": null
+  },
+  "screens": [
+    {
+      "name": "Home",
+      "visitCount": 1
+    },
+    {
+      "name": "NCTUPortal",
+      "visitCount": 99
+    }
+  ],
+  "issues": [],
+  "actions": [
+    {
+      "step": 1,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042889542
+    },
+    {
+      "step": 2,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042892526
+    },
+    {
+      "step": 3,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042895099
+    },
+    {
+      "step": 4,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042897620
+    },
+    {
+      "step": 5,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042900338
+    },
+    {
+      "step": 6,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042902716
+    },
+    {
+      "step": 7,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042905832
+    },
+    {
+      "step": 8,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042909029
+    },
+    {
+      "step": 9,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042912219
+    },
+    {
+      "step": 10,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042914660
+    },
+    {
+      "step": 11,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042917105
+    },
+    {
+      "step": 12,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042920055
+    },
+    {
+      "step": 13,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042923593
+    },
+    {
+      "step": 14,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042927441
+    },
+    {
+      "step": 15,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042930038
+    },
+    {
+      "step": 16,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042932408
+    },
+    {
+      "step": 17,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042934770
+    },
+    {
+      "step": 18,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042937119
+    },
+    {
+      "step": 19,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042939626
+    },
+    {
+      "step": 20,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042942064
+    },
+    {
+      "step": 21,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042944824
+    },
+    {
+      "step": 22,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042947331
+    },
+    {
+      "step": 23,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042949751
+    },
+    {
+      "step": 24,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042952204
+    },
+    {
+      "step": 25,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042954725
+    },
+    {
+      "step": 26,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042957170
+    },
+    {
+      "step": 27,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042959604
+    },
+    {
+      "step": 28,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042961960
+    },
+    {
+      "step": 29,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042964354
+    },
+    {
+      "step": 30,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042966809
+    },
+    {
+      "step": 31,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042969254
+    },
+    {
+      "step": 32,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042971666
+    },
+    {
+      "step": 33,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042974170
+    },
+    {
+      "step": 34,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042976708
+    },
+    {
+      "step": 35,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042979426
+    },
+    {
+      "step": 36,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042982237
+    },
+    {
+      "step": 37,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042984710
+    },
+    {
+      "step": 38,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042987507
+    },
+    {
+      "step": 39,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042990223
+    },
+    {
+      "step": 40,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042992941
+    },
+    {
+      "step": 41,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042995368
+    },
+    {
+      "step": 42,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777042997867
+    },
+    {
+      "step": 43,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043000288
+    },
+    {
+      "step": 44,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043002893
+    },
+    {
+      "step": 45,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043005274
+    },
+    {
+      "step": 46,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043007780
+    },
+    {
+      "step": 47,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043010139
+    },
+    {
+      "step": 48,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043012658
+    },
+    {
+      "step": 49,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043015083
+    },
+    {
+      "step": 50,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043017676
+    },
+    {
+      "step": 51,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043020233
+    },
+    {
+      "step": 52,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043022650
+    },
+    {
+      "step": 53,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043025084
+    },
+    {
+      "step": 54,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043027480
+    },
+    {
+      "step": 55,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043030023
+    },
+    {
+      "step": 56,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043032397
+    },
+    {
+      "step": 57,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043034908
+    },
+    {
+      "step": 58,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043037401
+    },
+    {
+      "step": 59,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043039905
+    },
+    {
+      "step": 60,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043042405
+    },
+    {
+      "step": 61,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043045110
+    },
+    {
+      "step": 62,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043047847
+    },
+    {
+      "step": 63,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043050249
+    },
+    {
+      "step": 64,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043052817
+    },
+    {
+      "step": 65,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043055999
+    },
+    {
+      "step": 66,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043058509
+    },
+    {
+      "step": 67,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043060942
+    },
+    {
+      "step": 68,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043063442
+    },
+    {
+      "step": 69,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043066034
+    },
+    {
+      "step": 70,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043068476
+    },
+    {
+      "step": 71,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043071055
+    },
+    {
+      "step": 72,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043073445
+    },
+    {
+      "step": 73,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043075883
+    },
+    {
+      "step": 74,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043078253
+    },
+    {
+      "step": 75,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043080602
+    },
+    {
+      "step": 76,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043082965
+    },
+    {
+      "step": 77,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043085395
+    },
+    {
+      "step": 78,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043087782
+    },
+    {
+      "step": 79,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043090169
+    },
+    {
+      "step": 80,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043092542
+    },
+    {
+      "step": 81,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043095006
+    },
+    {
+      "step": 82,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043097357
+    },
+    {
+      "step": 83,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043099727
+    },
+    {
+      "step": 84,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043102063
+    },
+    {
+      "step": 85,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043104404
+    },
+    {
+      "step": 86,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043107047
+    },
+    {
+      "step": 87,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043109747
+    },
+    {
+      "step": 88,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043112351
+    },
+    {
+      "step": 89,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043115042
+    },
+    {
+      "step": 90,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043117449
+    },
+    {
+      "step": 91,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043119804
+    },
+    {
+      "step": 92,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043122315
+    },
+    {
+      "step": 93,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043124779
+    },
+    {
+      "step": 94,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043127248
+    },
+    {
+      "step": 95,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043129639
+    },
+    {
+      "step": 96,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043132144
+    },
+    {
+      "step": 97,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043134631
+    },
+    {
+      "step": 98,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043137005
+    },
+    {
+      "step": 99,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043139338
+    },
+    {
+      "step": 100,
+      "tool": "error",
+      "params": {},
+      "result": "models/gemini-2.0-flash-exp is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",
+      "timestamp": 1777043141885
+    }
+  ]
+}

@@ -17,9 +17,9 @@ const Semester = sequelize.define('Semester', {
     }
   },
   semester_name: {
-    type: DataTypes.ENUM('Fall', 'Spring', 'Summer'),
+    type: DataTypes.STRING(100),
     allowNull: false,
-    comment: 'اسم الترم: Fall (الأول)، Spring (الثاني)، Summer (الصيفي)'
+    comment: 'اسم الترم: Fall/Spring/Summer أو الفصل الدراسي الأول/الثاني'
   },
   start_date: {
     type: DataTypes.DATE,

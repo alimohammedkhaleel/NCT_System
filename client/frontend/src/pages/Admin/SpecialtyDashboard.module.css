@@ -1,0 +1,300 @@
+.pageWrapper {
+  padding: var(--spacing-lg, 24px);
+  direction: rtl;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--body-page);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.pageHeader {
+  margin-bottom: 32px;
+}
+
+.backBtn {
+  background: rgba(179, 110, 255, 0.15);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--purple-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+
+.backBtn:hover {
+  background: rgba(179, 110, 255, 0.25);
+  border-color: var(--purple-primary);
+  transform: translateX(-4px);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.specialtyIcon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--purple-primary);
+  margin: 0 0 4px;
+  text-shadow: 0 0 20px var(--glow-purple);
+}
+
+.subtitle {
+  color: var(--gray-500, #6b7280);
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ── Info Card ── */
+.infoCard {
+  background: rgba(17, 1, 23, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(179, 110, 255, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoLabel {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.infoValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--purple-primary);
+}
+
+/* ── Section Headers ── */
+.sectionHeader {
+  margin: 32px 0 20px;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--purple-primary);
+  margin: 0 0 4px;
+}
+
+.sectionSubtitle {
+  color: var(--gray-500, #6b7280);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Years Grid ── */
+.yearsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.yearCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(179, 110, 255, 0.2);
+  border-radius: 16px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.yearCard:hover {
+  border-color: var(--purple-primary);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(179, 110, 255, 0.3);
+}
+
+.yearIcon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.yearTitle {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--purple-primary);
+}
+
+.yearStats {
+  display: flex;
+  gap: 24px;
+  margin: 12px 0;
+  padding: 12px 0;
+  border-top: 1px solid rgba(179, 110, 255, 0.2);
+  border-bottom: 1px solid rgba(179, 110, 255, 0.2);
+  width: 100%;
+  justify-content: center;
+}
+
+.yearStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.yearStatValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--purple-primary);
+  line-height: 1;
+}
+
+.yearStatLabel {
+  font-size: 0.75rem;
+  color: var(--gray-500, #6b7280);
+  font-weight: 500;
+}
+
+/* ── Tracks Info (for ICT) ── */
+.tracksInfo {
+  width: 100%;
+  padding: 12px;
+  background: rgba(179, 110, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.tracksBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.tracksList {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.track {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  border-radius: 6px;
+}
+
+.yearAction {
+  color: var(--purple-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.yearCard:hover .yearAction {
+  color: var(--purple-light);
+}
+
+/* ── Loading & Error ── */
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(179, 110, 255, 0.2);
+  border-top-color: var(--purple-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 20px var(--glow-purple);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorMessage {
+  font-size: 1.1rem;
+  color: var(--gray-600, #4b5563);
+  margin: 0;
+}
+
+.backButton {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(179, 110, 255, 0.3);
+}
+
+.backButton:hover {
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+}
+
+@media (max-width: 640px) {
+  .yearsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .infoCard {
+    grid-template-columns: 1fr;
+  }
+  
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -52,6 +52,11 @@ const User = sequelize.define('User', {
     type: DataTypes.BLOB,
     allowNull: true
   },
+  profile_image: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+    comment: 'مسار صورة الملف الشخصي (VARCHAR)'
+  },
   is_active: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
@@ -67,6 +72,12 @@ const User = sequelize.define('User', {
   updated_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
+  },
+  token_version: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    allowNull: false,
+    comment: 'إصدار التوكن لمنع تعدد الجلسات'
   }
 }, {
   tableName: 'users',

@@ -17,6 +17,13 @@ const StudentQRCode = require('../models/StudentQRCode');
 const ActivityLog = require('../models/ActivityLog');
 const GradeSetting = require('../models/GradeSetting');
 const Timetable = require('../models/Timetable');
+const SpecialtyFee = require('../models/SpecialtyFee');
+
+const RegistrationLink = require('../models/RegistrationLink');
+const RegistrationRequest = require('../models/RegistrationRequest');
+const CourseGradeConfig = require('../models/CourseGradeConfig');
+const ProfessorRegistrationRequest = require('../models/ProfessorRegistrationRequest');
+const ProfessorRegistrationLink = require('../models/ProfessorRegistrationLink');
 
 // ==================== Define associations ====================
 const defineAssociations = () => {
@@ -76,6 +83,10 @@ const defineAssociations = () => {
   // Course -> ProfessorCourse (one-to-many)
   Course.hasMany(ProfessorCourse, { foreignKey: 'course_id', onDelete: 'CASCADE' });
   ProfessorCourse.belongsTo(Course, { foreignKey: 'course_id' });
+
+  // Course -> CourseGradeConfig (one-to-one)
+  Course.hasOne(CourseGradeConfig, { foreignKey: 'course_id', onDelete: 'CASCADE' });
+  CourseGradeConfig.belongsTo(Course, { foreignKey: 'course_id' });
 
   // ==================== Professor Associations ====================
   // Professor -> ProfessorCourse (one-to-many)
@@ -160,6 +171,38 @@ const defineAssociations = () => {
   // User -> Timetable (created by)
   User.hasMany(Timetable, { foreignKey: 'created_by', as: 'timetablesCreated' });
   Timetable.belongsTo(User, { foreignKey: 'created_by', as: 'createdByUser' });
+
+  // ==================== SpecialtyFee Associations ====================
+  Specialty.hasMany(SpecialtyFee, { foreignKey: 'specialty_id', onDelete: 'CASCADE' });
+  SpecialtyFee.belongsTo(Specialty, { foreignKey: 'specialty_id' });
+
+  // ==================== RegistrationLink Associations ====================
+  User.hasMany(RegistrationLink, { foreignKey: 'created_by', as: 'registrationLinks' });
+  RegistrationLink.belongsTo(User, { foreignKey: 'created_by', as: 'createdByAdmin' });
+
+  // ==================== RegistrationRequest Associations ====================
+  Specialty.hasMany(RegistrationRequest, { foreignKey: 'specialty_id' });
+  RegistrationRequest.belongsTo(Specialty, { foreignKey: 'specialty_id' });
+
+  // ==================== ProfessorRegistrationRequest Associations ====================
+  Specialty.hasMany(ProfessorRegistrationRequest, { foreignKey: 'specialty_id' });
+  ProfessorRegistrationRequest.belongsTo(Specialty, { foreignKey: 'specialty_id' });
+
+  User.hasMany(ProfessorRegistrationRequest, { foreignKey: 'processed_by', as: 'professorRequestsProcessed' });
+  ProfessorRegistrationRequest.belongsTo(User, { foreignKey: 'processed_by', as: 'ProcessedBy' });
+
+  User.hasMany(ProfessorRegistrationRequest, { foreignKey: 'created_user_id', as: 'professorRequestsCreated' });
+  ProfessorRegistrationRequest.belongsTo(User, { foreignKey: 'created_user_id', as: 'CreatedUser' });
+
+  Professor.hasMany(ProfessorRegistrationRequest, { foreignKey: 'created_professor_id', as: 'professorRequests' });
+  ProfessorRegistrationRequest.belongsTo(Professor, { foreignKey: 'created_professor_id', as: 'CreatedProfessor' });
+
+  // ==================== ProfessorRegistrationLink Associations ====================
+  User.hasMany(ProfessorRegistrationLink, { foreignKey: 'created_by', as: 'professorRegistrationLinks' });
+  ProfessorRegistrationLink.belongsTo(User, { foreignKey: 'created_by', as: 'professorLinkCreatedBy' });
+
+  User.hasMany(ProfessorRegistrationLink, { foreignKey: 'used_by', as: 'professorLinksUsed' });
+  ProfessorRegistrationLink.belongsTo(User, { foreignKey: 'used_by', as: 'professorLinkUsedBy' });
 };
 
 // ==================== Export ====================
@@ -181,5 +224,11 @@ module.exports = {
   ActivityLog,
   GradeSetting,
   Timetable,
+  SpecialtyFee,
+  RegistrationLink,
+  RegistrationRequest,
+  CourseGradeConfig,
+  ProfessorRegistrationRequest,
+  ProfessorRegistrationLink,
   defineAssociations
 };

@@ -1,0 +1,122 @@
+.dashboard {
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 100px 1.5rem 3rem;
+  color: var(--white);
+}
+
+.dashboard-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 2.5vw, 2.7rem);
+  color: var(--purple-primary);
+  text-shadow: 0 2px 10px var(--glow-purple);
+}
+.dashboard-header p {
+  margin: 0;
+  color: var(--white-dim);
+  font-size: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(17, 1, 23, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-purple);
+  border-radius: 24px;
+  padding: 1.4rem;
+  box-shadow: 0 4px 15px var(--glow-purple);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px var(--glow-purple);
+}
+
+.stat-icon {
+  min-width: 4rem;
+  min-height: 4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #ffffff;
+}
+
+.stat-content h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+  color: var(--white);
+  text-shadow: 0 2px 8px var(--glow-purple);
+}
+
+.stat-content p {
+  margin: 0;
+  color: var(--white-dim);
+  font-size: 0.95rem;
+}
+
+.chart-container {
+  background: rgba(17, 1, 23, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-purple);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--glow-purple);
+}
+
+.chart-container h3 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: var(--purple-primary);
+  text-shadow: 0 2px 6px var(--glow-purple);
+}
+
+.dashboard-loading {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--white);
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 8px solid var(--purple-transparent);
+  border-top-color: var(--purple-primary);
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 20px var(--glow-purple);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+  .stats-grid,
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    padding: 1.25rem;
+  }
+}

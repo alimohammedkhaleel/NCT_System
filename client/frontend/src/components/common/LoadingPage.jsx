@@ -107,9 +107,9 @@ const LoadingPage = ({ message = 'جاري التحميل...', timeout = 5000, o
         className="loading-bg-gradient"
         animate={{
           background: [
-            'linear-gradient(135deg, #00ADB5 0%, #4DA8FF 100%)',
-            'linear-gradient(135deg, #4DA8FF 0%, #00ADB5 100%)',
-            'linear-gradient(135deg, #00ADB5 0%, #4DA8FF 100%)'
+            'linear-gradient(135deg, #110117 0%, #2d004d 100%)',
+            'linear-gradient(135deg, #2d004d 0%, #110117 100%)',
+            'linear-gradient(135deg, #110117 0%, #2d004d 100%)'
           ]
         }}
         transition={{

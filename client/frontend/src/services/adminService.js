@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/admin';
+// Use relative path to leverage Vite proxy
+const API_URL = '/api/admin';
 
 // Get token from localStorage
 const getToken = () => {

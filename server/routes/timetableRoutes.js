@@ -5,16 +5,42 @@ const { authenticateToken, authorizeRoles } = require('../middleware/auth');
 const upload = require('../config/multer');
 
 /**
- * POST /api/admin/timetables
- * Create a new timetable with PDF upload
+ * GET /api/admin/timetables/student
+ * Get timetable for the logged-in student based on specialty
  */
-router.post('/timetables', authenticateToken, authorizeRoles('admin'), upload.single('file'), TimetableController.createTimetable);
+router.get('/timetables/student', authenticateToken, authorizeRoles('student'), async (req, res) => {
+  try {
+    const Student = require('../models/Student');
+    const Timetable = require('../models/Timetable');
+    const Specialty = require('../models/Specialty');
+
+    const student = await Student.findOne({ where: { user_id: req.user.id } });
+    if (!student) return res.status(404).json({ success: false, message: 'Student not found' });
+
+    const timetables = await Timetable.findAll({
+      where: { specialty_id: student.specialty_id },
+      include: [{ model: Specialty, attributes: ['name', 'arabic_name', 'code'] }],
+      order: [['created_at', 'DESC']]
+    });
+
+    res.json({ success: true, data: timetables, count: timetables.length });
+  } catch (error) {
+    console.error('Get student timetable error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
 
 /**
  * GET /api/admin/timetables
  * Get all timetables with optional filtering
  */
 router.get('/timetables', authenticateToken, authorizeRoles('admin'), TimetableController.getAllTimetables);
+
+/**
+ * POST /api/admin/timetables
+ * Create a new timetable with PDF upload
+ */
+router.post('/timetables', authenticateToken, authorizeRoles('admin'), upload.single('file'), TimetableController.createTimetable);
 
 /**
  * GET /api/admin/timetables/:id

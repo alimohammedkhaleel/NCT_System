@@ -1,0 +1,17 @@
+{
+  "id": "nctu-local-env",
+  "name": "NCTU Local Development",
+  "values": [
+    { "key": "base_url", "value": "http://localhost:5000", "enabled": true },
+    { "key": "token", "value": "", "enabled": true },
+    { "key": "student_token", "value": "", "enabled": true },
+    { "key": "course_id", "value": "1", "enabled": true },
+    { "key": "specialty_id", "value": "1", "enabled": true },
+    { "key": "config_id", "value": "", "enabled": true },
+    { "key": "new_config_id", "value": "", "enabled": true },
+    { "key": "registration_token", "value": "", "enabled": true },
+    { "key": "registration_link_id", "value": "", "enabled": true },
+    { "key": "registration_request_id", "value": "", "enabled": true },
+    { "key": "all_paid", "value": "false", "enabled": true }
+  ]
+}

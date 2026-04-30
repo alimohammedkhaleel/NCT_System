@@ -1,7 +1,13 @@
+/* CoursesPage.module.css - Glass Morphism Theme */
+
 .pageWrapper {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 20px;
+  background: var(--body-page);
+  min-height: 100vh;
+  direction: rtl;
 }
 
 .pageHeader {
@@ -9,34 +15,43 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(17, 1, 23, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(179, 110, 255, 0.1);
 }
 
 .pageTitle {
   font-size: 28px;
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--purple-primary);
   margin: 0;
+  text-shadow: 0 0 20px var(--glow-purple);
 }
 
 .addBtn {
   padding: 10px 20px;
-  background-color: #27ae60;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
   color: white;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid var(--purple-primary);
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 4px 16px rgba(179, 110, 255, 0.3);
 }
 
 .addBtn:hover {
-  background-color: #229954;
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 8px 24px rgba(179, 110, 255, 0.5);
 }
 
 .filters {
@@ -44,8 +59,10 @@
   gap: 10px;
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  background: rgba(179, 110, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  border-radius: 8px;
 }
 
 .filterGroup {
@@ -58,36 +75,44 @@
 .filterLabel {
   font-size: 12px;
   font-weight: 600;
-  color: #7f8c8d;
+  color: var(--purple-primary);
   text-transform: uppercase;
   margin: 0;
 }
 
 .filterInput {
   padding: 8px 12px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 6px;
   font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.filterInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .filterInput:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 4px rgba(52, 152, 219, 0.3);
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 12px rgba(179, 110, 255, 0.4);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .loading {
   text-align: center;
   padding: 40px;
-  color: #7f8c8d;
+  color: var(--text-secondary);
 }
 
 .loadingSpinner {
   display: inline-block;
   width: 30px;
   height: 30px;
-  border: 4px solid #ecf0f1;
-  border-top-color: #3498db;
+  border: 4px solid rgba(179, 110, 255, 0.2);
+  border-top-color: var(--purple-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -105,7 +130,7 @@
   display: block;
   margin-bottom: 5px;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--purple-primary);
   font-size: 14px;
 }
 
@@ -114,18 +139,28 @@
 .textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.input::placeholder,
+.select::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 4px rgba(52, 152, 219, 0.3);
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 12px rgba(179, 110, 255, 0.4);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .textarea {
@@ -142,59 +177,64 @@
 
 .submitBtn {
   padding: 10px 20px;
-  background-color: #3498db;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
   color: white;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid var(--purple-primary);
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.4);
 }
 
 .submitBtn:hover {
-  background-color: #2980b9;
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.5);
 }
 
 .cancelBtn {
   padding: 10px 20px;
-  background-color: #95a5a6;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background: rgba(179, 110, 255, 0.15);
+  color: var(--purple-light);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .cancelBtn:hover {
-  background-color: #7f8c8d;
+  background: rgba(179, 110, 255, 0.25);
+  transform: translateY(-2px);
 }
 
 .errorMessage {
-  color: #e74c3c;
+  color: var(--error-color);
   font-size: 12px;
   margin-top: 4px;
 }
 
 .successMessage {
-  background-color: #d4edda;
-  color: #155724;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
   padding: 12px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 20px;
-  border-left: 4px solid #28a745;
+  border: 1px solid #10b981;
+  backdrop-filter: blur(10px);
 }
 
 .errorAlert {
-  background-color: #f8d7da;
-  color: #721c24;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
   padding: 12px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 20px;
-  border-left: 4px solid #f5c6cb;
+  border: 1px solid #ef4444;
+  backdrop-filter: blur(10px);
 }
 
 @media (max-width: 768px) {
@@ -220,4 +260,147 @@
   .cancelBtn {
     width: 100%;
   }
+}
+
+/* Notification Styles - Dark Glass Theme */
+.notification {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease;
+}
+
+.notificationError {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.notificationSuccess {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.notificationCloseBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: inherit;
+  transition: opacity 0.2s ease;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.notificationCloseBtn:hover {
+  opacity: 0.7;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Course Modal Styles - Dark Glass Theme */
+.filterSection {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(179, 110, 255, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(179, 110, 255, 0.2);
+}
+
+.filterLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--white-dim);
+}
+
+.filterInfo {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(179, 110, 255, 0.1);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--purple-light);
+}
+
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.courseCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  padding: 12px;
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(17, 1, 23, 0.4);
+  transition: all 0.2s ease;
+}
+
+.courseCard:hover {
+  background: rgba(17, 1, 23, 0.6);
+  border-color: rgba(179, 110, 255, 0.4);
+}
+
+.courseCardSelected {
+  border: 2px solid var(--purple-primary);
+  background: rgba(179, 110, 255, 0.15);
+}
+
+.courseCheckbox {
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.courseInfo {
+  flex: 1;
+}
+
+.courseCode {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--white);
+}
+
+.courseName {
+  font-size: 13px;
+  color: var(--white-dim);
+  margin-bottom: 4px;
+}
+
+.courseDetails {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px;
+  color: var(--white-dim);
+}
+
+.emptyStateSubtext {
+  font-size: 13px;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.4);
 }

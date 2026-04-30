@@ -1,0 +1,9 @@
+.bounce-card {
+  cursor: pointer;
+  will-change: transform;
+  transition: box-shadow var(--transition-normal);
+}
+
+.bounce-card:hover {
+  box-shadow: var(--shadow-glow);
+}

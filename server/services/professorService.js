@@ -34,7 +34,7 @@ const generateProfessorCode = async () => {
 
 /**
  * Create new professor (creates User + Professor records)
- * @param {object} professorData - Professor data { username, email, password, full_name, phone, department, specialization }
+ * @param {object} professorData - Professor data { username, email, password, full_name, phone, national_id, department, specialization, specialty_id }
  * @param {number} userId - Admin user ID (for activity logging)
  * @returns {Promise<object>} Created professor with user info
  */
@@ -42,22 +42,36 @@ const createProfessor = async (professorData, userId) => {
   const transaction = await sequelize.transaction();
   
   try {
+    // Validate required fields
+    if (!professorData.username || !professorData.email || !professorData.password || !professorData.full_name) {
+      throw new Error('يرجى ملء جميع الحقول المطلوبة (username, email, password, full_name)');
+    }
+
     // Verify username doesn't exist
     const existingUser = await User.findOne({
-      where: { username: professorData.username }
+      where: { 
+        [Op.or]: [
+          { username: professorData.username },
+          { email: professorData.email }
+        ]
+      }
     });
     
     if (existingUser) {
-      throw new Error('Username already exists');
+      if (existingUser.username === professorData.username) {
+        throw new Error('اسم المستخدم موجود بالفعل');
+      }
+      if (existingUser.email === professorData.email) {
+        throw new Error('البريد الإلكتروني موجود بالفعل');
+      }
     }
-    
-    // Verify email doesn't exist
-    const existingEmail = await User.findOne({
-      where: { email: professorData.email }
-    });
-    
-    if (existingEmail) {
-      throw new Error('Email already exists');
+
+    // Verify national_id uniqueness if provided
+    if (professorData.national_id) {
+      const existingId = await User.findOne({ where: { national_id: professorData.national_id } });
+      if (existingId) {
+        throw new Error('الرقم القومي موجود بالفعل');
+      }
     }
     
     // Hash password
@@ -70,6 +84,7 @@ const createProfessor = async (professorData, userId) => {
       password_hash: hashedPassword,
       full_name: professorData.full_name,
       phone: professorData.phone || null,
+      national_id: professorData.national_id || null,
       role: 'professor',
       is_active: true
     }, { transaction });
@@ -83,6 +98,7 @@ const createProfessor = async (professorData, userId) => {
       professor_code: professorCode,
       department: professorData.department || null,
       specialization: professorData.specialization || null,
+      specialty_id: professorData.specialty_id || null,
       is_active: true
     }, { transaction });
     
@@ -90,17 +106,23 @@ const createProfessor = async (professorData, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'create',
-      entity_type: 'Professor',
+      entity: 'Professor',
       entity_id: professor.id,
-      description: `Created professor ${user.full_name} (${professorCode})`
+      details: JSON.stringify({ description: `Created professor ${user.full_name} (${professorCode})` }),
+      status: 'success'
     }, { transaction });
     
     await transaction.commit();
     
-    return {
-      profile: professor,
-      user: user
-    };
+    // Fetch complete professor data with user
+    const createdProfessor = await Professor.findByPk(professor.id, {
+      include: [{
+        model: User,
+        attributes: ['id', 'username', 'email', 'full_name', 'phone', 'national_id']
+      }]
+    });
+    
+    return createdProfessor;
   } catch (error) {
     await transaction.rollback();
     console.error('Create professor error:', error);
@@ -116,25 +138,51 @@ const createProfessor = async (professorData, userId) => {
  * @returns {Promise<object>} Updated professor
  */
 const updateProfessor = async (professorId, updateData, userId) => {
+  const transaction = await sequelize.transaction();
   try {
-    const professor = await Professor.findByPk(professorId);
+    const professor = await Professor.findByPk(professorId, {
+      include: [{ model: User }]
+    });
     if (!professor) {
       throw new Error('Professor not found');
     }
     
-    await professor.update(updateData);
+    // Update linked User record if user fields are provided
+    const userUpdateData = {};
+    if (updateData.full_name) userUpdateData.full_name = updateData.full_name;
+    if (updateData.email) userUpdateData.email = updateData.email;
+    if (updateData.phone) userUpdateData.phone = updateData.phone;
+    if (updateData.national_id) userUpdateData.national_id = updateData.national_id;
+    if (updateData.password) {
+      userUpdateData.password_hash = await bcrypt.hash(updateData.password, 12);
+    }
+
+    if (Object.keys(userUpdateData).length > 0) {
+      await professor.User.update(userUpdateData, { transaction });
+    }
+
+    // Update Professor record
+    const professorFields = ['department', 'specialization', 'is_active', 'specialty_id'];
+    const professorUpdateData = {};
+    professorFields.forEach(f => {
+      if (updateData[f] !== undefined) professorUpdateData[f] = updateData[f];
+    });
+
+    await professor.update(professorUpdateData, { transaction });
     
     // Log activity
     await ActivityLog.create({
       user_id: userId,
       action: 'update',
-      entity_type: 'Professor',
+      entity: 'Professor',
       entity_id: professor.id,
-      description: `Updated professor ${professor.id}`
-    });
+      details: JSON.stringify({ description: `Updated professor ${professor.professor_code}` })
+    }, { transaction });
     
+    await transaction.commit();
     return professor;
   } catch (error) {
+    await transaction.rollback();
     console.error('Update professor error:', error);
     throw error;
   }
@@ -168,9 +216,9 @@ const deleteProfessor = async (professorId, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'delete',
-      entity_type: 'Professor',
+      entity: 'Professor',
       entity_id: professor.id,
-      description: `Archived professor ${professor.professor_code}`
+      details: JSON.stringify({ description: `Archived professor ${professor.professor_code}` })
     }, { transaction });
     
     await transaction.commit();
@@ -200,12 +248,25 @@ const getProfessors = async (filters = {}) => {
     if (filters.department) {
       whereClause.department = filters.department;
     }
+
+    if (filters.specialty_id) {
+      whereClause.specialty_id = filters.specialty_id;
+    }
+
+    // Handle specialty code filter (from query string)
+    if (filters.specialty) {
+      const Specialty = require('../models/Specialty');
+      const specialty = await Specialty.findOne({ where: { code: filters.specialty } });
+      if (specialty) {
+        whereClause.specialty_id = specialty.id;
+      }
+    }
     
     const professors = await Professor.findAll({
       where: whereClause,
       include: [{
         model: User,
-        attributes: ['id', 'username', 'email', 'full_name', 'phone', 'last_login']
+        attributes: ['id', 'username', 'email', 'full_name', 'phone', 'national_id', 'last_login']
       }],
       order: [['created_at', 'DESC']]
     });
@@ -311,9 +372,9 @@ const assignCourseToProfessor = async (
     await ActivityLog.create({
       user_id: userId,
       action: 'create',
-      entity_type: 'ProfessorCourse',
+      entity: 'ProfessorCourse',
       entity_id: assignment.id,
-      description: `Assigned course to professor ${professor.professor_code}`
+      details: JSON.stringify({ description: `Assigned course to professor ${professor.professor_code}` })
     });
     
     return assignment;
@@ -340,9 +401,9 @@ const removeCourseFomProfessor = async (assignmentId, userId) => {
     await ActivityLog.create({
       user_id: userId,
       action: 'delete',
-      entity_type: 'ProfessorCourse',
+      entity: 'ProfessorCourse',
       entity_id: assignmentId,
-      description: `Removed course assignment from professor`
+      details: JSON.stringify({ description: `Removed course assignment from professor` })
     });
     
     await assignment.destroy();

@@ -45,8 +45,22 @@ const Student = sequelize.define('Student', {
       max: 4
     }
   },
+  current_semester: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    validate: {
+      min: 1,
+      max: 2
+    },
+    comment: 'الترم الحالي (1 أو 2)'
+  },
+  branch: {
+    type: DataTypes.ENUM('Software', 'Network'),
+    allowNull: true,
+    comment: 'فرع الطالب (للسنة الثالثة والرابعة في ICT) - البرمجيات أو الشبكات'
+  },
   academic_status: {
-    type: DataTypes.ENUM('active', 'graduated', 'suspended', 'transferred', 'dropped'),
+    type: DataTypes.ENUM('active', 'graduated', 'suspended', 'transferred', 'dropped', 'summer_course', 'repeat_year'),
     defaultValue: 'active'
   },
   enrollment_date: {
@@ -104,7 +118,9 @@ const Student = sequelize.define('Student', {
     { fields: ['academic_status'] },
     { fields: ['current_year'] },
     { fields: ['user_id'] },
-    { fields: ['specialty_id'] }
+    { fields: ['specialty_id'] },
+    { fields: ['branch'] },
+    { fields: ['specialty_id', 'current_year', 'branch'] }
   ]
 });
 

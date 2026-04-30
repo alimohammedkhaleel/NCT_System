@@ -1,0 +1,20 @@
+.true-focus-container {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+}
+
+.true-focus-border {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--purple-primary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 20px var(--glow-purple);
+  pointer-events: none;
+  transition: all var(--transition-normal);
+}
+
+.true-focus-content {
+  position: relative;
+  z-index: 1;
+}

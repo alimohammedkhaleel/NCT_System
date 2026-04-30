@@ -593,3 +593,58 @@ SELECT 'Professor: username=prof_ahmed, password=prof123' AS '';
 SELECT 'Student:   username=student_ahmed, password=student123' AS '';
 SELECT 'Accountant: username=accountant, password=account123' AS '';
 SELECT '===================================================' AS '';
+
+
+-- =====================================================
+-- 20. جدول روابط التسجيل (Registration Links)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS registration_links (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    expires_at DATETIME NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    used_at DATETIME,
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_token (token),
+    INDEX idx_expires_at (expires_at),
+    INDEX idx_is_used (is_used)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
+-- 21. جدول طلبات التسجيل (Registration Requests)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS registration_requests (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    national_id VARCHAR(14) NOT NULL UNIQUE,
+    birth_date DATE,
+    gender ENUM('male', 'female'),
+    email VARCHAR(255),
+    phone VARCHAR(20),
+    address TEXT,
+    specialty_id INT NOT NULL,
+    high_school_certificate VARCHAR(255),
+    high_school_grade DECIMAL(5,2),
+    guardian_name VARCHAR(255),
+    guardian_phone VARCHAR(20),
+    guardian_relation VARCHAR(50),
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    rejection_reason TEXT,
+    reviewed_by INT,
+    reviewed_at DATETIME,
+    created_user_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (specialty_id) REFERENCES specialties(id) ON DELETE RESTRICT,
+    FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (created_user_id) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (token) REFERENCES registration_links(token) ON DELETE CASCADE,
+    INDEX idx_token (token),
+    INDEX idx_status (status),
+    INDEX idx_national_id (national_id),
+    INDEX idx_specialty (specialty_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

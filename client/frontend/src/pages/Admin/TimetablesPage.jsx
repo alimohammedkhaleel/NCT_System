@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Table, Modal } from '../../components/common';
+import toast from 'react-hot-toast';
 import { timetablesAPI, specialtiesAPI } from '../../services/apiService';
-import styles from './CoursesPage.module.css';
+import { Table, Modal } from '../../components/common';
+import styles from './TimetablesPage.module.css';
 
 export default function TimetablesPage() {
   const [timetables, setTimetables] = useState([]);
@@ -28,27 +29,34 @@ export default function TimetablesPage() {
       setLoading(true);
       const [timetablesRes, specialtiesRes] = await Promise.all([
         timetablesAPI.getAll().catch(() => ({ data: { data: [] } })),
-        specialtiesAPI.getAll()
+        specialtiesAPI.getAll().catch(e => {
+          console.error('specialties fetch error:', e.response?.status, e.response?.data);
+          return { data: { data: [] } };
+        })
       ]);
       setTimetables(timetablesRes.data.data || []);
-      
-      // Add static specialties as fallback
-      const specs = specialtiesRes.data.data || [
-        { id: 1, name: 'هندسة البرمجيات', code: 'CS' },
-        { id: 2, name: 'هندسة الاتصالات', code: 'EE' },
-        { id: 3, name: 'العلوم الإدارية', code: 'BA' }
-      ];
-      setSpecialties(specs);
+      const specsData = specialtiesRes.data.data || [];
+      setSpecialties(specsData.length > 0 ? specsData : [
+        { id: 1, code: 'MCT', name: 'Mechatronics Technology', arabic_name: 'تكنولوجيا الميكاترونكس' },
+        { id: 2, code: 'AUT', name: 'Autotronics Technology', arabic_name: 'تكنولوجيا الأوتوترونكس' },
+        { id: 3, code: 'ICT', name: 'Information Technology', arabic_name: 'تكنولوجيا المعلومات' },
+        { id: 4, code: 'PRO', name: 'Prosthetics Technology', arabic_name: 'تكنولوجيا الأطراف الصناعية' },
+        { id: 5, code: 'OIL', name: 'Oil Production Technology', arabic_name: 'تكنولوجيا إنتاج البترول' },
+        { id: 6, code: 'REN', name: 'Renewable Energy Technology', arabic_name: 'تكنولوجيا الطاقة المتجددة' },
+      ]);
     } catch (error) {
-      showNotification('Error fetching timetables', 'error');
+      showNotification('خطأ في تحميل البيانات', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const showNotification = (message, type) => {
-    setNotification({ message, type });
-    setTimeout(() => setNotification(null), 3000);
+    if (type === 'error') {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
   };
 
   const handleOpenModal = (timetable = null) => {
@@ -134,6 +142,13 @@ export default function TimetablesPage() {
       fData.append('specialty_id', formData.specialty_id);
       if (formData.file) {
         fData.append('file', formData.file);
+        console.log('📤 Uploading file:', formData.file.name, formData.file.size, 'bytes');
+      }
+
+      // Debug: Log FormData contents
+      console.log('📋 FormData contents:');
+      for (let pair of fData.entries()) {
+        console.log(`  ${pair[0]}:`, pair[1]);
       }
 
       if (editingId) {
@@ -147,6 +162,7 @@ export default function TimetablesPage() {
       handleCloseModal();
       fetchData();
     } catch (error) {
+      console.error('❌ Upload error:', error.response?.data || error.message);
       showNotification(error.response?.data?.message || 'Error saving timetable', 'error');
     } finally {
       setUploading(false);
@@ -166,8 +182,27 @@ export default function TimetablesPage() {
   };
 
   const handleViewPDF = (timetable) => {
-    if (timetable.file_url) {
-      window.open(timetable.file_url, '_blank');
+    try {
+      // Use file_url from database
+      const url = timetable.file_url;
+      if (url) {
+        // Convert relative path to absolute URL
+        const baseURL = window.location.origin; // http://localhost:5173
+        const backendURL = 'http://localhost:5000'; // Backend server URL
+        
+        // If url starts with /, it's a relative path - prepend backend URL
+        const fullURL = url.startsWith('/') ? `${backendURL}${url}` : url;
+        
+        // Open in new tab
+        window.open(fullURL, '_blank', 'noopener,noreferrer');
+        
+        toast.success('جاري فتح الملف...');
+      } else {
+        toast.error('لا يوجد ملف PDF');
+      }
+    } catch (error) {
+      console.error('Error opening PDF:', error);
+      toast.error('فشل في فتح ملف PDF');
     }
   };
 
@@ -178,7 +213,7 @@ export default function TimetablesPage() {
       label: 'Specialty',
       render: (specialtyId) => {
         const specialty = specialties.find(s => s.id === specialtyId);
-        return specialty ? (specialty.name || specialty.specialty_name) : 'N/A';
+        return specialty ? (specialty.arabic_name || specialty.name) : 'N/A';
       }
     },
     {
@@ -190,12 +225,15 @@ export default function TimetablesPage() {
           style={{
             background: 'none',
             border: 'none',
-            color: '#3498db',
+            color: 'var(--purple-primary)',
             cursor: 'pointer',
             textDecoration: 'underline',
             fontSize: '14px',
-            fontWeight: '500'
+            fontWeight: '600',
+            transition: 'all var(--transition-fast)'
           }}
+          onMouseEnter={(e) => e.target.style.textDecoration = 'none'}
+          onMouseLeave={(e) => e.target.style.textDecoration = 'underline'}
         >
           📄 {fileName}
         </button>
@@ -237,13 +275,14 @@ export default function TimetablesPage() {
         <div style={{
           padding: '12px 16px',
           marginBottom: '16px',
-          borderRadius: '4px',
-          backgroundColor: notification.type === 'error' ? '#ffebee' : '#e8f5e9',
-          color: notification.type === 'error' ? '#c62828' : '#2e7d32',
-          border: `1px solid ${notification.type === 'error' ? '#ef5350' : '#66bb6a'}`,
+          borderRadius: '8px',
+          backgroundColor: notification.type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+          color: notification.type === 'error' ? '#ef4444' : '#10b981',
+          border: `1px solid ${notification.type === 'error' ? '#ef4444' : '#10b981'}`,
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          backdropFilter: 'blur(10px)'
         }}>
           <span>{notification.message}</span>
           <button
@@ -270,13 +309,14 @@ export default function TimetablesPage() {
       ) : timetables.length === 0 ? (
         <div style={{
           textAlign: 'center',
-          padding: '40px',
-          color: '#7f8c8d',
-          background: '#f8f9fa',
-          borderRadius: '8px'
+          padding: '60px 40px',
+          color: 'var(--text-secondary)',
+          background: 'rgba(179, 110, 255, 0.05)',
+          border: '1px solid var(--border-purple)',
+          borderRadius: '12px'
         }}>
           <div style={{ fontSize: '48px', marginBottom: '10px' }}>📅</div>
-          <h3>No timetables uploaded yet</h3>
+          <h3 style={{ color: 'var(--purple-primary)', marginBottom: '8px' }}>No timetables uploaded yet</h3>
           <p>Click "Upload New Timetable" to add one</p>
         </div>
       ) : (
@@ -324,7 +364,7 @@ export default function TimetablesPage() {
               <option value="">Select Specialty</option>
               {specialties.map((specialty) => (
                 <option key={specialty.id} value={specialty.id}>
-                  {specialty.name || specialty.specialty_name}
+                  {specialty.arabic_name || specialty.name} ({specialty.code})
                 </option>
               ))}
             </select>
@@ -333,13 +373,20 @@ export default function TimetablesPage() {
           <div className={styles.formGroup}>
             <label className={styles.label}>PDF File {!editingId && '*'}</label>
             <div style={{
-              border: '2px dashed #3498db',
+              border: '2px dashed var(--purple-primary)',
               borderRadius: '8px',
               padding: '20px',
               textAlign: 'center',
-              background: '#f8f9fa',
+              background: 'rgba(179, 110, 255, 0.08)',
               cursor: 'pointer',
-              transition: 'all 0.3s ease'
+              transition: 'all var(--transition-normal)'
+            }} onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.style.borderColor = 'var(--purple-light)';
+              e.currentTarget.style.background = 'rgba(179, 110, 255, 0.15)';
+            }} onDragLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--purple-primary)';
+              e.currentTarget.style.background = 'rgba(179, 110, 255, 0.08)';
             }}>
               <input
                 type="file"
@@ -350,10 +397,10 @@ export default function TimetablesPage() {
               />
               <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
                 <div style={{ fontSize: '32px', marginBottom: '10px' }}>📄</div>
-                <div style={{ fontWeight: '600', color: '#2c3e50', marginBottom: '5px' }}>
-                  {fileInfo ? `Selected: ${fileInfo}` : 'Click to select PDF file'}
+                <div style={{ fontWeight: '600', color: 'var(--purple-primary)', marginBottom: '5px' }}>
+                  {fileInfo ? `✓ Selected: ${fileInfo}` : 'Click to select PDF file'}
                 </div>
-                <div style={{ fontSize: '12px', color: '#7f8c8d' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   or drag and drop (Max 5MB)
                 </div>
               </label>

@@ -1,0 +1,322 @@
+/* TimetablesPage Styles - Matching index.css Theme */
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--body-page);
+  min-height: 100vh;
+  color: var(--text-primary);
+  direction: rtl;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(17, 1, 23, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(179, 110, 255, 0.1);
+}
+
+.pageTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--purple-primary);
+  margin: 0;
+  text-shadow: 0 0 20px var(--glow-purple);
+}
+
+.addBtn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  color: var(--white);
+  border: 1px solid var(--purple-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(179, 110, 255, 0.3);
+}
+
+.addBtn:hover {
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(179, 110, 255, 0.5);
+}
+
+.addBtn:active {
+  transform: translateY(0);
+}
+
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(179, 110, 255, 0.08);
+  border: 1px solid var(--border-purple);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filterLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--purple-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.filterInput {
+  padding: 10px 14px;
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 6px;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  font-family: var(--font-family-primary);
+  transition: all var(--transition-fast);
+}
+
+.filterInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.filterInput:focus {
+  outline: none;
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 12px rgba(179, 110, 255, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 40px;
+  color: var(--text-secondary);
+  background: rgba(179, 110, 255, 0.05);
+  border: 1px solid var(--border-purple);
+  border-radius: 12px;
+}
+
+.loadingSpinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(179, 110, 255, 0.2);
+  border-top-color: var(--purple-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.formGroup {
+  margin-bottom: 18px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--purple-primary);
+  font-size: 14px;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: var(--font-family-primary);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.input::placeholder,
+.select::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 12px rgba(179, 110, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.select {
+  cursor: pointer;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.submitBtn,
+.cancelBtn {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(179, 110, 255, 0.3);
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background: rgba(179, 110, 255, 0.15);
+  color: var(--purple-light);
+  border: 1px solid var(--border-purple);
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: rgba(179, 110, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.cancelBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Modal-specific button styling */
+.pageWrapper button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Table Container */
+.tableContainer {
+  background: rgba(17, 1, 23, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(179,110,255,0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(179,110,255,0.08);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 12px;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    align-items: stretch;
+  }
+
+  .pageTitle {
+    font-size: 22px;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .filterGroup {
+    min-width: auto;
+  }
+
+  .formActions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .submitBtn,
+  .cancelBtn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 8px;
+  }
+
+  .pageTitle {
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+
+  .submitBtn,
+  .cancelBtn {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+}

@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Use relative path to leverage Vite proxy
+const API_BASE_URL = '/api';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: API_BASE_URL
+  // Note: Do NOT set Content-Type here — it breaks FormData uploads
 });
 
 // Add token to request headers
@@ -41,10 +40,24 @@ api.interceptors.response.use(
       data: error.response?.data
     });
     
+    // Only logout on 401 if it's a token-related error (not other auth issues)
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      const errorMessage = error.response?.data?.message?.toLowerCase() || '';
+      
+      // Only force logout if token is invalid/expired
+      if (errorMessage.includes('token') || 
+          errorMessage.includes('expired') || 
+          errorMessage.includes('invalid') ||
+          errorMessage.includes('authentication required')) {
+        console.warn('[Auth] Token expired or invalid - logging out');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Only redirect if not already on login page
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      }
     }
     return Promise.reject(error);
   }
@@ -71,8 +84,8 @@ export const professorsAPI = {
   delete: (id) => api.delete(`/admin/professors/${id}`),
   
   // Course assignment
-  assignCourses: (professorId, courseIds) => 
-    api.post(`/admin/professors/${professorId}/assign-courses`, { course_ids: courseIds }),
+  assignCourse: (professorId, courseAssignment) => 
+    api.post(`/admin/professors/${professorId}/courses`, courseAssignment),
   
   getAssignedCourses: (professorId) => 
     api.get(`/admin/professors/${professorId}/courses`)
@@ -90,7 +103,9 @@ export const gradesAPI = {
   submitGrade: (data) => api.post('/grades', data),
   submitForApproval: (gradeId) => api.post(`/grades/${gradeId}/submit-for-approval`),
   getPending: () => api.get('/grades/admin/pending'),
-  editPending: (id, data) => api.put(`/admin/grades/${id}/edit`, data),
+  getAllGrades: (filters) => api.get('/grades/admin/all', { params: filters }),
+  approveAll: (filters) => api.put('/grades/admin/approve-all', filters || {}),
+  editPending: (id, data) => api.put(`/grades/${id}`, data),
   approve: (id) => api.put(`/grades/${id}/approve`),
   reject: (id, reason) => api.put(`/grades/${id}/reject`, { rejection_reason: reason }),
   getStudentGrades: () => api.get('/grades/student/grades')
@@ -116,22 +131,20 @@ export const timetablesAPI = {
   },
   getById: (id) => api.get(`/admin/timetables/${id}`),
   create: (formData) => {
-    // Don't set Content-Type header - let axios handle it with FormData
-    const config = { headers: {} };
-    return api.post('/admin/timetables', formData, config);
+    // Let axios automatically set Content-Type with boundary for FormData
+    return api.post('/admin/timetables', formData);
   },
   update: (id, formData) => {
-    // Don't set Content-Type header - let axios handle it with FormData
-    const config = { headers: {} };
-    return api.put(`/admin/timetables/${id}`, formData, config);
+    // Let axios automatically set Content-Type with boundary for FormData
+    return api.put(`/admin/timetables/${id}`, formData);
   },
   delete: (id) => api.delete(`/admin/timetables/${id}`)
 };
 
 // ==================== SPECIALTIES API ====================
 export const specialtiesAPI = {
-  getAll: () => api.get('/admin/specialties'),
-  getById: (id) => api.get(`/admin/specialties/${id}`)
+  getAll: () => api.get('/specialties'),
+  getById: (id) => api.get(`/specialties/${id}`)
 };
 
 // ==================== ACADEMIC YEARS API ====================
@@ -150,6 +163,24 @@ export const semestersAPI = {
     return api.get('/admin/semesters', { params });
   },
   getById: (id) => api.get(`/admin/semesters/${id}`)
+};
+
+// ==================== RESULTS PUBLISHING API ====================
+export const resultsAPI = {
+  getCoursesWithStats: (filters) => api.get('/admin/publish-results/courses', { params: filters }),
+  publishResults: (payload) => api.post('/admin/publish-results', payload)
+};
+
+// ==================== PROFESSOR REGISTRATION API ====================
+export const professorRegistrationAPI = {
+  getRequests: () => api.get('/professor-registration/admin/requests'),
+  getRequest: (id) => api.get(`/professor-registration/admin/requests/${id}`),
+  approve: (id) => api.post(`/professor-registration/admin/requests/${id}/approve`),
+  approveBulk: () => api.post('/professor-registration/admin/requests/approve-all'),
+  reject: (id, data) => api.post(`/professor-registration/admin/requests/${id}/reject`, data),
+  delete: (id) => api.delete(`/professor-registration/admin/requests/${id}`),
+  createLink: (data) => api.post('/professor-registration/admin/links', data),
+  getLinks: () => api.get('/professor-registration/admin/links')
 };
 
 export default api;

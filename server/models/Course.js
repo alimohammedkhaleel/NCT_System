@@ -51,6 +51,11 @@ const Course = sequelize.define('Course', {
     defaultValue: 3,
     comment: 'عدد الساعات المعتمدة'
   },
+  branch: {
+    type: DataTypes.ENUM('Software', 'Network', 'Both'),
+    allowNull: true,
+    comment: 'فرع المادة: Software=للبرمجيات فقط, Network=للشبكات فقط, Both=للكليهما, NULL=للجميع'
+  },
   description: {
     type: DataTypes.TEXT,
     allowNull: true
@@ -73,7 +78,9 @@ const Course = sequelize.define('Course', {
   indexes: [
     { fields: ['course_code'] },
     { fields: ['specialty_id', 'academic_year_id', 'semester_id'] },
-    { fields: ['is_active'] }
+    { fields: ['is_active'] },
+    { fields: ['branch'] },
+    { fields: ['specialty_id', 'academic_year_id', 'branch'] }
   ]
 });
 

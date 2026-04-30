@@ -69,7 +69,7 @@ const validateProfessorUpdate = [
 ];
 
 const validateCoursAssignment = [
-  body('professor_id').isInt().withMessage('professor_id must be an integer'),
+  param('id').isInt().withMessage('Professor ID must be an integer'),
   body('course_id').isInt().withMessage('course_id must be an integer'),
   body('academic_year_id').isInt().withMessage('academic_year_id must be an integer'),
   body('semester_id').isInt().withMessage('semester_id must be an integer'),

@@ -1,0 +1,41 @@
+/* Home Page Container */
+.home-page {
+  min-height: 100vh;
+  background: var(--body-page);
+  position: relative;
+}
+
+/* Section Wrappers for Better Isolation */
+.images-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.scroll-velocity-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* GSAP style text for velocity */
+.gsap-velocity-text .fullscreen-scroll-velocity-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 8rem);
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.gsap-velocity-text-outline .fullscreen-scroll-velocity-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 8rem);
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px #b388ff;
+  letter-spacing: -2px;
+  line-height: 1;
+}

@@ -3,3 +3,7 @@ export { default as Modal } from './Modal';
 export { default as Notification } from './Notification';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as LoadingPage } from './LoadingPage';
+export { default as ModernNavbar } from '../navComponent/Navbar';
+export { default as HeroSection } from './HeroSection';
+export { default as ModernCard } from './ModernCard';
+export { default as ModernFooter } from './ModernFooter';

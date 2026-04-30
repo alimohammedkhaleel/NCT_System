@@ -1,0 +1,129 @@
+.infinite-menu {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+
+  border-radius: 50%;
+  overflow: visible;
+}
+
+.infinite-menu-tilt-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(-15deg);
+  /* This creates the 3D basin tilt */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infinite-menu-circle {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  transform-style: preserve-3d;
+}
+
+.infinite-menu-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  transform-style: preserve-3d;
+  cursor: grab;
+  transition: transform 0.5s ease;
+  backface-visibility: hidden;
+  /* Fixes overlapping glitch from the back */
+}
+
+.infinite-menu-item:active {
+  cursor: grabbing;
+}
+
+
+.infinite-menu-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.infinite-menu-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.infinite-menu-item:hover .infinite-menu-img {
+  transform: scale(1.1);
+}
+
+.infinite-menu-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  text-align: center;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.infinite-menu-item:hover .infinite-menu-overlay {
+  background: transparent;
+}
+
+.infinite-menu-icon {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.infinite-menu-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.infinite-menu-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.infinite-menu-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--purple-primary);
+  border: none;
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.infinite-menu-btn:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-glow);
+}
+
+.infinite-menu-btn:active {
+  transform: scale(0.95);
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="appcrawl" tests="1" failures="0" time="328">
+  <testsuite name="appcrawl.explore" tests="1" failures="0" time="328" timestamp="2026-04-24T15:05:47.846Z">
+    <testcase classname="appcrawl.explore" name="explore http://localhost:5173" time="328">
+    </testcase>
+  </testsuite>
+</testsuites>

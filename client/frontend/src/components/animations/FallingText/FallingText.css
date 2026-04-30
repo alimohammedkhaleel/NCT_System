@@ -1,0 +1,13 @@
+.falling-text-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.falling-text-word {
+  display: inline-block;
+  will-change: transform, opacity;
+  color: var(--purple-primary);
+  font-weight: 600;
+  text-shadow: 0 0 10px var(--glow-purple);
+}

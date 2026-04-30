@@ -42,6 +42,15 @@ const Professor = sequelize.define('Professor', {
     type: DataTypes.BOOLEAN,
     defaultValue: true
   },
+  specialty_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'specialties',
+      key: 'id'
+    },
+    comment: 'التخصص المرتبط به (اختياري)'
+  },
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW

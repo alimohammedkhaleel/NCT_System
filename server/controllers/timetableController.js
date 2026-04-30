@@ -7,9 +7,23 @@ class TimetableController {
    */
   async createTimetable(req, res) {
     try {
+      console.log('📥 CREATE TIMETABLE REQUEST:');
+      console.log('  - Headers:', req.headers);
+      console.log('  - Body:', req.body);
+      console.log('  - File:', req.file);
+      console.log('  - Files:', req.files);
+      
       const { title, specialty_id } = req.body;
       const userId = req.user.id;
       const file = req.file;
+
+      if (!file) {
+        console.error('❌ No file received in req.file');
+        return res.status(400).json({
+          success: false,
+          message: 'PDF file is required'
+        });
+      }
 
       const timetable = await TimetableService.createTimetable(
         { title, specialty_id },
@@ -49,8 +63,8 @@ class TimetableController {
         count: timetables.length
       });
     } catch (error) {
-      console.error('Get timetables error:', error);
-      res.status(400).json({
+      console.error('Get timetables error:', error.message, error.stack);
+      res.status(500).json({
         success: false,
         message: error.message || 'Failed to fetch timetables'
       });

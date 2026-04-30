@@ -1,0 +1,271 @@
+/* 🎬 Advanced Animation Effects */
+
+/* ============================================
+   PARALLAX SECTION
+   ============================================ */
+
+.parallax-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-bg {
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 150%;
+  background: var(--gradient-bg-vibrant);
+  z-index: -1;
+}
+
+/* ============================================
+   RIPPLE BUTTON
+   ============================================ */
+
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(179, 110, 255, 0.2), rgba(78, 205, 196, 0.1));
+  border: 2px solid #b36eff;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.ripple-button:hover {
+  background: linear-gradient(135deg, rgba(179, 110, 255, 0.3), rgba(78, 205, 196, 0.15));
+  box-shadow: 0 0 20px rgba(179, 110, 255, 0.5);
+}
+
+.ripple-button-content {
+  position: relative;
+  z-index: 1;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   HORIZONTAL SCROLL
+   ============================================ */
+
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+  background: rgba(179, 110, 255, 0.1);
+  border-radius: 10px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #b36eff, #4ecdc4);
+  border-radius: 10px;
+}
+
+.horizontal-scroll-content {
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.horizontal-scroll-item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  animation: scroll-item-enter 0.6s ease-out;
+}
+
+@keyframes scroll-item-enter {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   SLIDE IN TEXT
+   ============================================ */
+
+.slide-in-text {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.slide-in-text-content {
+  display: inline-block;
+  animation: slide-in-text 0.6s ease-out;
+}
+
+@keyframes slide-in-text {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   FLOATING ELEMENT
+   ============================================ */
+
+.floating-element {
+  position: relative;
+  transition: transform 0.2s ease-out;
+  animation: float-initial 3s ease-in-out infinite;
+}
+
+@keyframes float-initial {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ============================================
+   SCROLL VELOCITY TEXT
+   ============================================ */
+
+.scroll-velocity-text {
+  position: relative;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #b36eff;
+  text-shadow: 0 0 20px rgba(179, 110, 255, 0.5);
+  animation: velocity-text 0.8s ease-out;
+}
+
+@keyframes velocity-text {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   PULSE GLOW ELEMENT
+   ============================================ */
+
+.pulse-glow-element {
+  position: relative;
+  padding: 16px 24px;
+  border-radius: 8px;
+  border: 2px solid;
+  background: rgba(20, 15, 40, 0.8);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+}
+
+.pulse-glow-element:hover {
+  transform: translateY(-4px);
+}
+
+/* ============================================
+   SMOOTH ANIMATIONS
+   ============================================ */
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .ripple-button {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+
+  .horizontal-scroll-container {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .scroll-velocity-text {
+    font-size: 1.5rem;
+  }
+}

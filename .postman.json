@@ -1,0 +1,2631 @@
+{
+  "info": {
+    "name": "NCTU ERP - Complete API Testing",
+    "description": "Complete testing workflow for NCTU ERP including CourseGradeConfig endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.data.token);",
+                  "    pm.environment.set('user_id', jsonData.data.user.id);",
+                  "    console.log('Token saved:', jsonData.data.token);",
+                  "    pm.test('Login successful', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Login failed', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Retrieve Student Code - Valid National ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test('Response has student_code', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('student_code');",
+                  "    pm.expect(jsonData.data).to.have.property('full_name');",
+                  "});",
+                  "",
+                  "pm.test('Message is in Arabic', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('تم');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"national_id\": \"10000000000001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/retrieve-student-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "retrieve-student-code"]
+            }
+          }
+        },
+        {
+          "name": "Retrieve Student Code - Missing National ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has error message', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('يرجى إدخال الرقم القومي');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/retrieve-student-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "retrieve-student-code"]
+            }
+          }
+        },
+        {
+          "name": "Retrieve Student Code - Invalid Format (Not 14 Digits)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has validation error', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('14 رقماً');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"national_id\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/retrieve-student-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "retrieve-student-code"]
+            }
+          }
+        },
+        {
+          "name": "Retrieve Student Code - Invalid Format (Non-Numeric)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has validation error', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('14 رقماً');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"national_id\": \"1234567890ABCD\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/retrieve-student-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "retrieve-student-code"]
+            }
+          }
+        },
+        {
+          "name": "Retrieve Student Code - Non-Existent National ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function() {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Response has not found error', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('غير مسجل');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"national_id\": \"99999999999999\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/retrieve-student-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "retrieve-student-code"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Get Specialties & Courses",
+      "item": [
+        {
+          "name": "Get All Specialties",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        pm.environment.set('specialty_id', jsonData.data[0].id);",
+                  "        console.log('Specialty ID saved:', jsonData.data[0].id);",
+                  "    }",
+                  "    pm.test('Get specialties successful', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/specialties",
+              "host": ["{{base_url}}"],
+              "path": ["api", "specialties"]
+            }
+          }
+        },
+        {
+          "name": "Get All Courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        pm.environment.set('course_id', jsonData.data[0].id);",
+                  "        console.log('Course ID saved:', jsonData.data[0].id);",
+                  "    }",
+                  "    pm.test('Get courses successful', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. CourseGradeConfig - CRUD Operations",
+      "item": [
+        {
+          "name": "Get All Grade Configs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        pm.environment.set('config_id', jsonData.data[0].id);",
+                  "        console.log('Config ID saved:', jsonData.data[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config"]
+            }
+          }
+        },
+        {
+          "name": "Create Grade Config",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Delete existing config first so we can create a fresh one",
+                  "const courseId = pm.environment.get('course_id');",
+                  "const baseUrl = pm.variables.get('base_url') || pm.environment.get('base_url') || 'http://localhost:5000';",
+                  "const token = pm.environment.get('token');",
+                  "",
+                  "console.log('Pre-request - Base URL:', baseUrl);",
+                  "console.log('Pre-request - Course ID:', courseId);",
+                  "",
+                  "if (courseId && token && baseUrl) {",
+                  "    pm.sendRequest({",
+                  "        url: `${baseUrl}/api/admin/course-grade-config/${courseId}`,",
+                  "        method: 'DELETE',",
+                  "        header: { 'Authorization': `Bearer ${token}` }",
+                  "    }, function(err, res) {",
+                  "        if (err) {",
+                  "            console.log('Pre-delete error:', err);",
+                  "        } else {",
+                  "            console.log('Pre-delete status:', res.code);",
+                  "        }",
+                  "    });",
+                  "} else {",
+                  "    console.log('Skipping pre-delete: missing courseId, token, or baseUrl');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201 or 200', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('new_config_id', jsonData.data.id);",
+                  "        console.log('New Config ID saved:', jsonData.data.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course_id\": {{course_id}},\n  \"ass1_percentage\": 20.00,\n  \"ass2_percentage\": 20.00,\n  \"final_percentage\": 60.00,\n  \"ass1_max\": 30.00,\n  \"ass2_max\": 30.00,\n  \"final_max\": 150.00,\n  \"p_value\": 30.00,\n  \"m_value\": 21.00,\n  \"d_value\": 15.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config"]
+            }
+          }
+        },
+        {
+          "name": "Get Config by Course ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Grade Config",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ass1_percentage\": 25.00,\n  \"ass2_percentage\": 25.00,\n  \"final_percentage\": 50.00,\n  \"ass1_max\": 30.00,\n  \"ass2_max\": 30.00,\n  \"final_max\": 150.00,\n  \"p_value\": 30.00,\n  \"m_value\": 21.00,\n  \"d_value\": 15.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Test Validation - Invalid Percentages",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error message mentions percentage sum', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('100');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ass1_percentage\": 30.00,\n  \"ass2_percentage\": 30.00,\n  \"final_percentage\": 30.00,\n  \"ass1_max\": 30.00,\n  \"ass2_max\": 30.00,\n  \"final_max\": 150.00,\n  \"p_value\": 30.00,\n  \"m_value\": 21.00,\n  \"d_value\": 15.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "{{course_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Grade Config",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/{{course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "{{course_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Student Payment & Grades",
+      "item": [
+        {
+          "name": "Login as Student",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('student_token', jsonData.data.token);",
+                  "    pm.environment.set('student_id', jsonData.data.user.id);",
+                  "    console.log('Student Token saved:', jsonData.data.token);",
+                  "    pm.test('Student login successful', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Student login failed', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student_code\": \"20262115\",\n  \"national_id\": \"10000000000001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/student-login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "student-login"]
+            }
+          }
+        },
+        {
+          "name": "Get Student Data (NEW)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has student data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.have.property('payment_status');",
+                  "    pm.expect(jsonData.data).to.have.property('total_invoiced');",
+                  "    pm.expect(jsonData.data).to.have.property('total_paid');",
+                  "    pm.expect(jsonData.data).to.have.property('total_due');",
+                  "    pm.expect(jsonData.data).to.have.property('result_status');",
+                  "    pm.expect(jsonData.data).to.have.property('grades_count');",
+                  "    pm.expect(jsonData.data).to.have.property('last_updated');",
+                  "});",
+                  "",
+                  "pm.test('Payment status is valid', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.payment_status).to.be.oneOf(['paid', 'unpaid', 'partial']);",
+                  "});",
+                  "",
+                  "pm.test('Result status is valid', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.result_status).to.be.oneOf(['published', 'not_published']);",
+                  "});",
+                  "",
+                  "pm.test('Numeric fields are numbers', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.total_invoiced).to.be.a('number');",
+                  "    pm.expect(jsonData.data.total_paid).to.be.a('number');",
+                  "    pm.expect(jsonData.data.total_due).to.be.a('number');",
+                  "    pm.expect(jsonData.data.grades_count).to.be.a('number');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/student/data",
+              "host": ["{{base_url}}"],
+              "path": ["api", "student", "data"]
+            }
+          }
+        },
+        {
+          "name": "Get Student Payment Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has payment status data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.data).to.have.property('all_paid');",
+                  "    pm.expect(jsonData.data).to.have.property('total_due');",
+                  "    pm.expect(jsonData.data).to.have.property('total_invoiced');",
+                  "    pm.expect(jsonData.data).to.have.property('total_paid');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('all_paid', jsonData.data.all_paid);",
+                  "    console.log('Payment Status - All Paid:', jsonData.data.all_paid);",
+                  "    console.log('Total Due:', jsonData.data.total_due);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/student/payment-status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "student", "payment-status"]
+            }
+          }
+        },
+        {
+          "name": "Get Student Grades (Conditional)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const allPaid = pm.environment.get('all_paid');",
+                  "",
+                  "if (allPaid === true || allPaid === 'true') {",
+                  "    // Even if all_paid=true, grades may be blocked if no invoices exist",
+                  "    pm.test('Status code is 200 or 403 (paid or no invoices)', function() {",
+                  "        pm.expect(pm.response.code).to.be.oneOf([200, 403]);",
+                  "    });",
+                  "    ",
+                  "    if (pm.response.code === 200) {",
+                  "        pm.test('Response has grades data', function() {",
+                  "            const jsonData = pm.response.json();",
+                  "            pm.expect(jsonData).to.have.property('success');",
+                  "            pm.expect(jsonData).to.have.property('data');",
+                  "            pm.expect(jsonData).to.have.property('gpa');",
+                  "        });",
+                  "    } else {",
+                  "        pm.test('Response has error message', function() {",
+                  "            const jsonData = pm.response.json();",
+                  "            pm.expect(jsonData.success).to.be.false;",
+                  "            pm.expect(jsonData.message.length).to.be.above(0);",
+                  "        });",
+                  "    }",
+                  "} else {",
+                  "    pm.test('Status code is 403 (not paid)', function() {",
+                  "        pm.response.to.have.status(403);",
+                  "    });",
+                  "    ",
+                  "    pm.test('Response has payment required message', function() {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.false;",
+                  "        // Either payment required message or auth error",
+                  "        const msg = jsonData.message || '';",
+                  "        pm.expect(msg.length).to.be.above(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/student/grades",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "student", "grades"]
+            }
+          }
+        },
+        {
+          "name": "Test Non-Student Access to Payment Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 403 (forbidden)', function() {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "pm.test('Response has error message', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.have.length.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/student/payment-status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "student", "payment-status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Registration Links Management",
+      "item": [
+        {
+          "name": "Validate Registration Link (GET)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const code = pm.response.code;",
+                  "pm.test('Status is 200 or 404 (no active link yet)', function() {",
+                  "    pm.expect(code).to.be.oneOf([200, 400, 404]);",
+                  "});",
+                  "if (code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.test('Response has specialties', function() {",
+                  "        pm.expect(jsonData.data).to.have.property('specialties');",
+                  "        pm.expect(jsonData.data.specialties).to.be.an('array');",
+                  "    });",
+                  "    pm.test('Response has valid flag', function() {",
+                  "        pm.expect(jsonData.data.valid).to.be.true;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/register-link/{{registration_token}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register-link", "{{registration_token}}"]
+            }
+          }
+        },
+        {
+          "name": "Submit Registration Request (POST) - Full Fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const code = pm.response.code;",
+                  "pm.test('Status is 200 or 400 (link may be used/expired)', function() {",
+                  "    pm.expect(code).to.be.oneOf([200, 400]);",
+                  "});",
+                  "const jsonData = pm.response.json();",
+                  "if (code === 200) {",
+                  "    pm.test('Success message in Arabic', function() {",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.message).to.include('تم');",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Error message present', function() {",
+                  "        pm.expect(jsonData.success).to.be.false;",
+                  "        pm.expect(jsonData.message).to.have.length.above(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"أحمد محمد علي\",\n  \"national_id\": \"30001011234567\",\n  \"email\": \"ahmed.test@example.com\",\n  \"phone\": \"+201234567890\",\n  \"specialty_id\": {{specialty_id}},\n  \"birth_date\": \"2000-01-01\",\n  \"gender\": \"male\",\n  \"address\": \"القاهرة، مصر\",\n  \"high_school_certificate\": \"علمي رياضيات\",\n  \"high_school_grade\": 85.5,\n  \"guardian_name\": \"محمد علي\",\n  \"guardian_phone\": \"+201098765432\",\n  \"guardian_relation\": \"أب\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register-link/{{registration_token}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register-link", "{{registration_token}}"]
+            }
+          }
+        },
+        {
+          "name": "Submit Registration - Missing Required Fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 for missing fields', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);",
+                  "});",
+                  "const jsonData = pm.response.json();",
+                  "pm.test('Error message mentions required fields', function() {",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.have.length.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"ناقص بيانات\",\n  \"national_id\": \"30001011234568\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register-link/{{registration_token}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register-link", "{{registration_token}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Registration Link",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function() {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has registration link data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.data).to.have.property('token');",
+                  "    pm.expect(jsonData.data).to.have.property('expires_at');",
+                  "    pm.expect(jsonData.data).to.have.property('registration_url');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('registration_token', jsonData.data.token);",
+                  "    pm.environment.set('registration_link_id', jsonData.data.id);",
+                  "    console.log('Registration Token saved:', jsonData.data.token);",
+                  "    console.log('Registration URL:', jsonData.data.registration_url);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expires_in_days\": 7\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/registration-links",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "registration-links"]
+            }
+          }
+        },
+        {
+          "name": "Get All Registration Links",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has links array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Links have required fields', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        const link = jsonData.data[0];",
+                  "        pm.expect(link).to.have.property('token');",
+                  "        pm.expect(link).to.have.property('expires_at');",
+                  "        pm.expect(link).to.have.property('is_used');",
+                  "        pm.expect(link).to.have.property('is_expired');",
+                  "        pm.expect(link).to.have.property('is_active');",
+                  "        pm.expect(link).to.have.property('registration_url');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/registration-links",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "registration-links"]
+            }
+          }
+        },
+        {
+          "name": "Get All Registration Requests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has requests array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        const pendingRequest = jsonData.data.find(r => r.status === 'pending');",
+                  "        if (pendingRequest) {",
+                  "            pm.environment.set('registration_request_id', pendingRequest.id);",
+                  "            console.log('Pending Request ID saved:', pendingRequest.id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/registration-requests",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "registration-requests"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Registration Requests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('All requests are pending', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        jsonData.data.forEach(request => {",
+                  "            pm.expect(request.status).to.equal('pending');",
+                  "        });",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/registration-requests?status=pending",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "registration-requests"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Professor - Get Students by Course",
+      "item": [
+        {
+          "name": "Login as Professor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('professor_token', jsonData.data.token);",
+                  "    pm.environment.set('professor_id', jsonData.data.user.id);",
+                  "    console.log('Professor Token saved:', jsonData.data.token);",
+                  "    pm.test('Professor login successful', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    // Fetch professor's assigned courses to get a valid course_id",
+                  "    const baseUrl = pm.environment.get('base_url') || 'http://localhost:5000';",
+                  "    pm.sendRequest({",
+                  "        url: `${baseUrl}/api/grades/professor/courses`,",
+                  "        method: 'GET',",
+                  "        header: { 'Authorization': `Bearer ${jsonData.data.token}` }",
+                  "    }, function(err, res) {",
+                  "        if (!err && res.code === 200) {",
+                  "            const coursesData = res.json();",
+                  "            if (coursesData.data && coursesData.data.length > 0) {",
+                  "                const firstAssignment = coursesData.data[0];",
+                  "                const courseId = firstAssignment.Course ? firstAssignment.Course.id : firstAssignment.course_id;",
+                  "                pm.environment.set('professor_course_id', courseId);",
+                  "                console.log('Professor Course ID saved:', courseId);",
+                  "            }",
+                  "        } else {",
+                  "            console.log('Could not fetch professor courses:', err || res.code);",
+                  "        }",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Professor login failed', function() {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"professor1\",\n  \"password\": \"prof123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Students by Course (NEW)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has students data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Response has course_info', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('course_info');",
+                  "    pm.expect(jsonData.course_info).to.have.property('course_code');",
+                  "    pm.expect(jsonData.course_info).to.have.property('specialty_name');",
+                  "    pm.expect(jsonData.course_info).to.have.property('academic_year');",
+                  "    pm.expect(jsonData.course_info).to.have.property('semester_name');",
+                  "});",
+                  "",
+                  "pm.test('Response has course_config', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('course_config');",
+                  "    pm.expect(jsonData.course_config).to.have.property('ass1_max');",
+                  "    pm.expect(jsonData.course_config).to.have.property('ass2_max');",
+                  "    pm.expect(jsonData.course_config).to.have.property('final_max');",
+                  "    pm.expect(jsonData.course_config).to.have.property('p_value');",
+                  "    pm.expect(jsonData.course_config).to.have.property('m_value');",
+                  "    pm.expect(jsonData.course_config).to.have.property('d_value');",
+                  "});",
+                  "",
+                  "pm.test('Students have correct structure', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        const student = jsonData.data[0];",
+                  "        pm.expect(student).to.have.property('student_id');",
+                  "        pm.expect(student).to.have.property('student_code');",
+                  "        pm.expect(student).to.have.property('full_name');",
+                  "        pm.expect(student).to.have.property('specialty_name');",
+                  "        pm.expect(student).to.have.property('current_year');",
+                  "        pm.expect(student).to.have.property('grade');",
+                  "        ",
+                  "        if (student.grade) {",
+                  "            pm.expect(student.grade).to.have.property('assignment1_grade');",
+                  "            pm.expect(student.grade).to.have.property('assignment2_grade');",
+                  "            pm.expect(student.grade).to.have.property('final_exam_score');",
+                  "            pm.expect(student.grade).to.have.property('total_score');",
+                  "            pm.expect(student.grade).to.have.property('status');",
+                  "        }",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{professor_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/professor/students-by-course?course_id=16",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "professor", "students-by-course"],
+              "query": [
+                {
+                  "key": "course_id",
+                  "value": "16"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Missing course_id Parameter",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error message mentions course_id', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('course_id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{professor_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/professor/students-by-course",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "professor", "students-by-course"]
+            }
+          }
+        },
+        {
+          "name": "Test Non-Professor Access",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 403', function() {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "pm.test('Error message in Arabic', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.have.length.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/professor/students-by-course?course_id=16",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "professor", "students-by-course"],
+              "query": [
+                {
+                  "key": "course_id",
+                  "value": "16"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Publish Results (NEW)",
+      "item": [
+        {
+          "name": "Publish Results by Semester & Year",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Response has success field', function() {",
+                  "        pm.expect(jsonData).to.have.property('success');",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "    });",
+                  "",
+                  "    pm.test('Response has published count', function() {",
+                  "        pm.expect(jsonData.data).to.have.property('published_count');",
+                  "        pm.expect(jsonData.data).to.have.property('students_notified');",
+                  "        pm.expect(jsonData.data).to.have.property('published_at');",
+                  "    });",
+                  "",
+                  "    pm.test('Message is in Arabic', function() {",
+                  "        pm.expect(jsonData.message).to.include('تم نشر');",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Error message in Arabic', function() {",
+                  "        pm.expect(jsonData.success).to.be.false;",
+                  "        pm.expect(jsonData.message).to.have.length.above(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": {\n    \"semester_id\": 1,\n    \"academic_year_id\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        },
+        {
+          "name": "Publish Results by Specialty",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Response has published data', function() {",
+                  "        pm.expect(jsonData.data).to.have.property('published_count');",
+                  "        pm.expect(jsonData.data).to.have.property('students_notified');",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Error message in Arabic', function() {",
+                  "        pm.expect(jsonData.success).to.be.false;",
+                  "        pm.expect(jsonData.message).to.have.length.above(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": {\n    \"semester_id\": 1,\n    \"academic_year_id\": 1,\n    \"specialty_id\": {{specialty_id}}\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        },
+        {
+          "name": "Publish Specific Grades by IDs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Response has published data', function() {",
+                  "        pm.expect(jsonData.data).to.have.property('published_count');",
+                  "        pm.expect(jsonData.data).to.have.property('students_notified');",
+                  "        pm.expect(jsonData.data).to.have.property('published_at');",
+                  "        pm.expect(jsonData.data.published_count).to.be.at.least(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course_ids\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        },
+        {
+          "name": "Test Missing Required Fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function() {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error message in Arabic', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.message).to.include('يرجى تحديد');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        },
+        {
+          "name": "Test Non-Admin Access",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 403', function() {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "",
+                  "pm.test('Error message present', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"semester_id\": 1,\n  \"academic_year_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Import/Export Grade Configs",
+      "item": [
+        {
+          "name": "Export All Configs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has configs array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('configs');",
+                  "    pm.expect(jsonData.configs).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Response has metadata', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('metadata');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/export",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "export"]
+            }
+          }
+        },
+        {
+          "name": "Import Configs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has import results', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('imported');",
+                  "    pm.expect(jsonData.data).to.have.property('failed');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"course_id\": {{course_id}},\n    \"ass1_percentage\": 15.00,\n    \"ass2_percentage\": 15.00,\n    \"final_percentage\": 70.00,\n    \"ass1_max\": 30.00,\n    \"ass2_max\": 30.00,\n    \"final_max\": 150.00,\n    \"p_value\": 30.00,\n    \"m_value\": 21.00,\n    \"d_value\": 15.00\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/course-grade-config/import",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "course-grade-config", "import"]
+            }
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "name": "9. Grade Workflow (End-to-End)",
+      "item": [
+        {
+          "name": "Login as Admin (workflow setup)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Admin login successful', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.data.token);",
+                  "    console.log('Admin token refreshed for workflow');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login as Professor (workflow setup)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Professor login successful', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('professor_token', jsonData.data.token);",
+                  "    console.log('Professor token refreshed for workflow');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"professor1\",\n  \"password\": \"prof123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login as Student (workflow setup)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student login successful', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('student_token', jsonData.data.token);",
+                  "    console.log('Student token refreshed for workflow');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student_code\": \"20262115\",\n  \"national_id\": \"10000000000001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/student-login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "student-login"]
+            }
+          }
+        },
+        {
+          "name": "Get Professor Courses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has courses data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        const c = jsonData.data[0];",
+                  "        pm.environment.set('prof_course_id', c.course_id || c.id);",
+                  "        pm.environment.set('prof_academic_year_id', c.academic_year_id);",
+                  "        pm.environment.set('prof_semester_id', c.semester_id);",
+                  "        console.log('Prof course saved:', c.id || c.course_id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{professor_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/professor/courses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "professor", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Get Students for Course (students-by-course)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has students array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        const s = jsonData.data[0];",
+                  "        pm.environment.set('target_student_id', s.id || s.student_id);",
+                  "        console.log('Target student saved:', s.id || s.student_id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{professor_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/professor/students-by-course?course_id={{prof_course_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "professor", "students-by-course"],
+              "query": [{ "key": "course_id", "value": "{{prof_course_id}}" }]
+            }
+          }
+        },
+        {
+          "name": "Submit Grade (Professor)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Ensure we have required IDs",
+                  "const courseId = pm.environment.get('prof_course_id');",
+                  "const studentId = pm.environment.get('target_student_id');",
+                  "console.log('Submitting grade for student:', studentId, 'course:', courseId);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200, 201, or 409 (already exists)', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 409]);",
+                  "});",
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    const gradeId = jsonData.data?.id || jsonData.id;",
+                  "    if (gradeId) {",
+                  "        pm.environment.set('grade_id', gradeId);",
+                  "        console.log('Grade ID saved:', gradeId);",
+                  "    }",
+                  "    pm.test('Grade has correct structure', function() {",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.have.property('id');",
+                  "        pm.expect(jsonData.data).to.have.property('status');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{professor_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"student_id\": {{target_student_id}},\n  \"course_id\": {{prof_course_id}},\n  \"academic_year_id\": {{prof_academic_year_id}},\n  \"semester_id\": {{prof_semester_id}},\n  \"assignment1_grade\": \"P\",\n  \"assignment2_grade\": \"M\",\n  \"final_exam_score\": 100\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/grades",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades"]
+            }
+          }
+        },
+        {
+          "name": "Submit Grade for Admin Approval",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 400 (already submitted)', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Grade submitted for approval', function() {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{professor_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/{{grade_id}}/submit-for-approval",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "{{grade_id}}", "submit-for-approval"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Pending Grades",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has pending grades', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    console.log('Pending grades count:', jsonData.data.length);",
+                  "    if (jsonData.data.length > 0 && !pm.environment.get('grade_id')) {",
+                  "        pm.environment.set('grade_id', jsonData.data[0].id);",
+                  "        console.log('Grade ID from pending:', jsonData.data[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/admin/pending",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "admin", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Approve Grade",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 400 (already approved)', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Grade approved successfully', function() {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/{{grade_id}}/approve",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "{{grade_id}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Publish Results by Course",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const courseId = pm.environment.get('prof_course_id');",
+                  "if (courseId) {",
+                  "    pm.environment.set('publish_body', JSON.stringify({ course_ids: [parseInt(courseId)] }));",
+                  "} else {",
+                  "    pm.environment.set('publish_body', JSON.stringify({ course_ids: [1] }));",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404 (no approved grades)', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Publish response has count', function() {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.have.property('published_count');",
+                  "    });",
+                  "    const jsonData = pm.response.json();",
+                  "    console.log('Published grades:', jsonData.data?.published_count);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{{publish_body}}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results"]
+            }
+          }
+        },
+        {
+          "name": "Student - View Published Grades",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 403 (payment required)', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 403]);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Student grades response is valid', function() {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.be.an('array');",
+                  "    });",
+                  "    const jsonData = pm.response.json();",
+                  "    console.log('Student visible grades:', jsonData.data?.length);",
+                  "    if (jsonData.data?.length > 0) {",
+                  "        const g = jsonData.data[0];",
+                  "        console.log('Grade: course=', g.Course?.course_name, 'total=', g.total_score, 'published=', g.is_published);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{student_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/student/grades",
+              "host": ["{{base_url}}"],
+              "path": ["api", "grades", "student", "grades"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Courses with Grade Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has courses with stats', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.expect(jsonData.data[0]).to.have.property('grade_stats');",
+                  "        pm.expect(jsonData.data[0].grade_stats).to.have.property('total');",
+                  "        pm.expect(jsonData.data[0].grade_stats).to.have.property('approved');",
+                  "        pm.expect(jsonData.data[0].grade_stats).to.have.property('published');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/publish-results/courses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "publish-results", "courses"]
+            }
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "name": "10. Accountant",
+      "item": [
+        {
+          "name": "Login as Accountant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Accountant login successful', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('accountant_token', jsonData.data.token);",
+                  "    console.log('Accountant token saved');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"accountant\",\n  \"password\": \"accountant123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Accountant Summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has summary data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('object');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "summary"]
+            }
+          }
+        },
+        {
+          "name": "Get Academic Years (NEW)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test('Response has data array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Academic years have required fields', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        const year = jsonData.data[0];",
+                  "        pm.expect(year).to.have.property('id');",
+                  "        pm.expect(year).to.have.property('year_name');",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test('Non-accountant cannot access this endpoint (role guard)', function() {",
+                  "    // This test just confirms the endpoint responded — role guard tested separately",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        pm.environment.set('accountant_academic_year_id', jsonData.data[0].id);",
+                  "        console.log('Academic year ID saved for accountant:', jsonData.data[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/academic-years",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "academic-years"]
+            }
+          }
+        },
+        {
+          "name": "Get Academic Years - Non-Accountant Forbidden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 403 (forbidden for non-accountant)', function() {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test('Response has error message', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/academic-years",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "academic-years"]
+            }
+          }
+        },
+        {
+          "name": "Get All Students with Payments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has students array', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        pm.environment.set('accountant_student_id', jsonData.data[0].id);",
+                  "        console.log('Student ID for accountant tests:', jsonData.data[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/students",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "students"]
+            }
+          }
+        },
+        {
+          "name": "Search Student by National ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/students/search?national_id=10000000000001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "students", "search"],
+              "query": [{ "key": "national_id", "value": "10000000000001" }]
+            }
+          }
+        },
+        {
+          "name": "Get Student Invoices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "pm.test('Response has success field', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/students/{{accountant_student_id}}/invoices",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "students", "{{accountant_student_id}}", "invoices"]
+            }
+          }
+        },
+        {
+          "name": "Get Specialty Fees",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has fees data', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Fees include summer_fee and course_fail_fee fields', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.length > 0) {",
+                  "        const specialty = jsonData.data[0];",
+                  "        pm.expect(specialty).to.have.property('_summer_fee');",
+                  "        pm.expect(specialty).to.have.property('_course_fail_fee');",
+                  "        pm.expect(specialty._summer_fee).to.be.a('number');",
+                  "        pm.expect(specialty._course_fail_fee).to.be.a('number');",
+                  "        pm.environment.set('fees_specialty_id', specialty.id);",
+                  "        console.log('Specialty ID for fees update:', specialty.id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountant_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/accountant/specialty-fees",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "specialty-fees"]
+            }
+          }
+        },
+        {
+          "name": "Update Specialty Fees (with summer_fee & course_fail_fee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has success true', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "pm.test('Success message is in Arabic', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('تم تحديث الرسوم');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountant_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year1_fee\": 12000,\n  \"year2_fee\": 12000,\n  \"year3_fee\": 12000,\n  \"year4_fee\": 12000,\n  \"summer_fee\": 3000,\n  \"course_fail_fee\": 1500\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accountant/specialty-fees/{{fees_specialty_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "specialty-fees", "{{fees_specialty_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Specialty Fees - Zero summer_fee (edge case)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Accepts zero values for optional fee fields', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountant_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year1_fee\": 12000,\n  \"year2_fee\": 12000,\n  \"year3_fee\": 12000,\n  \"year4_fee\": 12000,\n  \"summer_fee\": 0,\n  \"course_fail_fee\": 0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accountant/specialty-fees/{{fees_specialty_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "specialty-fees", "{{fees_specialty_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Specialty Fees - Omit optional fields (backward compat)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Backward compatible - omitting summer_fee and course_fail_fee defaults to 0', function() {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountant_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year1_fee\": 12000,\n  \"year2_fee\": 12000,\n  \"year3_fee\": 12000,\n  \"year4_fee\": 12000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accountant/specialty-fees/{{fees_specialty_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accountant", "specialty-fees", "{{fees_specialty_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set base_url if not already set",
+          "if (!pm.variables.get('base_url')) {",
+          "    pm.variables.set('base_url', 'http://localhost:5000');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

@@ -1,7 +1,12 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { Timetable, Specialty, User, ActivityLog } = require('../config/models');
 const sequelize = require('../config/database');
+
+// Use models from config/models to ensure associations are defined
+const getModels = () => {
+  const { Timetable, Specialty, User, ActivityLog } = require('../config/models');
+  return { Timetable, Specialty, User, ActivityLog };
+};
 
 class TimetableService {
   /**
@@ -12,6 +17,7 @@ class TimetableService {
    * @returns {Promise<Object>} Created timetable with associations
    */
   async createTimetable(timetableData, file, userId) {
+    const { Timetable, Specialty, ActivityLog } = getModels();
     if (!file) {
       throw new Error('PDF file is required');
     }
@@ -49,9 +55,9 @@ class TimetableService {
         {
           user_id: userId,
           action: 'create',
-          entity_type: 'Timetable',
+          entity: 'Timetable',
           entity_id: timetable.id,
-          description: `Created timetable: ${timetable.title}`
+          details: `Created timetable: ${timetable.title}`
         },
         { transaction }
       );
@@ -80,6 +86,7 @@ class TimetableService {
    * @returns {Promise<Array>} Array of timetables with associations
    */
   async getAllTimetables(filters = {}) {
+    const { Timetable, Specialty, User } = getModels();
     const where = {};
 
     if (filters.specialty_id) {
@@ -111,6 +118,7 @@ class TimetableService {
    * @returns {Promise<Object>} Timetable with associations
    */
   async getTimetableById(timetableId) {
+    const { Timetable, Specialty, User } = getModels();
     const timetable = await Timetable.findByPk(timetableId, {
       include: [
         {
@@ -141,6 +149,7 @@ class TimetableService {
    * @returns {Promise<Object>} Updated timetable
    */
   async updateTimetable(timetableId, updateData, file, userId) {
+    const { Timetable, ActivityLog } = getModels();
     const timetable = await Timetable.findByPk(timetableId);
     if (!timetable) {
       throw new Error('Timetable not found');
@@ -178,9 +187,9 @@ class TimetableService {
         {
           user_id: userId,
           action: 'update',
-          entity_type: 'Timetable',
+          entity: 'Timetable',
           entity_id: timetable.id,
-          description: `Updated timetable: ${timetable.title}`
+          details: `Updated timetable: ${timetable.title}`
         },
         { transaction }
       );
@@ -209,6 +218,7 @@ class TimetableService {
    * @returns {Promise<void>}
    */
   async deleteTimetable(timetableId, userId) {
+    const { Timetable, ActivityLog } = getModels();
     const timetable = await Timetable.findByPk(timetableId);
     if (!timetable) {
       throw new Error('Timetable not found');
@@ -230,9 +240,9 @@ class TimetableService {
         {
           user_id: userId,
           action: 'delete',
-          entity_type: 'Timetable',
+          entity: 'Timetable',
           entity_id: timetable.id,
-          description: `Deleted timetable: ${timetable.title}`
+          details: `Deleted timetable: ${timetable.title}`
         },
         { transaction }
       );

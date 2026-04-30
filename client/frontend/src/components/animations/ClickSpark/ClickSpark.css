@@ -1,0 +1,68 @@
+.click-spark-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.click-spark-container {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.click-spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--purple-primary);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 10px var(--purple-primary),
+    0 0 20px var(--glow-purple);
+  animation: spark-fly var(--duration, 0.8s) ease-out forwards;
+  transform-origin: center;
+}
+
+@keyframes spark-fly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Different spark colors for variety */
+.click-spark:nth-child(2n) {
+  background: var(--purple-light);
+  box-shadow: 
+    0 0 10px var(--purple-light),
+    0 0 20px var(--glow-purple);
+}
+
+.click-spark:nth-child(3n) {
+  background: var(--purple-deep);
+  box-shadow: 
+    0 0 10px var(--purple-deep),
+    0 0 20px var(--glow-purple);
+  width: 6px;
+  height: 6px;
+}
+
+.click-spark:nth-child(4n) {
+  background: var(--purple-dark);
+  box-shadow: 
+    0 0 10px var(--purple-dark),
+    0 0 20px var(--glow-purple);
+  width: 10px;
+  height: 10px;
+}

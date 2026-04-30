@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Set default axios config
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-axios.defaults.headers.common['Content-Type'] = 'application/json';
+// Set default axios config to use Vite proxy
+axios.defaults.baseURL = '/api';
+// Note: Do NOT set Content-Type globally — it breaks FormData uploads (multer needs multipart/form-data with boundary)
 
 // Add token to requests if available
 const token = localStorage.getItem('token');
@@ -48,6 +48,33 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
+  // Axios interceptor for JWT expiry
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Clear auth state
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          delete axios.defaults.headers.common['Authorization'];
+          setUser(null);
+          setIsAuthenticated(false);
+          // Redirect to login with expired flag
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login?expired=true';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    // Cleanup interceptor on unmount
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, []);
+
   const login = async (username, password) => {
     try {
       const response = await axios.post('/auth/login', { username, password });
@@ -65,6 +92,27 @@ export const AuthProvider = ({ children }) => {
       return {
         success: false,
         message: error.response?.data?.message || 'Login failed'
+      };
+    }
+  };
+
+  const studentLogin = async (student_code, national_id) => {
+    try {
+      const response = await axios.post('/auth/student-login', { student_code, national_id });
+      const { user, token } = response.data.data;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      setUser(user);
+      setIsAuthenticated(true);
+
+      return { success: true, user };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message || 'فشل تسجيل الدخول'
       };
     }
   };
@@ -126,6 +174,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated,
     login,
+    studentLogin,
     logout,
     updateProfile,
     register

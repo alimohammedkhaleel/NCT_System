@@ -1,0 +1,432 @@
+/* ForgotCodeModal - Unified Purple Theme */
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 4, 60, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+/* Modal Container */
+.modal {
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  width: 100%;
+  max-width: 480px;
+  padding: 2rem;
+  position: relative;
+  color: var(--white);
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(179, 110, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: var(--white);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.closeButton:hover:not(:disabled) {
+  background: var(--purple-primary);
+  transform: rotate(90deg);
+  box-shadow: 0 0 15px rgba(179, 110, 255, 0.5);
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--white-dim);
+  line-height: 1.5;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Error Message */
+.errorMessage {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
+.errorIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Form Group */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+
+/* Input Wrapper */
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 3rem 0.875rem 1rem;
+  background: rgba(17, 1, 23, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input:focus {
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 0 3px rgba(179, 110, 255, 0.1);
+  background: rgba(17, 1, 23, 0.8);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.inputError:focus {
+  border-color: rgba(239, 68, 68, 0.7);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.25rem;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Hint */
+.hint {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.25rem;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.3);
+  font-family: inherit;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonIcon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.submitButton:hover:not(:disabled) .buttonIcon {
+  transform: translateX(-3px);
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Cancel Button */
+.cancelButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--white-dim);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: rgba(179, 110, 255, 0.1);
+  border-color: var(--purple-primary);
+  color: var(--white);
+}
+
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Success Container */
+.successContainer {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--white);
+  box-shadow: 0 8px 25px rgba(179, 110, 255, 0.4);
+  animation: successPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(179, 110, 255, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(179, 110, 255, 0.6);
+  }
+}
+
+.successTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+/* Code Display */
+.codeDisplay {
+  background: rgba(17, 1, 23, 0.6);
+  border: 2px solid var(--purple-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 0 20px rgba(179, 110, 255, 0.3);
+}
+
+.codeLabel {
+  font-size: 0.9rem;
+  color: var(--white-dim);
+  font-weight: 500;
+}
+
+.codeValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--purple-light);
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(179, 110, 255, 0.5);
+}
+
+.successMessage {
+  font-size: 0.95rem;
+  color: var(--white-dim);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Done Button */
+.doneButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.3);
+  font-family: inherit;
+}
+
+.doneButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+}
+
+.doneButton:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .modal {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .icon {
+    font-size: 2.5rem;
+  }
+
+  .codeValue {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .input {
+    padding: 0.75rem 2.5rem 0.75rem 0.875rem;
+    font-size: 0.95rem;
+  }
+
+  .submitButton,
+  .cancelButton,
+  .doneButton {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}

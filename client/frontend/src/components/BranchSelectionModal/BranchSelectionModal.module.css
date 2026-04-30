@@ -1,0 +1,206 @@
+/* BranchSelectionModal Component Styles */
+/* Uses the NCTU ERP purple theme */
+
+/* Overlay - covers entire screen, non-dismissible */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 4, 60, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* Modal Container */
+.modal {
+  background: linear-gradient(145deg, rgba(17, 1, 23, 0.95), rgba(28, 6, 46, 0.95));
+  border: 1px solid rgba(179, 110, 255, 0.4);
+  border-radius: 20px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(179, 110, 255, 0.2),
+              0 0 0 1px rgba(179, 110, 255, 0.1);
+  direction: rtl;
+  text-align: right;
+  animation: modalEnter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.headerIcon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white, #ffffff);
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+  margin: 0;
+}
+
+/* Student Info */
+.studentInfo {
+  background: rgba(179, 110, 255, 0.08);
+  border: 1px solid rgba(179, 110, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.studentInfoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoLabel {
+  font-size: 0.82rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: 0.9rem;
+  color: var(--white, #ffffff);
+  font-weight: 500;
+}
+
+/* Description */
+.description {
+  margin-bottom: 20px;
+}
+
+.descAr {
+  font-size: 0.9rem;
+  color: var(--white-dim, rgba(255, 255, 255, 0.8));
+  margin: 0 0 6px 0;
+  line-height: 1.6;
+}
+
+.descEn {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  direction: ltr;
+  text-align: left;
+}
+
+/* Selector Wrapper */
+.selectorWrapper {
+  margin-bottom: 24px;
+}
+
+/* Submit Button */
+.submitBtn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #7e39b6, #b36eff);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(179, 110, 255, 0.4);
+  background: linear-gradient(135deg, #9448b5, #c07fff);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading State */
+.loadingContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Note */
+.note {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin: 0;
+  line-height: 1.6;
+  padding: 12px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+}
+
+.noteEn {
+  direction: ltr;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+}

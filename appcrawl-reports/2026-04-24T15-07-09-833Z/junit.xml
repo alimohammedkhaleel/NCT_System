@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="appcrawl" tests="1" failures="0" time="309">
+  <testsuite name="appcrawl.steered" tests="1" failures="0" time="309" timestamp="2026-04-24T15:12:20.241Z">
+    <testcase classname="appcrawl.steered" name="قم بتنفيذ سيناريو اختبار شامل لنظام NCTU ERP. اتبع الخطوات التالية بدقة:
+
+**الجز" time="309">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -129,39 +129,53 @@ const resetDatabase = async () => {
     console.log('✅ Student user created (student_ahmed/student123)');
 
     // ==================== SPECIALTIES ====================
-    const specialty_ict = await Specialty.create({
-      code: 'ICT',
-      name: 'Information and Communication Technology',
-      arabic_name: 'تكنولوجيا المعلومات والاتصالات',
-      duration_years: 4,
-      total_credits: 120,
-      annual_fee: 50000,
-      is_active: true
-    });
-    console.log('✅ Specialty created (ICT)');
+    const specialtyData = [
+      { code: 'MCT', name: 'Mechatronics Technology', arabic_name: 'تكنولوجيا الميكاترونكس', duration_years: 4, total_credits: 132, annual_fee: 15000.00, is_active: true },
+      { code: 'AUT', name: 'Autotronics Technology', arabic_name: 'تكنولوجيا الأوتوترونكس', duration_years: 4, total_credits: 132, annual_fee: 14000.00, is_active: true },
+      { code: 'ICT', name: 'Information Technology', arabic_name: 'تكنولوجيا المعلومات', duration_years: 4, total_credits: 132, annual_fee: 12000.00, is_active: true },
+      { code: 'PRO', name: 'Prosthetics Technology', arabic_name: 'تكنولوجيا الأطراف الصناعية', duration_years: 4, total_credits: 132, annual_fee: 16000.00, is_active: true },
+      { code: 'OIL', name: 'Oil Production Technology', arabic_name: 'تكنولوجيا إنتاج البترول', duration_years: 4, total_credits: 132, annual_fee: 18000.00, is_active: true },
+      { code: 'REN', name: 'Renewable Energy Technology', arabic_name: 'تكنولوجيا الطاقة المتجددة', duration_years: 4, total_credits: 132, annual_fee: 17000.00, is_active: true },
+    ];
+    const createdSpecialties = [];
+    for (const spec of specialtyData) {
+      const created = await Specialty.create(spec);
+      createdSpecialties.push(created);
+      console.log(`✅ Specialty: ${spec.code} - ${spec.arabic_name}`);
+    }
 
-    // ==================== ACADEMIC YEARS ====================
-    const year2024_1 = await AcademicYear.create({
-      specialty_id: specialty_ict.id,
-      year_number: 1,
-      academic_season: '2024-2025',
-      is_active: true
-    });
-    console.log('✅ Academic year created (Year 1 - 2024-2025)');
+    // Use ICT as the primary specialty for seed data
+    const specialty_ict = createdSpecialties.find(s => s.code === 'ICT');
 
-    // ==================== SEMESTERS ====================
-    const semester_fall = await Semester.create({
-      academic_year_id: year2024_1.id,
-      semester_name: 'Fall',
-      is_active: true
-    });
-    
-    const semester_spring = await Semester.create({
-      academic_year_id: year2024_1.id,
-      semester_name: 'Spring',
-      is_active: true
-    });
-    console.log('✅ Semesters created (Fall & Spring)');
+    // ==================== ACADEMIC YEARS & SEMESTERS (all specialties) ====================
+    let year2024_1, semester_fall, semester_spring;
+    for (const spec of createdSpecialties) {
+      for (let yearNum = 1; yearNum <= 4; yearNum++) {
+        const academicYear = await AcademicYear.create({
+          specialty_id: spec.id,
+          year_number: yearNum,
+          is_active: true
+        });
+        // Create 2 semesters per academic year
+        const sem1 = await Semester.create({
+          academic_year_id: academicYear.id,
+          semester_name: 'الفصل الأول',
+          is_active: true
+        });
+        const sem2 = await Semester.create({
+          academic_year_id: academicYear.id,
+          semester_name: 'الفصل الثاني',
+          is_active: true
+        });
+        // Keep references for ICT year 1
+        if (spec.code === 'ICT' && yearNum === 1) {
+          year2024_1 = academicYear;
+          semester_fall = sem1;
+          semester_spring = sem2;
+        }
+      }
+    }
+    console.log('✅ Academic years and semesters created for all specialties');
 
     // ==================== COURSES ====================
     const course1 = await Course.create({
@@ -219,7 +233,7 @@ const resetDatabase = async () => {
     // ==================== STUDENT ====================
     const student = await Student.create({
       user_id: studentUser.id,
-      student_code: 'NCTU-2024-001',
+      student_code: '20240001',
       national_id: '30001011234567',
       specialty_id: specialty_ict.id,
       current_year: 1,
@@ -228,7 +242,7 @@ const resetDatabase = async () => {
       total_paid: 0,
       total_due: 50000
     });
-    console.log('✅ Student profile created (NCTU-2024-001)');
+    console.log('✅ Student profile created (20240001)');
 
     // ==================== STUDENT ENROLLMENT ====================
     const enrollment1 = await StudentEnrollment.create({
@@ -311,7 +325,7 @@ const resetDatabase = async () => {
     console.log('═══════════════════════════════════════════');
     console.log('STUDENT:');
     console.log('  Username: student_ahmed  | Password: student123');
-    console.log('  Code: NCTU-2024-001      | Year: 1 (Year 1)');
+    console.log('  Code: 20240001           | Year: 1 (Year 1)');
     console.log('═══════════════════════════════════════════\n');
 
     process.exit(0);
