@@ -1,0 +1,455 @@
+@startuml NCT_System_ERD
+!define TABLE(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define PK(x) <u>x</u>
+!define FK(x) <i>x</i>
+
+hide methods
+hide stereotypes
+
+skinparam class {
+  BackgroundColor #FEFEFE
+  BorderColor #333333
+  ArrowColor #555555
+  FontSize 11
+}
+
+skinparam classFontSize 12
+skinparam classAttributeFontSize 10
+skinparam linetype ortho
+
+' ─────────────────────────────────────────────
+'  CORE USER & ROLES
+' ─────────────────────────────────────────────
+
+TABLE(users, "users") {
+  PK(id) : INT AUTO_INCREMENT
+  username : VARCHAR(100) UNIQUE NOT NULL
+  email : VARCHAR(255) UNIQUE NOT NULL
+  password_hash : VARCHAR(255) NOT NULL
+  full_name : VARCHAR(255) NOT NULL
+  phone : VARCHAR(20)
+  national_id : VARCHAR(20) UNIQUE
+  role : ENUM(admin, professor, accountant, registrar, student)
+  profile_picture : BLOB
+  profile_image : VARCHAR(500)
+  is_active : BOOLEAN DEFAULT true
+  last_login : DATETIME
+  token_version : INT DEFAULT 1
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(students, "students") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(user_id) : INT UNIQUE NOT NULL → users.id
+  student_code : VARCHAR(20) UNIQUE NOT NULL
+  national_id : VARCHAR(20) UNIQUE NOT NULL
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  current_year : INT DEFAULT 1
+  current_semester : INT DEFAULT 1
+  branch : ENUM(Software, Network)
+  academic_status : ENUM(active, graduated, suspended, transferred, dropped, summer_course, repeat_year)
+  enrollment_date : DATETIME
+  graduation_date : DATETIME
+  qr_secret : VARCHAR(255) UNIQUE
+  qr_data : TEXT
+  qr_image : LONGTEXT
+  total_paid : DECIMAL(12,2) DEFAULT 0
+  total_due : DECIMAL(12,2) DEFAULT 0
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(professors, "professors") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(user_id) : INT UNIQUE NOT NULL → users.id
+  professor_code : VARCHAR(20) UNIQUE NOT NULL
+  department : VARCHAR(100)
+  hire_date : DATETIME
+  specialization : VARCHAR(255)
+  is_active : BOOLEAN DEFAULT true
+  FK(specialty_id) : INT → specialties.id
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+' ─────────────────────────────────────────────
+'  ACADEMIC STRUCTURE
+' ─────────────────────────────────────────────
+
+TABLE(specialties, "specialties") {
+  PK(id) : INT AUTO_INCREMENT
+  code : VARCHAR(20) UNIQUE NOT NULL
+  name : VARCHAR(100) NOT NULL
+  arabic_name : VARCHAR(100) NOT NULL
+  duration_years : INT DEFAULT 4
+  total_credits : INT DEFAULT 120
+  annual_fee : DECIMAL(10,2) DEFAULT 10000
+  is_active : BOOLEAN DEFAULT true
+  description : TEXT
+  createdAt : DATETIME
+  updatedAt : DATETIME
+}
+
+TABLE(academic_years, "academic_years") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  year_number : INT NOT NULL [1-4]
+  academic_season : VARCHAR(50)
+  is_active : BOOLEAN DEFAULT true
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(semesters, "semesters") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  semester_name : VARCHAR(100) NOT NULL
+  start_date : DATETIME
+  end_date : DATETIME
+  is_active : BOOLEAN DEFAULT true
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(courses, "courses") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  FK(semester_id) : INT NOT NULL → semesters.id
+  course_code : VARCHAR(20) UNIQUE NOT NULL
+  course_name : VARCHAR(100) NOT NULL
+  arabic_name : VARCHAR(100)
+  credit_hours : INT DEFAULT 3
+  branch : ENUM(Software, Network, Both)
+  description : TEXT
+  is_active : BOOLEAN DEFAULT true
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+' ─────────────────────────────────────────────
+'  GRADES & ENROLLMENT
+' ─────────────────────────────────────────────
+
+TABLE(student_enrollments, "student_enrollments") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(student_id) : INT NOT NULL → students.id
+  FK(course_id) : INT NOT NULL → courses.id
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  FK(semester_id) : INT NOT NULL → semesters.id
+  enrollment_date : DATETIME
+  status : ENUM(enrolled, dropped, completed, failed)
+  created_at : DATETIME
+  updated_at : DATETIME
+  UNIQUE(student_id, course_id, academic_year_id, semester_id)
+}
+
+TABLE(grades, "grades") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(student_id) : INT NOT NULL → students.id
+  FK(course_id) : INT NOT NULL → courses.id
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  FK(semester_id) : INT NOT NULL → semesters.id
+  FK(enrollment_id) : INT → student_enrollments.id
+  student_branch_at_creation : ENUM(Software, Network)
+  assignment1_grade : ENUM(P, M, D)
+  assignment1_score : DECIMAL(5,2) DEFAULT 0
+  assignment2_grade : ENUM(P, M, D)
+  assignment2_score : DECIMAL(5,2) DEFAULT 0
+  final_exam_score : DECIMAL(5,2) DEFAULT 0
+  total_score : DECIMAL(6,2) DEFAULT 0
+  total_percentage : DECIMAL(5,2) DEFAULT 0
+  grade_point : DECIMAL(3,2) DEFAULT 0
+  final_result : ENUM(Distinction, Merit, Pass, Refer, Fail)
+  letter_grade : VARCHAR(3)
+  status : ENUM(draft, pending_admin_approval, approved)
+  FK(professor_submitted_by) : INT NOT NULL → users.id
+  FK(admin_approved_by) : INT → users.id
+  approved_at : DATETIME
+  is_published : BOOLEAN DEFAULT false
+  published_at : DATETIME
+  FK(published_by) : INT → users.id
+  notes : TEXT
+  created_at : DATETIME
+  updated_at : DATETIME
+  UNIQUE(student_id, course_id, academic_year_id, semester_id)
+}
+
+TABLE(course_grade_configs, "course_grade_configs") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(course_id) : INT UNIQUE NOT NULL → courses.id
+  ass1_percentage : DECIMAL(5,2) DEFAULT 15.00
+  ass2_percentage : DECIMAL(5,2) DEFAULT 15.00
+  final_percentage : DECIMAL(5,2) DEFAULT 70.00
+  ass1_max : DECIMAL(5,2) DEFAULT 30.00
+  ass2_max : DECIMAL(5,2) DEFAULT 30.00
+  final_max : DECIMAL(5,2) DEFAULT 150.00
+  p_value : DECIMAL(5,2) DEFAULT 30.00
+  m_value : DECIMAL(5,2) DEFAULT 21.00
+  d_value : DECIMAL(5,2) DEFAULT 15.00
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(grade_settings, "grade_settings") {
+  PK(id) : INT AUTO_INCREMENT
+  setting_name : VARCHAR(100) UNIQUE NOT NULL
+  setting_value : DECIMAL(10,2) NOT NULL
+  description : TEXT
+  setting_type : ENUM(grade_value, max_score, other)
+  FK(updated_by) : INT → users.id
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(professor_courses, "professor_courses") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(professor_id) : INT NOT NULL → professors.id
+  FK(course_id) : INT NOT NULL → courses.id
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  FK(semester_id) : INT NOT NULL → semesters.id
+  is_primary : BOOLEAN DEFAULT true
+  created_at : DATETIME
+  updated_at : DATETIME
+  UNIQUE(professor_id, course_id, academic_year_id, semester_id)
+}
+
+' ─────────────────────────────────────────────
+'  FINANCIAL
+' ─────────────────────────────────────────────
+
+TABLE(specialty_fees, "specialty_fees") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  year_number : INT NOT NULL [1-4]
+  fee_amount : DECIMAL(10,2) DEFAULT 0
+  summer_fee : DECIMAL(10,2) DEFAULT 0
+  course_fail_fee : DECIMAL(10,2) DEFAULT 0
+  createdAt : DATETIME
+  updatedAt : DATETIME
+  UNIQUE(specialty_id, year_number)
+}
+
+TABLE(fee_invoices, "fee_invoices") {
+  PK(id) : INT AUTO_INCREMENT
+  invoice_number : VARCHAR(50) UNIQUE NOT NULL
+  FK(student_id) : INT NOT NULL → students.id
+  FK(academic_year_id) : INT NOT NULL → academic_years.id
+  FK(semester_id) : INT → semesters.id
+  total_amount : DECIMAL(12,2) NOT NULL
+  paid_amount : DECIMAL(12,2) DEFAULT 0
+  status : ENUM(pending, partial, paid, overdue)
+  due_date : DATETIME NOT NULL
+  FK(issued_by) : INT NOT NULL → users.id
+  notes : TEXT
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(payments, "payments") {
+  PK(id) : INT AUTO_INCREMENT
+  receipt_number : VARCHAR(50) UNIQUE NOT NULL
+  FK(student_id) : INT NOT NULL → students.id
+  FK(invoice_id) : INT → fee_invoices.id
+  amount : DECIMAL(12,2) NOT NULL
+  payment_method : ENUM(نقدي, تحويل بنكي, شيك, بطاقة ائتمان)
+  transaction_id : VARCHAR(100)
+  bank_name : VARCHAR(100)
+  check_number : VARCHAR(50)
+  payment_date : DATETIME
+  FK(collected_by) : INT NOT NULL → users.id
+  notes : TEXT
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+' ─────────────────────────────────────────────
+'  REGISTRATION
+' ─────────────────────────────────────────────
+
+TABLE(registration_links, "registration_links") {
+  PK(id) : INT AUTO_INCREMENT
+  token : UUID UNIQUE NOT NULL
+  expires_at : DATETIME NOT NULL
+  is_used : BOOLEAN DEFAULT false
+  FK(created_by) : INT NOT NULL → users.id
+  FK(used_by) : INT → users.id
+  used_at : DATETIME
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(registration_requests, "registration_requests") {
+  PK(id) : INT AUTO_INCREMENT
+  full_name : VARCHAR(100) NOT NULL
+  national_id : VARCHAR(14) UNIQUE NOT NULL
+  birth_date : DATE NOT NULL
+  gender : ENUM(male, female)
+  email : VARCHAR(100) UNIQUE NOT NULL
+  phone : VARCHAR(20) NOT NULL
+  address : TEXT
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  current_year : INT DEFAULT 1
+  branch : ENUM(Software, Network)
+  high_school_certificate : VARCHAR(50)
+  high_school_grade : DECIMAL(5,2)
+  guardian_name : VARCHAR(100)
+  guardian_phone : VARCHAR(20)
+  guardian_relation : VARCHAR(50)
+  status : ENUM(pending, approved, rejected)
+  rejection_reason : TEXT
+  FK(reviewed_by) : INT → users.id
+  reviewed_at : DATETIME
+  FK(created_user_id) : INT → users.id
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(professor_registration_links, "professor_registration_links") {
+  PK(id) : INT AUTO_INCREMENT
+  token : UUID UNIQUE NOT NULL
+  expires_at : DATETIME NOT NULL
+  is_used : BOOLEAN DEFAULT false
+  FK(created_by) : INT NOT NULL → users.id
+  FK(used_by) : INT → users.id
+  used_at : DATETIME
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(professor_registration_requests, "professor_registration_requests") {
+  PK(id) : INT AUTO_INCREMENT
+  full_name : VARCHAR(255) NOT NULL
+  national_id : VARCHAR(14) UNIQUE
+  email : VARCHAR(255) UNIQUE NOT NULL
+  phone : VARCHAR(20)
+  FK(specialty_id) : INT → specialties.id
+  qualification : VARCHAR(255)
+  years_of_experience : INT
+  password_hash : VARCHAR(255) NOT NULL
+  username : VARCHAR(100)
+  department : VARCHAR(255)
+  specialization : VARCHAR(255)
+  status : ENUM(pending, approved, rejected)
+  rejection_reason : TEXT
+  processed_at : DATETIME
+  FK(processed_by) : INT → users.id
+  FK(created_user_id) : INT → users.id
+  FK(created_professor_id) : INT → professors.id
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+' ─────────────────────────────────────────────
+'  TIMETABLE & QR
+' ─────────────────────────────────────────────
+
+TABLE(timetables, "timetables") {
+  PK(id) : INT AUTO_INCREMENT
+  title : VARCHAR(255) NOT NULL
+  FK(specialty_id) : INT NOT NULL → specialties.id
+  file_url : VARCHAR(500) NOT NULL
+  file_name : VARCHAR(255) NOT NULL
+  file_size : INT
+  FK(created_by) : INT NOT NULL → users.id
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(student_qr_codes, "student_qr_codes") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(student_id) : INT UNIQUE NOT NULL → students.id
+  qr_secret : VARCHAR(255) UNIQUE NOT NULL
+  qr_data : TEXT NOT NULL
+  qr_image : LONGTEXT
+  is_active : BOOLEAN DEFAULT true
+  expires_at : DATETIME
+  scanned_at : DATETIME
+  scan_count : INT DEFAULT 0
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+TABLE(activity_logs, "activity_logs") {
+  PK(id) : INT AUTO_INCREMENT
+  FK(user_id) : INT → users.id
+  action : VARCHAR(255) NOT NULL
+  entity_type : VARCHAR(100)
+  entity_id : INT
+  details : JSON
+  ip_address : VARCHAR(45)
+  created_at : DATETIME
+}
+
+' ─────────────────────────────────────────────
+'  RELATIONSHIPS
+' ─────────────────────────────────────────────
+
+' User → Student/Professor (1:1)
+users ||--o| students : "has profile"
+users ||--o| professors : "has profile"
+
+' Specialty hierarchy
+specialties ||--|{ academic_years : "has years"
+academic_years ||--|{ semesters : "has semesters"
+semesters ||--|{ courses : "has courses"
+specialties ||--|{ courses : "has courses"
+academic_years ||--|{ courses : "has courses"
+
+' Student relationships
+specialties ||--|{ students : "enrolls in"
+students ||--|{ student_enrollments : "enrolled in"
+students ||--|{ grades : "has grades"
+students ||--|{ fee_invoices : "has invoices"
+students ||--|{ payments : "makes payments"
+students ||--o| student_qr_codes : "has QR"
+
+' Professor relationships
+specialties ||--o{ professors : "belongs to"
+professors ||--|{ professor_courses : "teaches"
+courses ||--|{ professor_courses : "taught by"
+
+' Course relationships
+courses ||--|{ student_enrollments : "has enrollments"
+courses ||--|{ grades : "has grades"
+courses ||--o| course_grade_configs : "has config"
+
+' Academic year/semester in grades
+academic_years ||--|{ grades : "in year"
+semesters ||--|{ grades : "in semester"
+academic_years ||--|{ student_enrollments : "in year"
+semesters ||--|{ student_enrollments : "in semester"
+academic_years ||--|{ professor_courses : "in year"
+semesters ||--|{ professor_courses : "in semester"
+
+' Financial
+academic_years ||--|{ fee_invoices : "for year"
+semesters ||--o{ fee_invoices : "for semester"
+fee_invoices ||--|{ payments : "paid by"
+specialties ||--|{ specialty_fees : "has fees"
+
+' Registration
+users ||--|{ registration_links : "creates"
+specialties ||--|{ registration_requests : "for specialty"
+specialties ||--|{ professor_registration_requests : "for specialty"
+users ||--|{ professor_registration_links : "creates"
+
+' Timetables
+specialties ||--|{ timetables : "has timetables"
+users ||--|{ timetables : "uploaded by"
+
+' Grade approval chain
+users ||--|{ grades : "submitted by (professor)"
+users ||--o{ grades : "approved by (admin)"
+users ||--o{ grades : "published by (admin)"
+users ||--|{ grade_settings : "updated by"
+
+' Invoice issuer
+users ||--|{ fee_invoices : "issued by"
+users ||--|{ payments : "collected by"
+
+' Activity logs
+users ||--o{ activity_logs : "performs"
+
+@enduml
