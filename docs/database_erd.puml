@@ -357,31 +357,6 @@ TABLE(timetables, "timetables") {
   updated_at : DATETIME
 }
 
-TABLE(student_qr_codes, "student_qr_codes") {
-  PK(id) : INT AUTO_INCREMENT
-  FK(student_id) : INT UNIQUE NOT NULL → students.id
-  qr_secret : VARCHAR(255) UNIQUE NOT NULL
-  qr_data : TEXT NOT NULL
-  qr_image : LONGTEXT
-  is_active : BOOLEAN DEFAULT true
-  expires_at : DATETIME
-  scanned_at : DATETIME
-  scan_count : INT DEFAULT 0
-  created_at : DATETIME
-  updated_at : DATETIME
-}
-
-TABLE(activity_logs, "activity_logs") {
-  PK(id) : INT AUTO_INCREMENT
-  FK(user_id) : INT → users.id
-  action : VARCHAR(255) NOT NULL
-  entity_type : VARCHAR(100)
-  entity_id : INT
-  details : JSON
-  ip_address : VARCHAR(45)
-  created_at : DATETIME
-}
-
 ' ─────────────────────────────────────────────
 '  RELATIONSHIPS
 ' ─────────────────────────────────────────────
@@ -403,7 +378,6 @@ students ||--|{ student_enrollments : "enrolled in"
 students ||--|{ grades : "has grades"
 students ||--|{ fee_invoices : "has invoices"
 students ||--|{ payments : "makes payments"
-students ||--o| student_qr_codes : "has QR"
 
 ' Professor relationships
 specialties ||--o{ professors : "belongs to"
@@ -448,8 +422,5 @@ users ||--|{ grade_settings : "updated by"
 ' Invoice issuer
 users ||--|{ fee_invoices : "issued by"
 users ||--|{ payments : "collected by"
-
-' Activity logs
-users ||--o{ activity_logs : "performs"
 
 @enduml

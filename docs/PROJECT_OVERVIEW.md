@@ -95,7 +95,6 @@ server/
 │   ├── ProfessorRegistrationLink.js  # روابط تسجيل الدكاترة
 │   ├── ProfessorRegistrationRequest.js # طلبات تسجيل الدكاترة
 │   ├── Timetable.js         # الجداول الدراسية
-│   ├── StudentQRCode.js     # QR Codes للطلاب
 │   └── ActivityLog.js       # سجل النشاطات
 │
 ├── controllers/             # منطق الأعمال

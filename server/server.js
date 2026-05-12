@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
 
@@ -17,7 +16,6 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const extendedAdminRoutes = require('./routes/extendedAdminRoutes');
 const gradeRoutes = require('./routes/gradeRoutes');
-const botRoutes = require('./routes/botRoutes');
 const timetableRoutes = require('./routes/timetableRoutes');
 const accountantRoutes = require('./routes/accountantRoutes');
 const studentRoutes = require('./routes/studentRoutes');
@@ -59,7 +57,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Compression
-app.use(compression());
+// (removed - use nginx/reverse proxy for compression in production)
 
 // Logging
 app.use(morgan('combined'));
@@ -154,8 +152,7 @@ app.use('/api/student', timetableRoutes); // Student timetable access (bypasses 
 app.use('/api/admin/students', studentRoutes);
 app.use('/api/student', studentRoutes); // Student-specific routes
 app.use('/api/grades', gradeRoutes);
-app.use('/api/professor-registration', professorRegistrationRoutes); // Professor registration routes
-app.use('/api', botRoutes);
+app.use('/api/professor-registration', professorRegistrationRoutes);
 app.use('/api/accountant', accountantRoutes);
 
 // Health check
