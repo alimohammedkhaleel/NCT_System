@@ -2,11 +2,11 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import './ImagesArcAnimation.css';
 
-import autotronicsImg from '../../assets/Autotronics.jpg';
-import mechatronicImg from '../../assets/Mechatronic.jpg';
-import petroleumImg from '../../assets/Petroleum engineering.jpg';
-import renewableImg from '../../assets/Renewable energy.jpg';
-import saudiImg from '../../assets/saudi-franchise-committee.jpg';
+import autotronicsImg from '../../../assets/Autotronics.jpg';
+import mechatronicImg from '../../../assets/Mechatronic.jpg';
+import petroleumImg from '../../../assets/Petroleum engineering.jpg';
+import renewableImg from '../../../assets/Renewable energy.jpg';
+import saudiImg from '../../../assets/saudi-franchise-committee.jpg';
 
 /**
  * ImagesArcAnimation - بطاقات الصور بتأثير القوس مع سقوط متتالي
