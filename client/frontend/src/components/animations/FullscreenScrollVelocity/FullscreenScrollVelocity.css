@@ -303,43 +303,132 @@
   filter: drop-shadow(0 0 15px currentColor);
 }
 
-/* Responsive */
+/* Responsive - Tablet (max 1024px) */
+@media (max-width: 1024px) {
+  .nctu-hero-intro {
+    padding: 0 6vw;
+  }
+
+  .hero-wrapper {
+    max-width: 650px;
+    gap: 1.5rem;
+  }
+
+  .main-title {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+  }
+
+  .hero-shapes {
+    width: 45vw;
+    opacity: 0.7;
+  }
+
+  .shape-dome {
+    width: 320px;
+    height: 160px;
+  }
+
+  .epic-sentence {
+    font-size: clamp(1.6rem, 5vw, 3.5rem);
+  }
+}
+
+/* Responsive - Mobile (max 768px) */
 @media (max-width: 768px) {
-  .nctu-full-experience { 
-    height: auto; 
-    overflow: visible; 
+  .nctu-full-experience {
+    height: auto;
+    overflow: visible;
   }
-  .horizontal-content-wrapper { 
-    flex-direction: column; 
-    height: auto; 
-    width: 100vw; 
+
+  .horizontal-content-wrapper {
+    flex-direction: column;
+    height: auto;
+    width: 100vw;
   }
-  .nctu-hero-intro { 
-    padding: 10vh 5vw; 
-    justify-content: center; 
-    text-align: center; 
-    width: 100vw; 
+
+  .nctu-hero-intro {
+    padding: 80px 5vw 50px;
+    justify-content: center;
+    text-align: center;
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
   }
-  .hero-wrapper { align-items: center; }
-  .main-title { font-size: 2.2rem; }
-  
-  .velocity-text-stream { 
-    padding: 50px 20px; 
-    height: auto; 
+
+  .hero-wrapper {
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .hero-shapes {
+    display: none; /* hide floating shapes on mobile */
+  }
+
+  .main-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+  }
+
+  .tech-pills {
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .tech-pill {
+    font-size: 0.78rem;
+    padding: 6px 14px;
+  }
+
+  .velocity-text-stream {
+    padding: 50px 20px;
+    height: auto;
     align-items: flex-start;
+    width: 100vw;
   }
-  .epic-sentence { 
-    font-size: 2rem; 
-    white-space: normal; 
-    line-height: 1.5; 
+
+  .epic-sentence {
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    white-space: normal;
+    line-height: 1.5;
   }
-  
+
   .creative-icon {
-    position: relative;
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    margin: 10px;
-    display: inline-flex;
+    display: none !important; /* إخفاء الأيقونات العائمة على الموبايل */
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive - Small Mobile (max 480px) */
+@media (max-width: 480px) {
+  .nctu-hero-intro {
+    padding: 75px 4vw 40px;
+  }
+
+  .main-title {
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+  }
+
+  .ready-badge {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+
+  .typewriter-sub {
+    font-size: 0.95rem;
+  }
+
+  .tech-pill {
+    font-size: 0.72rem;
+    padding: 5px 10px;
+  }
+
+  .epic-sentence {
+    font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+  }
+
+  .social-links-row {
+    gap: 10px;
   }
 }

@@ -366,3 +366,41 @@ select option {
   background: #111111 !important;
   color: #FFFFFF !important;
 }
+
+/* ======================================
+   Global Responsive Rules
+   ====================================== */
+@media (max-width: 1024px) {
+  html {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    padding: var(--spacing-md);
+  }
+
+  .main-content.with-navbar {
+    margin-top: 65px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 12.5px;
+  }
+
+  .main-content {
+    padding: var(--spacing-sm);
+  }
+}
+

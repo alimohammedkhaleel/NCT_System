@@ -15,19 +15,33 @@
   z-index: 1;
 }
 
-/* Hero Section */
+/* ─────────────────────────────────────────
+   Hero Section
+───────────────────────────────────────── */
 .contact-hero-v2 {
   margin-bottom: 50px;
   text-align: center;
 }
 
 .contact-hero-v2 h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(2rem, 6vw, 4.5rem);
   font-weight: 900;
   margin-bottom: 15px;
   color: #FFFFFF;
 }
 
+.contact-hero-v2 p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+  padding: 0 8px;
+}
+
+/* ─────────────────────────────────────────
+   Flex Container (form + animation)
+───────────────────────────────────────── */
 .contact-flex-container {
   display: flex;
   gap: 40px;
@@ -36,8 +50,8 @@
 }
 
 .contact-animation-side {
-  flex: 0 0 450px;
-  min-height: 550px;
+  flex: 0 0 420px;
+  min-height: 480px;
   background: transparent;
   border-radius: 24px;
   position: relative;
@@ -60,10 +74,13 @@
   justify-content: center;
 }
 
+/* ─────────────────────────────────────────
+   Modern Form
+───────────────────────────────────────── */
 .modern-form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 28px;
 }
 
 .input-group-modern {
@@ -81,6 +98,7 @@
   font-size: 1rem;
   font-family: 'Cairo', sans-serif;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .input-group-modern label {
@@ -90,6 +108,7 @@
   color: #94a3b8;
   pointer-events: none;
   transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .input-group-modern input:focus,
@@ -106,7 +125,7 @@
 .input-group-modern textarea:not(:placeholder-shown) + label {
   top: -12px;
   right: 15px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #00d2ff;
   background: #0a0f1d;
   padding: 0 8px;
@@ -121,12 +140,13 @@
   border-radius: 12px;
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
   font-family: 'Cairo', sans-serif;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 210, 255, 0.35);
   transition: all 0.3s ease;
   margin-top: 10px;
+  width: 100%;
 }
 
 .modern-submit-btn:hover {
@@ -136,6 +156,9 @@
   transform: translateY(-2px);
 }
 
+/* ─────────────────────────────────────────
+   Contact Info Panel (3-column row)
+───────────────────────────────────────── */
 .contact-info-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -152,20 +175,188 @@
   gap: 16px;
   border: 1px solid rgba(0, 210, 255, 0.2);
   box-shadow: 0 6px 20px rgba(0, 210, 255, 0.15);
+  transition: transform 0.3s ease;
 }
 
-.info-item h4 {
+.info-icon-glow {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.info-item h3 {
   color: #00d2ff;
   font-weight: 700;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  margin: 0 0 4px 0;
 }
 
 .info-item p {
   color: #94a3b8;
+  font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  margin: 0;
 }
 
+/* ─────────────────────────────────────────
+   Map Section
+───────────────────────────────────────── */
+.contact-map-section {
+  margin-top: 20px;
+}
+
+.map-glass-card {
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0a0f1d;
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+}
+
+.map-overlay {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.map-overlay h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: #00d2ff;
+  margin-bottom: 10px;
+}
+
+.map-overlay p {
+  color: #94a3b8;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+}
+
+/* ─────────────────────────────────────────
+   Responsive - Tablet (max 1024px)
+───────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .contact-flex-container { flex-direction: column; }
-  .contact-animation-side { width: 100%; min-height: 350px; }
-  .contact-info-panel { grid-template-columns: 1fr; }
-  .contact-form-panel { padding: 30px 20px; }
+  .contact-layout-wrapper {
+    padding: 110px 24px 60px;
+  }
+
+  .contact-flex-container {
+    gap: 28px;
+  }
+
+  .contact-animation-side {
+    flex: 0 0 340px;
+    min-height: 380px;
+  }
+
+  .contact-form-panel {
+    padding: 36px 28px;
+  }
+
+  .contact-info-panel {
+    gap: 16px;
+  }
+}
+
+/* ─────────────────────────────────────────
+   Responsive - Mobile (max 768px)
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .contact-layout-wrapper {
+    padding: 90px 16px 50px;
+  }
+
+  .contact-hero-v2 {
+    margin-bottom: 32px;
+  }
+
+  /* Stack form and animation vertically */
+  .contact-flex-container {
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .contact-animation-side {
+    width: 100%;
+    flex: unset;
+    min-height: 280px;
+    order: 2; /* Show animation below form on mobile */
+  }
+
+  .contact-form-panel {
+    flex: unset;
+    width: 100%;
+    padding: 28px 20px;
+    order: 1;
+    border-radius: 18px;
+  }
+
+  /* 3 → 1 column for info items */
+  .contact-info-panel {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .info-item {
+    padding: 18px 20px;
+    border-radius: 14px;
+  }
+
+  .modern-form {
+    gap: 22px;
+  }
+
+  .input-group-modern input,
+  .input-group-modern textarea {
+    font-size: 0.95rem;
+    padding: 14px 16px;
+  }
+
+  .input-group-modern label {
+    top: 14px;
+    right: 16px;
+    font-size: 0.9rem;
+  }
+
+  .map-glass-card {
+    border-radius: 18px;
+    min-height: 160px;
+  }
+}
+
+/* ─────────────────────────────────────────
+   Responsive - Small Mobile (max 480px)
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .contact-layout-wrapper {
+    padding: 80px 12px 40px;
+  }
+
+  .contact-form-panel {
+    padding: 22px 16px;
+    border-radius: 16px;
+  }
+
+  .contact-animation-side {
+    min-height: 220px;
+  }
+
+  .info-item {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .info-icon-glow {
+    font-size: 1.3rem;
+  }
+
+  .modern-submit-btn {
+    padding: 14px 24px;
+  }
+
+  .map-glass-card {
+    min-height: 130px;
+    border-radius: 14px;
+  }
 }
