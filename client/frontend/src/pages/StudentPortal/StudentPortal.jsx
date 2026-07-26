@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import { TrueFocus, FadeIn } from '../../components/animations';
@@ -78,7 +78,7 @@ export default function StudentPortal() {
     setSummaryLoading(true);
     setSummaryError(null);
     try {
-      const res = await axios.get('/auth/profile');
+      const res = await api.get('/auth/profile');
       setStudentSummary(res.data.data);
     } catch (err) {
       setSummaryError(err.response?.data?.message || 'فشل تحميل بيانات الطالب');
@@ -94,7 +94,7 @@ export default function StudentPortal() {
     setGradesError(null);
     try {
       // Check payment status first
-      const paymentRes = await axios.get('/student/payment-status');
+      const paymentRes = await api.get('/student/payment-status');
       const paymentData = paymentRes.data.data;
       setPaymentStatus(paymentData);
 
@@ -102,7 +102,7 @@ export default function StudentPortal() {
         // Fetch grades if all paid
         setGradesLoading(true);
         try {
-          const gradesRes = await axios.get('/grades/student/grades');
+          const gradesRes = await api.get('/grades/student/grades');
           setGrades(gradesRes.data.data || []);
           setGpa(gradesRes.data.gpa || null);
           setActiveView('grades');
@@ -128,7 +128,7 @@ export default function StudentPortal() {
     setInvoicesLoading(true);
     setInvoicesError(null);
     try {
-      const res = await axios.get('/grades/student/invoices');
+      const res = await api.get('/grades/student/invoices');
       setInvoices(res.data.data || []);
       setActiveView('payments');
     } catch (err) {

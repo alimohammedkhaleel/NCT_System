@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import axios from 'axios';
+import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import styles from './StudentDataPage.module.css';
 
@@ -22,11 +22,7 @@ const StudentDataPage = () => {
   const fetchStudentData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/student/data`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await api.get('/student/data');
 
       if (response.data.success) {
         setStudentData(response.data.data);

@@ -7,7 +7,7 @@ import { validateLoginForm } from '../../api/auth';
 import { useAuth } from '../../context/AuthContext';
 import LoadingPage from '../../components/common/LoadingPage';
 import ForgotCodeModal from '../../components/ForgotCodeModal/ForgotCodeModal';
-import axios from 'axios';
+import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import './Login.css';
 
@@ -226,8 +226,8 @@ const Login = () => {
     setLoginLoading(true);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/student-login`,
+      const response = await api.post(
+        '/auth/student-login',
         {
           student_code: studentFormData.student_code,
           national_id: studentFormData.national_id

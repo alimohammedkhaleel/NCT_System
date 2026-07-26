@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import styles from './ForgotCodeModal.module.css';
 
@@ -47,8 +47,8 @@ const ForgotCodeModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/retrieve-student-code`,
+      const response = await api.post(
+        '/auth/retrieve-student-code',
         { national_id: nationalId }
       );
 
