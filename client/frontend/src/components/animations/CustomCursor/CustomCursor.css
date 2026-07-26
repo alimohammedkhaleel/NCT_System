@@ -101,3 +101,15 @@
 * {
   cursor: none !important;
 }
+
+/* Hide custom cursor on mobile (touch devices have no mouse) */
+@media (max-width: 768px) {
+  .custom-cursor,
+  .cursor-trail {
+    display: none !important;
+  }
+
+  * {
+    cursor: auto !important;
+  }
+}
