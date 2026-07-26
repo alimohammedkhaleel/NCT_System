@@ -1,15 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Set default axios config to use Vite proxy
-axios.defaults.baseURL = '/api';
-// Note: Do NOT set Content-Type globally — it breaks FormData uploads (multer needs multipart/form-data with boundary)
-
-// Add token to requests if available
-const token = localStorage.getItem('token');
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
+import api from '../services/apiService';
 
 const AuthContext = createContext();
 
