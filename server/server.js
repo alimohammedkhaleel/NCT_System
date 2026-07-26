@@ -178,13 +178,13 @@ app.use('*', (req, res) => {
   });
 });
 
-// Database sync and server start
+// Define all associations synchronously so they are available in serverless environments
+defineAssociations();
+console.log('✅ Model associations defined successfully.');
+
+// Database sync and server start (For local or persistent hosting like Render)
 const startServer = async () => {
   try {
-    // Define all associations BEFORE syncing
-    defineAssociations();
-    console.log('✅ Model associations defined successfully.');
-
     // Test database connection
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully.');
@@ -293,8 +293,9 @@ const startServer = async () => {
   }
 };
 
-// Only start server if not in test environment
-if (process.env.NODE_ENV !== 'test') {
+// Only start server if not in test environment AND NOT ON VERCEL
+// Vercel Serverless Functions execute the exported app directly without app.listen
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   startServer();
 }
 
