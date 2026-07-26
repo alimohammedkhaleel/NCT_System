@@ -16,9 +16,3 @@
   }
 }
 
-/* Hide on mobile - no mouse cursor on touch devices */
-@media (max-width: 768px) {
-  .splash-cursor-canvas {
-    display: none;
-  }
-}
