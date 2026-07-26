@@ -22,7 +22,7 @@ const StudentDataPage = () => {
   const fetchStudentData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/student/data', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/student/data`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

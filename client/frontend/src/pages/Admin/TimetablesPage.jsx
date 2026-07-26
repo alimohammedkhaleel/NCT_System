@@ -188,7 +188,7 @@ export default function TimetablesPage() {
       if (url) {
         // Convert relative path to absolute URL
         const baseURL = window.location.origin; // http://localhost:5173
-        const backendURL = 'http://localhost:5000'; // Backend server URL
+        const backendURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         
         // If url starts with /, it's a relative path - prepend backend URL
         const fullURL = url.startsWith('/') ? `${backendURL}${url}` : url;

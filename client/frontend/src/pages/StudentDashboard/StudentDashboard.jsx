@@ -363,7 +363,7 @@ const StudentDashboard = () => {
                   <div className="avatar-container">
                     {avatarUrl ? (
                       <img
-                        src={`http://localhost:5000${avatarUrl}`}
+                        src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${avatarUrl}`}
                         alt="صورة الطالب"
                         className="avatar-img"
                         onError={(e) => {
@@ -759,7 +759,7 @@ const StudentDashboard = () => {
                         </div>
                         {t.file_url && (
                           <a
-                            href={`http://localhost:5000${t.file_url}`}
+                            href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${t.file_url}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="sp-timetable-btn"
