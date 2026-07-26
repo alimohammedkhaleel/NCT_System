@@ -2,6 +2,12 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import './ImagesArcAnimation.css';
 
+import autotronicsImg from '../../assets/Autotronics.jpg';
+import mechatronicImg from '../../assets/Mechatronic.jpg';
+import petroleumImg from '../../assets/Petroleum engineering.jpg';
+import renewableImg from '../../assets/Renewable energy.jpg';
+import saudiImg from '../../assets/saudi-franchise-committee.jpg';
+
 /**
  * ImagesArcAnimation - بطاقات الصور بتأثير القوس مع سقوط متتالي
  * ديسكتوب/تابلت: شكل قوسي (نصف دائرة)
@@ -43,11 +49,11 @@ export default function ImagesArcAnimation() {
 
   // 5 صور
   const images = [
-    { id: 0, delay: 0, image: '/src/assets/Autotronics.jpg', title: 'Autotronics' },
-    { id: 1, delay: 0.6, image: '/src/assets/Mechatronic.jpg', title: 'Mechatronic' },
-    { id: 2, delay: 1.2, image: '/src/assets/Petroleum engineering.jpg', title: 'Petroleum' },
-    { id: 3, delay: 1.8, image: '/src/assets/Renewable energy.jpg', title: 'Renewable Energy' },
-    { id: 4, delay: 2.4, image: '/src/assets/saudi-franchise-committee.jpg', title: 'Saudi Committee' },
+    { id: 0, delay: 0, image: autotronicsImg, title: 'Autotronics' },
+    { id: 1, delay: 0.6, image: mechatronicImg, title: 'Mechatronic' },
+    { id: 2, delay: 1.2, image: petroleumImg, title: 'Petroleum' },
+    { id: 3, delay: 1.8, image: renewableImg, title: 'Renewable Energy' },
+    { id: 4, delay: 2.4, image: saudiImg, title: 'Saudi Committee' },
   ];
   
   // نقطة البداية والنزول (للديسكتوب بس)

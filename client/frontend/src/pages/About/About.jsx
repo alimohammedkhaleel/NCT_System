@@ -9,6 +9,12 @@ import { InfiniteMenu, PinScrubDebug, TypewriterEffect, Computer3D } from '../..
 import './About.css';
 import '../../components/animations/Computer3D/Computer3D.css';
 
+import imagePng from '../../assets/image.png';
+import autotronicsImg from '../../assets/Autotronics.jpg';
+import mechatronicImg from '../../assets/Mechatronic.jpg';
+import petroleumImg from '../../assets/Petroleum engineering.jpg';
+import protocolImg from '../../assets/china-cooperation-protocol.jpg';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
@@ -16,11 +22,11 @@ const About = () => {
   const computerRef = useRef(null);
 
   const menuItems = [
-    { label: 'Academic & Digital', icon: '💻', image: '/src/assets/image.png' },
-    { label: 'Career & Training', icon: '💼', image: '/src/assets/autotronics.jpg' },
-    { label: 'Campus Facilities', icon: '🏭', image: '/src/assets/Mechatronic.jpg' },
-    { label: 'Support & Quality', icon: '⭐', image: '/src/assets/Petroleum engineering.jpg' },
-    { label: 'Industrial Protocols', icon: '🤝', image: '/src/assets/china-cooperation-protocol.jpg' },
+    { label: 'Academic & Digital', icon: '💻', image: imagePng },
+    { label: 'Career & Training', icon: '💼', image: autotronicsImg },
+    { label: 'Campus Facilities', icon: '🏭', image: mechatronicImg },
+    { label: 'Support & Quality', icon: '⭐', image: petroleumImg },
+    { label: 'Industrial Protocols', icon: '🤝', image: protocolImg },
   ];
 
   const services = [
@@ -121,8 +127,8 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>عن الجامعة - نظام NCTU</title>
-        <meta name="description" content="تعرف على جامعة القاهرة التكنولوجية الجديدة (NCTU) ورؤيتها ورسالتها في تطوير التعليم التكنولوجي." />
+        <title>عن الجامعة - NCT جامعة القاهرة الجديدة التكنولوجية</title>
+        <meta name="description" content="تعرف على جامعة القاهرة الجديدة التكنولوجية (NCTU) ورؤيتها ورسالتها في تطوير التعليم التكنولوجي التطبيقي في مصر." />
       </Helmet>
       <div ref={containerRef} style={{ position: 'relative' }}>
         <Navbar />

@@ -20,8 +20,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>الرئيسية - نظام NCTU</title>
-        <meta name="description" content="الصفحة الرئيسية للنظام الجامعي المتكامل لجامعة القاهرة التكنولوجية الجديدة (NCTU)." />
+        <meta name="description" content="الصفحة الرئيسية للنظام الجامعي المتكامل لجامعة القاهرة الجديدة التكنولوجية (NCTU)." />
       </Helmet>
       {/* Presentation */}
       {!introCompleted && <NCTPresentation onComplete={() => setIntroCompleted(true)} />}
