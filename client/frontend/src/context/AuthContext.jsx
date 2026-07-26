@@ -13,13 +13,7 @@ if (token) {
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -32,14 +26,12 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          const response = await axios.get('/auth/profile');
+          const response = await api.get('/auth/profile');
           setUser(response.data.data);
           setIsAuthenticated(true);
         } catch (error) {
           console.error('Auth check failed:', error);
           localStorage.removeItem('token');
-          delete axios.defaults.headers.common['Authorization'];
         }
       }
       setLoading(false);
@@ -50,14 +42,13 @@ export const AuthProvider = ({ children }) => {
 
   // Axios interceptor for JWT expiry
   useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
+    const interceptor = api.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
           // Clear auth state
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          delete axios.defaults.headers.common['Authorization'];
           setUser(null);
           setIsAuthenticated(false);
           // Redirect to login with expired flag
@@ -71,18 +62,17 @@ export const AuthProvider = ({ children }) => {
 
     // Cleanup interceptor on unmount
     return () => {
-      axios.interceptors.response.eject(interceptor);
+      api.interceptors.response.eject(interceptor);
     };
   }, []);
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('/auth/login', { username, password });
+      const response = await api.post('/auth/login', { username, password });
       const { user, token } = response.data.data;
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setUser(user);
       setIsAuthenticated(true);
@@ -98,12 +88,11 @@ export const AuthProvider = ({ children }) => {
 
   const studentLogin = async (student_code, national_id) => {
     try {
-      const response = await axios.post('/auth/student-login', { student_code, national_id });
+      const response = await api.post('/auth/student-login', { student_code, national_id });
       const { user, token } = response.data.data;
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setUser(user);
       setIsAuthenticated(true);
@@ -119,12 +108,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('/auth/logout');
+      await api.post('/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      localStorage.removeItem('user');
       setUser(null);
       setIsAuthenticated(false);
     }
@@ -132,7 +121,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
-      const response = await axios.put('/auth/profile', profileData);
+      const response = await api.put('/auth/profile', profileData);
       setUser(prev => ({ ...prev, ...profileData }));
       return { success: true, message: response.data.message };
     } catch (error) {
@@ -145,7 +134,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (registerData) => {
     try {
-      const response = await axios.post('/auth/register', {
+      const response = await api.post('/auth/register', {
         full_name: registerData.full_name,
         email: registerData.email,
         phone: registerData.phone,
@@ -155,7 +144,6 @@ export const AuthProvider = ({ children }) => {
       const { user, token } = response.data.data;
 
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setUser(user);
       setIsAuthenticated(true);
