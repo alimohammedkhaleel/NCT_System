@@ -2,8 +2,11 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, '../uploads/avatars');
+// On Vercel (serverless), only /tmp is writable. Use it when VERCEL env is set.
+const uploadDir = process.env.VERCEL
+  ? '/tmp/uploads/avatars'
+  : path.join(__dirname, '../uploads/avatars');
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
