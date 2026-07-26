@@ -293,10 +293,11 @@ const startServer = async () => {
   }
 };
 
-// Only start server if not in test environment AND NOT ON VERCEL
-// Vercel Serverless Functions execute the exported app directly without app.listen
-if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
+// Export the app for serverless environments (Vercel, AWS Lambda, etc.)
+module.exports = app;
+
+// Only start listening when run directly: node server.js
+// When Vercel imports this file as a module, require.main !== module, so listen() is NOT called
+if (require.main === module) {
   startServer();
 }
-
-module.exports = app;
