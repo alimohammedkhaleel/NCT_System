@@ -16,7 +16,7 @@
   font-weight: 700;
   color: var(--white);
   margin-bottom: var(--spacing-md);
-  text-shadow: 0 2px 10px var(--glow-purple);
+  text-shadow: 0 2px 10px rgba(0, 210, 255, 0.4);
 }
 
 .dashboard-header p {
@@ -34,12 +34,12 @@
 }
 
 .stat-card {
-  background: rgba(17, 1, 23, 0.6);
+  background: rgba(10, 15, 29, 0.7);
   backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
-  border: 1px solid var(--border-purple);
-  box-shadow: 0 4px 15px var(--glow-purple);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
@@ -48,7 +48,7 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px var(--glow-purple);
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.35);
 }
 
 .stat-icon {
@@ -67,7 +67,7 @@
   font-weight: 700;
   color: var(--white);
   margin-bottom: var(--spacing-xs);
-  text-shadow: 0 2px 8px var(--glow-purple);
+  text-shadow: 0 2px 8px rgba(0, 210, 255, 0.3);
 }
 
 .stat-content p {
@@ -84,38 +84,38 @@
 }
 
 .chart-container {
-  background: rgba(17, 1, 23, 0.6);
+  background: rgba(10, 15, 29, 0.7);
   backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
-  border: 1px solid var(--border-purple);
-  box-shadow: 0 4px 15px var(--glow-purple);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
 }
 
 .chart-container h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--purple-primary);
+  color: #00d2ff;
   margin-bottom: var(--spacing-lg);
   text-align: center;
-  text-shadow: 0 2px 6px var(--glow-purple);
+  text-shadow: 0 2px 6px rgba(0, 210, 255, 0.3);
 }
 
 .recent-activities {
-  background: rgba(17, 1, 23, 0.6);
+  background: rgba(10, 15, 29, 0.7);
   backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
-  border: 1px solid var(--border-purple);
-  box-shadow: 0 4px 15px var(--glow-purple);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
 }
 
 .recent-activities h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--purple-primary);
+  color: #00d2ff;
   margin-bottom: var(--spacing-lg);
-  text-shadow: 0 2px 6px var(--glow-purple);
+  text-shadow: 0 2px 6px rgba(0, 210, 255, 0.3);
 }
 
 .activities-list {
@@ -129,21 +129,21 @@
   align-items: flex-start;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--purple-transparent);
+  background: rgba(0, 210, 255, 0.05);
   border-radius: var(--radius-md);
-  border-right: 4px solid var(--purple-primary);
+  border-right: 4px solid #00d2ff;
   transition: all var(--transition-normal);
   cursor: pointer;
 }
 
 .activity-item:hover {
-  background: rgba(179, 110, 255, 0.15);
+  background: rgba(0, 210, 255, 0.15);
   transform: translateX(-2px);
-  box-shadow: 0 4px 12px var(--glow-purple);
+  box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
 }
 
 .activity-icon {
-  color: var(--purple-primary);
+  color: #00d2ff;
   font-size: 1.1rem;
   margin-top: 2px;
 }

@@ -55,10 +55,10 @@ export default function ServicesScrollVelocity() {
               p = Math.max(0, Math.min(1, p));
 
               if (p > 0.4) {
-                if (type === "scale") gsap.to(el, { scale: 1, opacity: 1, color: "#a855f7", duration: 0.15 });
-                else if (type === "drop") gsap.to(el, { y: 0, opacity: 1, color: "#3b82f6", duration: 0.15 });
-                else if (type === "slide-in-rtl") gsap.to(el, { x: 0, opacity: 1, color: "#10b981", duration: 0.15 });
-                else if (type === "slide-in-ltr") gsap.to(el, { x: 0, opacity: 1, color: "#f59e0b", duration: 0.15 });
+                if (type === "scale") gsap.to(el, { scale: 1, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                else if (type === "drop") gsap.to(el, { y: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                else if (type === "slide-in-rtl") gsap.to(el, { x: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                else if (type === "slide-in-ltr") gsap.to(el, { x: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
                 else if (type === "icon-float-up") gsap.to(el, { y: -20, x: 0, opacity: 1, rotate: 15, duration: 0.15 });
                 else if (type === "icon-float-down") gsap.to(el, { y: 20, x: 0, opacity: 1, rotate: -15, duration: 0.15 });
               } else {
@@ -114,7 +114,7 @@ export default function ServicesScrollVelocity() {
             <div className="title-block">
               <h1 className="main-title">
                 <span className="text-white">Our</span>
-                <span className="text-purple">Services</span>
+                <span className="text-purple" style={{ color: '#00d2ff' }}>Services</span>
               </h1>
               <p className="typewriter-sub">Empowering Your Future</p>
             </div>
@@ -143,10 +143,10 @@ export default function ServicesScrollVelocity() {
         {/* Velocity Teaser Sentence */}
         <section className="velocity-text-stream">
           <h2 className="epic-sentence">
-            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-15%', left: '10%' }}><Cpu size={50} color="#a855f7"/></span>
-            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-15%', left: '35%' }}><Zap size={50} color="#3b82f6"/></span>
-            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-20%', left: '60%' }}><Layers size={50} color="#10b981"/></span>
-            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-10%', left: '85%' }}><Sparkles size={50} color="#f59e0b"/></span>
+            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-15%', left: '10%' }}><Cpu size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-15%', left: '35%' }}><Zap size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-20%', left: '60%' }}><Layers size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-10%', left: '85%' }}><Sparkles size={50} color="#00d2ff"/></span>
 
             From <span className="creative-span" data-type="drop">Digital Libraries</span>
             {" "}and <span className="creative-span" data-type="scale">Smart Portals</span>

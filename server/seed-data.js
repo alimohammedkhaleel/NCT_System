@@ -93,6 +93,7 @@ const seedDatabase = async () => {
     const specialty = await Specialty.create({
       name: 'Information Technology',
       code: 'IT',
+      arabic_name: 'تكنولوجيا المعلومات',
       description: 'Bachelor of Information Technology'
     });
     console.log('✅ Specialty created (IT - Information Technology)');

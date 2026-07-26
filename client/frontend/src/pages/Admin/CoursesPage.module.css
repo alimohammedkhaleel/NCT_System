@@ -16,7 +16,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 20px;
-  background: rgba(17, 1, 23, 0.5);
+  background: rgba(10, 15, 29, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(179, 110, 255, 0.3);
@@ -353,12 +353,12 @@
   padding: 12px;
   border: 1px solid rgba(179, 110, 255, 0.2);
   border-radius: 8px;
-  background: rgba(17, 1, 23, 0.4);
+  background: rgba(10, 15, 29, 0.7);
   transition: all 0.2s ease;
 }
 
 .courseCard:hover {
-  background: rgba(17, 1, 23, 0.6);
+  background: rgba(10, 15, 29, 0.9);
   border-color: rgba(179, 110, 255, 0.4);
 }
 

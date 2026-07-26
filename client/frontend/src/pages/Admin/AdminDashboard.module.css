@@ -4,7 +4,7 @@
   position: relative;
   z-index: 1;
   min-height: calc(100vh - 80px);
-  background: var(--gradient-background);
+  background: #000000;
 }
 
 .pageHeader {
@@ -16,7 +16,7 @@
   font-weight: 700;
   color: var(--white);
   margin: 0 0 4px;
-  text-shadow: 0 2px 10px var(--glow-purple);
+  text-shadow: 0 2px 10px rgba(0, 210, 255, 0.4);
 }
 
 .subtitle {
@@ -50,12 +50,12 @@
 
 .statCard:hover { 
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.15);
 }
 
 .statIcon { 
   font-size: 1.8rem;
-  filter: drop-shadow(0 2px 4px var(--glow-purple));
+  filter: drop-shadow(0 2px 4px rgba(0, 210, 255, 0.4));
 }
 
 .statValue {
@@ -63,7 +63,7 @@
   font-weight: 700;
   color: var(--white);
   line-height: 1;
-  text-shadow: 0 2px 10px var(--glow-purple);
+  text-shadow: 0 2px 10px rgba(0, 210, 255, 0.4);
 }
 
 .statLabel {
@@ -81,9 +81,9 @@
 }
 
 .card {
-  background: var(--purple-transparent);
+  background: rgba(0, 210, 255, 0.08);
   backdrop-filter: blur(20px);
-  border: 2px solid var(--border-purple);
+  border: 2px solid rgba(0, 210, 255, 0.25);
   border-radius: 14px;
   padding: 24px 20px;
   cursor: pointer;
@@ -91,14 +91,14 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 4px 15px var(--glow-purple);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.15);
   position: relative;
 }
 
 .card:hover {
-  border-color: var(--purple-light);
+  border-color: #00e5ff;
   transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 15px 40px var(--glow-purple);
+  box-shadow: 0 15px 40px rgba(0, 210, 255, 0.3);
 }
 
 .cardIconWrap {
@@ -110,7 +110,7 @@
 .cardIcon { 
   font-size: 2.5rem; 
   line-height: 1;
-  filter: drop-shadow(0 2px 8px var(--glow-purple));
+  filter: drop-shadow(0 2px 8px rgba(0, 210, 255, 0.4));
 }
 
 .badge {
@@ -136,7 +136,7 @@
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--white);
-  text-shadow: 0 2px 8px var(--glow-purple);
+  text-shadow: 0 2px 8px rgba(0, 210, 255, 0.4);
 }
 
 .cardDescription {
@@ -149,8 +149,8 @@
 
 .cardAction {
   padding-top: 12px;
-  border-top: 1px solid var(--border-purple);
-  color: var(--purple-light);
+  border-top: 1px solid rgba(0, 210, 255, 0.2);
+  color: #00d2ff;
   font-size: 0.825rem;
   font-weight: 600;
 }
@@ -169,7 +169,7 @@
   font-weight: 700;
   color: var(--white);
   margin: 0 0 4px;
-  text-shadow: 0 2px 10px var(--glow-purple);
+  text-shadow: 0 2px 10px rgba(0, 210, 255, 0.4);
 }
 
 .sectionSubtitle {
@@ -205,9 +205,9 @@
 }
 
 .specialtyCard:hover {
-  border-color: var(--purple-light);
+  border-color: #00d2ff;
   transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 15px 40px rgba(179, 136, 255, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 210, 255, 0.3);
 }
 
 .specialtyIcon {
@@ -407,10 +407,10 @@
 .specialtyQuickBtn {
   flex: 1;
   padding: 8px 10px;
-  background: rgba(179, 110, 255, 0.15);
-  border: 1px solid var(--border-purple);
+  background: rgba(0, 210, 255, 0.15);
+  border: 1px solid rgba(0, 210, 255, 0.35);
   border-radius: 8px;
-  color: var(--purple-light);
+  color: #00d2ff;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -419,9 +419,9 @@
 }
 
 .specialtyQuickBtn:hover {
-  background: rgba(179, 110, 255, 0.3);
-  border-color: var(--purple-primary);
-  color: var(--white);
+  background: #00d2ff;
+  border-color: #00e5ff;
+  color: #000000 !important;
   transform: translateY(-1px);
 }
 
@@ -438,7 +438,7 @@
 }
 
 .modalBox {
-  background: var(--purple-dark, #1a0a2e);
+  background: #0a0f1d;
   border: 1px solid var(--border-purple);
   border-radius: 16px;
   width: 100%;
@@ -488,14 +488,14 @@
   gap: 10px;
   align-items: center;
   padding: 14px 24px;
-  border-bottom: 1px solid rgba(179, 110, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.15);
   flex-wrap: wrap;
 }
 
 .modalSelect {
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--border-purple);
+  border: 1px solid rgba(0, 210, 255, 0.35);
   border-radius: 8px;
   color: var(--white);
   font-size: 0.875rem;
@@ -505,7 +505,7 @@
 }
 
 .modalSelect option {
-  background: #1a0a2e;
+  background: #0a0f1d;
 }
 
 .modalCount {
@@ -539,23 +539,23 @@
 }
 
 .modalTable th {
-  background: rgba(179, 110, 255, 0.15);
-  color: var(--purple-light);
+  background: rgba(0, 210, 255, 0.15);
+  color: #00d2ff;
   font-weight: 600;
   padding: 12px 16px;
   text-align: right;
-  border-bottom: 1px solid var(--border-purple);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.25);
   position: sticky;
   top: 0;
 }
 
 .modalTable td {
   padding: 10px 16px;
-  border-bottom: 1px solid rgba(179, 110, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.08);
   color: var(--white-dim);
 }
 
 .modalTable tr:hover td {
-  background: rgba(179, 110, 255, 0.06);
+  background: rgba(0, 210, 255, 0.08);
   color: var(--white);
 }

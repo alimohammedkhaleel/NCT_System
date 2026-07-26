@@ -4,133 +4,104 @@ import './NCT-presentetion.css';
 
 const NCTPresentation = ({ onComplete }) => {
   const [animationStarted, setAnimationStarted] = useState(false);
-  
-  // Refs للعناصر
-  const containerRef = useRef(null);
-  const lineRef = useRef(null);
-  const logoRef = useRef(null);
-  
-  // Refs لنصفي الخلفية
-  const splitLeftRef = useRef(null);
-  const splitRightRef = useRef(null);
+  const onCompleteRef = useRef(onComplete);
+
+  const containerRef  = useRef(null);
+  const lineRef       = useRef(null);
+  const logoRef       = useRef(null);
+
+  // Keep onComplete ref updated without triggering re-renders
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
-    const startTimer = setTimeout(() => {
-      setAnimationStarted(true);
-    }, 100);
-
-    return () => clearTimeout(startTimer);
+    const t = setTimeout(() => setAnimationStarted(true), 100);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
     if (!animationStarted) return;
 
-    // تحسين الأداء
-    gsap.set([lineRef.current, logoRef.current], {
-      willChange: 'transform, opacity'
-    });
+    gsap.set([lineRef.current, logoRef.current], { willChange: 'transform, opacity' });
 
-    // إخفاء العناصر في البداية
-    gsap.set(logoRef.current, {
-      y: -50,
-      opacity: 0
-    });
+    // ── Initial states ──────────────────────────────────────────────────────
+    gsap.set(logoRef.current, { y: -60, opacity: 0 });
+    gsap.set(lineRef.current, { x: '-200%', opacity: 0 });
+    
+    // Ensure container starts fully visible
+    gsap.set(containerRef.current, { clipPath: 'circle(150% at 50% 100%)' });
 
-    gsap.set(lineRef.current, {
-      x: '-200%',
-      y: 0,
-      opacity: 0
-    });
-
-    // إنشاء Timeline رئيسي
     const tl = gsap.timeline();
 
-    // 1. ظهور NCT من الأعلى
+    // 1. NCT enters from top — ONE smooth move
     tl.to(logoRef.current, {
       y: 0,
       opacity: 1,
-      duration: 0.8,
-      ease: 'elastic.out(1, 0.6)'
+      duration: 0.7,
+      ease: 'power3.out'
     })
 
-    // 2. ظهور الخط من اليسار
+    // 2. Decorative line enters from left
     .to(lineRef.current, {
       x: '0%',
       opacity: 1,
       duration: 0.4,
       ease: 'power2.out'
-    }, '-=0.2')
+    }, '-=0.15')
 
-    // 3. الخط يتحرك للأعلى
+    // 3. Pause — let user see the logo
+    .to({}, { duration: 0.5 })
+
+    // 4. Line sweeps up then disappears downward
     .to(lineRef.current, {
-      y: -200,
-      duration: 0.5,
+      y: -220,
+      duration: 0.45,
       ease: 'power2.out'
     })
-
-    // 4. الخط يتحرك للأسفل ويختفي
     .to(lineRef.current, {
-      y: 200,
-      duration: 0.9,
-      ease: 'power2.in',
-      opacity: 0
-    })
-
-    // 5. إخفاء NCT في نفس وقت اختفاء الخط
-    .to(logoRef.current, {
-      scale: 0,
+      y: 240,
       opacity: 0,
-      duration: 0.9,
-      ease: 'back.in(1)'
-    }, '-=0.9')
-
-    // 6. النصف الأيسر يختفي من الشمال لليمين
-    .to(splitLeftRef.current, {
-      x: '-100%',
-      duration: 1,
-      ease: 'power3.inOut'
+      duration: 0.5,
+      ease: 'power2.in'
     })
 
-    // 7. النصف الأيمن يختفي من اليمين للشمال
-    .to(splitRightRef.current, {
-      x: '100%',
-      duration: 1,
-      ease: 'power3.inOut'
-    }, '-=1')
+    // 5. NCT logo fades out
+    .to(logoRef.current, {
+      opacity: 0,
+      scale: 0.85,
+      duration: 0.35,
+      ease: 'power2.in'
+    }, '-=0.5')
 
-    // 8. تحريك الحاوية للخارج
+    // 6. Semi-circle arc wipe: clipPath shrinks to bottom center
+    // This creates an arc from top to bottom
     .to(containerRef.current, {
-      y: '100%',
-      duration: 0.8,
-      ease: 'power4.inOut',
-      onComplete: onComplete
-    }, '-=0.5');
+      clipPath: 'circle(0% at 50% 100%)',
+      duration: 0.85,
+      ease: 'power3.inOut',
+      onComplete: () => {
+        gsap.set(containerRef.current, { display: 'none' });
+        if (onCompleteRef.current) onCompleteRef.current();
+      }
+    });
 
-    return () => {
-      tl.kill();
-    };
-  }, [animationStarted, onComplete]);
+    return () => tl.kill();
+  }, [animationStarted]); // Removed onComplete from dependencies to prevent double triggering
 
   return (
     <div className="nct-presentation-wrapper" ref={containerRef}>
-      {/* خلفية موحدة باللون EEEEEE */}
-      <div className="nct-bg-solid"></div>
-      
-      {/* نصفي الخلفية المنقسمة - لون 222831 */}
-      <div className="nct-split-left" ref={splitLeftRef}></div>
-      <div className="nct-split-right" ref={splitRightRef}></div>
-      
-      {/* المحتوى الرئيسي في المنتصف */}
+      {/* Solid background — slightly different from page black */}
+      <div className="nct-bg-solid" />
+
+      {/* Main content */}
       <div className="nct-main-content">
         <div className="nct-title-section">
-          {/* NCT فقط */}
           <div className="nct-logo" ref={logoRef}>
             <span className="nct-logo-text">NCT</span>
           </div>
-          
-          {/* الخط الزخرفي */}
           <div className="nct-line-container">
-            <div className="nct-decorative-line" ref={lineRef}></div>
+            <div className="nct-decorative-line" ref={lineRef} />
           </div>
         </div>
       </div>
@@ -138,4 +109,4 @@ const NCTPresentation = ({ onComplete }) => {
   );
 };
 
-export default NCTPresentation;
+export default NCTPresentation;

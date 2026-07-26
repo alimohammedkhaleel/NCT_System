@@ -1,128 +1,196 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Heart, Phone, MapPin, Clock, Shield, Globe } from 'lucide-react';
+import logoImg from '../../assets/originalLogo.png';
 import './ModernFooter.css';
 
-/**
- * ModernFooter - Footer حديث مع Glassmorphism
- */
+gsap.registerPlugin(ScrollTrigger);
+
+const FacebookIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
 const ModernFooter = () => {
-  const currentYear = new Date().getFullYear();
+  const footerRef = useRef(null);
 
-  const footerLinks = [
-    {
-      title: 'الروابط السريعة',
-      links: [
-        { label: 'الرئيسية', href: '/' },
-        { label: 'عن الجامعة', href: '/about' },
-        { label: 'البرامج', href: '/about' },
-        { label: 'تواصل معنا', href: '/contact' },
-      ],
-    },
-    {
-      title: 'الخدمات',
-      links: [
-        { label: 'لوحة التحكم', href: '/dashboard' },
-        { label: 'بوابة الطالب', href: '/student/portal' },
-        { label: 'التسجيل', href: '/register' },
-      ],
-    },
-    {
-      title: 'التواصل',
-      links: [
-        { label: 'البريد الإلكتروني', href: 'mailto:info@nct.edu.eg' },
-        { label: 'الهاتف', href: 'tel:+201234567890' },
-        { label: 'الموقع', href: '/contact' },
-      ],
-    },
-  ];
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      ScrollTrigger.refresh();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
+      gsap.fromTo('.footer-grid > *',
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse',
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power3.out',
+        }
+      );
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
+      gsap.fromTo('.footer-glow-line',
+        { scaleX: 0, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 95%',
+            toggleActions: 'play none none reverse',
+          },
+          scaleX: 1,
+          opacity: 1,
+          duration: 1.5,
+          ease: 'power2.inOut',
+        }
+      );
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <footer className="modern-footer">
-      <div className="footer-background">
-        <div className="footer-glow"></div>
-      </div>
+    <footer className="premium-footer" ref={footerRef} dir="rtl">
+      <div className="footer-glow-line" />
+      <div className="footer-container">
+        
+        {/* Main Grid Content */}
+        <div className="footer-grid">
+          
+          {/* Col 1: Brand & Management */}
+          <div className="footer-col brand-col">
+            <div className="footer-brand-header">
+              <img src={logoImg} alt="NCTU Logo" className="footer-brand-logo" />
+              <h3 className="footer-brand-title">NCTU <span className="highlight-cyan">SYSTEM</span></h3>
+            </div>
+            <p className="footer-brand-desc">
+              المنصة الذكية الرسمية لجامعة القاهرة الجديدة التكنولوجية (New Cairo Technological University). نهدف لتقديم أحدث النظم التعليمية والإدارية المتطورة لدعم طلاب وأساتذة الجامعة في قطاعات التكنولوجيا والهندسة.
+            </p>
+            <div className="management-badge">
+              <Shield size={16} className="highlight-cyan" />
+              <span>تحت قيادة وإشراف: <strong>إدارة جامعة القاهرة الجديدة التكنولوجية</strong></span>
+            </div>
+          </div>
 
-      <motion.div
-        className="footer-content"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        {/* Brand Section */}
-        <motion.div className="footer-brand" variants={itemVariants}>
-          <h3 className="footer-logo">
-            <span className="logo-text">NCT</span>
-            <span className="logo-subtitle">System</span>
-          </h3>
-          <p className="footer-description">
-            منصة تعليمية متطورة لإدارة العملية التعليمية في الجامعات التكنولوجية.
-          </p>
-        </motion.div>
-
-        {/* Links Section */}
-        {footerLinks.map((section, index) => (
-          <motion.div key={index} className="footer-section" variants={itemVariants}>
-            <h4 className="section-title">{section.title}</h4>
-            <ul className="links-list">
-              {section.links.map((link, linkIndex) => (
-                <li key={linkIndex}>
-                  <a href={link.href} className="footer-link">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+          {/* Col 2: Quick Contact */}
+          <div className="footer-col contact-col">
+            <h4 className="col-title">📞 تواصل معنا</h4>
+            <ul className="contact-list">
+              <li>
+                <a href="mailto:info@nctu.edu.eg" className="contact-link-item">
+                  <Globe size={16} className="highlight-cyan" />
+                  <span>info@nctu.edu.eg (البريد الرسمي)</span>
+                </a>
+              </li>
+              <li>
+                <a href="tel:+20228127300" className="contact-link-item">
+                  <Phone size={16} className="highlight-cyan" />
+                  <span>+20 2 28127300 (هاتف الجامعة)</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/201121360605" target="_blank" rel="noopener noreferrer" className="whatsapp-badge-link">
+                  💬 الدعم الفني المباشر عبر واتساب
+                </a>
+              </li>
             </ul>
-          </motion.div>
-        ))}
-      </motion.div>
+          </div>
 
-      {/* Footer Bottom */}
-      <motion.div
-        className="footer-bottom"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="footer-divider"></div>
-        <div className="footer-bottom-content">
-          <p className="copyright">
-            © {currentYear} جامعة القاهرة الجديدة التكنولوجية. جميع الحقوق محفوظة.
-          </p>
-          <div className="social-links">
-            <a href="#" className="social-link" aria-label="Facebook">
-              f
-            </a>
-            <a href="#" className="social-link" aria-label="Twitter">
-              𝕏
-            </a>
-            <a href="#" className="social-link" aria-label="LinkedIn">
-              in
+          {/* Col 3: Address & Location */}
+          <div className="footer-col location-col">
+            <h4 className="col-title">📍 موقع الجامعة</h4>
+            <div className="location-detail">
+              <MapPin size={18} className="highlight-cyan shrink-0" />
+              <p>
+                القاهرة الجديدة – التجمع الخامس – منطقة اللوتس الجنوبية – بجوار الجامعة الأمريكية وبجوار مجمع الكليات التكنولوجية.
+              </p>
+            </div>
+            <a
+              href="https://maps.google.com/?q=New+Cairo+Technological+University"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="map-link-btn"
+            >
+              🗺️ عرض الموقع على الخريطة
             </a>
           </div>
+
+          {/* Col 4: Hours & Follow */}
+          <div className="footer-col hours-col">
+            <h4 className="col-title">🕐 مواعيد العمل الرسمية</h4>
+            <div className="hours-detail">
+              <Clock size={16} className="highlight-cyan" />
+              <span>من الأحد إلى الخميس (8:00 ص – 4:00 م)</span>
+            </div>
+            
+            <h4 className="col-title social-title">🌐 تابعنا على السوشيال ميديا</h4>
+            <div className="footer-socials-grid">
+              <a
+                href="https://www.facebook.com/nctu.edu.eg/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn facebook"
+                title="فيسبوك"
+              >
+                <FacebookIcon />
+                <span>فيسبوك</span>
+              </a>
+              <a
+                href="https://www.instagram.com/nctu_official/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn instagram"
+                title="انستجرام"
+              >
+                <InstagramIcon />
+                <span>انستجرام</span>
+              </a>
+            </div>
+          </div>
+
         </div>
-      </motion.div>
+
+        {/* Bottom Bar with Developer & Copyright info */}
+        <div className="footer-bottom-bar">
+          <p className="copyright-text">
+            © {new Date().getFullYear()} جامعة القاهرة الجديدة التكنولوجية (NCTU). جميع الحقوق محفوظة.
+          </p>
+          
+          <div className="developer-credits">
+            <p className="dev-para">
+              تم الإنشاء بكل <Heart size={12} className="heart-icon" /> بواسطة{' '}
+              <span className="dev-name-highlight">باش مهندس علي محمد علي</span>
+            </p>
+            <div className="dev-meta-links">
+              <span className="dev-skill-tag">Full Stack React &amp; Express Developer</span>
+              <a href="https://wa.me/201121360605" target="_blank" rel="noopener noreferrer" className="dev-tel-link">📞 01121360605 (واتساب)</a>
+              <a
+                href="https://www.tiktok.com/@zlolcoding?is_from_webapp=1&amp;sender_device=pc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dev-tiktok-link"
+              >
+                🎵 TikTok: zlolcoding
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </footer>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
@@ -275,23 +276,16 @@ const Login = () => {
   }
 
   return (
-    <div className="login-container" ref={containerRef}>
+    <>
+      <Helmet>
+        <title>تسجيل الدخول - نظام NCTU</title>
+        <meta name="description" content="تسجيل الدخول إلى النظام الجامعي المتكامل لجامعة القاهرة التكنولوجية الجديدة (NCTU)." />
+      </Helmet>
+      <div className="login-container" ref={containerRef}>
       {/* Background with animation */}
       <motion.div
         className="login-background"
         ref={backgroundRef}
-        animate={{
-          background: [
-            'linear-gradient(135deg, #0a043c 0%, #1c062e 50%, #2c003e 100%)',
-            'linear-gradient(135deg, #2c003e 0%, #1c062e 50%, #0a043c 100%)',
-            'linear-gradient(135deg, #0a043c 0%, #1c062e 50%, #2c003e 100%)'
-          ]
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
       />
 
       {/* Animated blob shapes */}
@@ -583,6 +577,7 @@ const Login = () => {
         onClose={() => setIsForgotCodeModalOpen(false)}
       />
     </div>
+    </>
   );
 };
 

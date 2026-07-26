@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../../components/navComponent/Navbar';
 import ServicesScrollVelocity from './ServicesScrollVelocity';
+import ModernFooter from '../../components/common/ModernFooter';
 import './Services.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -122,17 +123,19 @@ const ServiceSection = ({ data, index }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth <= 768;
+
       // Section inner: scale from 0 → 1, fade in
       gsap.fromTo(innerRef.current, 
-        { scale: 0, opacity: 0, transformOrigin: "center center" },
+        { scale: isMobile ? 0.8 : 0, opacity: 0, transformOrigin: "center center" },
         {
           scale: 1,
           opacity: 1,
           ease: "back.out(1.4)",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 85%",
-            end: "top 25%",
+            start: isMobile ? "top 95%" : "top 85%",
+            end: isMobile ? "top 60%" : "top 25%",
             scrub: 1,
           }
         }
@@ -227,6 +230,7 @@ const Services = () => {
         </div>
 
       </main>
+      <ModernFooter />
     </>
   );
 };

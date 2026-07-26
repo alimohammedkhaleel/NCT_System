@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
-import Navbar from '../../components/navComponent/Navbar';
 import { TrueFocus, FadeIn } from '../../components/animations';
 import styles from './StudentPortal.module.css';
 
@@ -181,22 +180,17 @@ export default function StudentPortal() {
 
   if (summaryError) {
     return (
-      <>
-        <Navbar />
-        <div className={styles.center} style={{ minHeight: '100vh' }}>
-          <span className={styles.errorMsg}>{summaryError}</span>
-          <button className={styles.btnSecondary} onClick={fetchStudentSummary}>
-            إعادة المحاولة
-          </button>
-        </div>
-      </>
+      <div className={styles.center} style={{ minHeight: '100vh' }}>
+        <span className={styles.errorMsg}>{summaryError}</span>
+        <button className={styles.btnSecondary} onClick={fetchStudentSummary}>
+          إعادة المحاولة
+        </button>
+      </div>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className={styles.page}>
+    <div className={styles.page}>
         {/* ── Main View ── */}
         {activeView === 'main' && (
           <>
@@ -447,6 +441,5 @@ export default function StudentPortal() {
           </div>
         )}
       </div>
-    </>
   );
 }

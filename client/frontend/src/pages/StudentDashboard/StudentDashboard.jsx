@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
-import Navbar from '../../components/navComponent/Navbar';
 import BranchSelectionModal from '../../components/BranchSelectionModal/BranchSelectionModal';
 import './StudentDashboard.css';
 
@@ -334,7 +333,6 @@ const StudentDashboard = () => {
 
   return (
     <>
-      <Navbar />
       {/* Branch Selection Modal - shown for ICT year 3-4 students without branch */}
       <BranchSelectionModal
         isOpen={showBranchModal}

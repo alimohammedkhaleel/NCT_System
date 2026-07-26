@@ -22,24 +22,24 @@
   border-radius: 50px; /* Pill shape */
   opacity: 0.8;
   will-change: transform;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
 }
 
-/* Beautiful Gradient Colors for Pills */
+/* Beautiful Gradient Colors for Pills (Cyan / Electric Blue) */
 .parallax-pill.color-0 {
-  background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%);
+  background: linear-gradient(180deg, #00d2ff 0%, #0072ff 100%);
 }
 
 .parallax-pill.color-1 {
-  background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+  background: linear-gradient(180deg, #00e5ff 0%, #38bdf8 100%);
 }
 
 .parallax-pill.color-2 {
-  background: linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%);
+  background: linear-gradient(180deg, #67e8f9 0%, #00d2ff 100%);
 }
 
 .parallax-pill.color-3 {
-  background: linear-gradient(180deg, #84fab0 0%, #8fd3f4 100%);
+  background: linear-gradient(180deg, #38bdf8 0%, #0072ff 100%);
 }
 
 .programs-content-wrapper {
@@ -61,7 +61,7 @@
 .program-card {
   max-width: 800px;
   width: 100%;
-  background: transparent; /* Remove background as requested */
+  background: transparent;
   padding: 50px 40px;
   text-align: center;
   transform-origin: center center;
@@ -90,8 +90,8 @@
   z-index: 2;
   width: 100%;
   padding: 120px 20px 60px;
-  background: linear-gradient(to top, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0));
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  border-top: 1px solid rgba(0, 210, 255, 0.15);
   overflow: hidden;
 }
 
@@ -102,7 +102,7 @@
   left: 50%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, transparent 70%);
   transform: translateX(-50%);
   pointer-events: none;
   z-index: -1;
@@ -125,7 +125,7 @@
 .footer-brand h2 {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 900;
-  background: linear-gradient(to right, #fff, #a855f7);
+  background: linear-gradient(to right, #fff, #00d2ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
@@ -139,9 +139,9 @@
 }
 
 .footer-links {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 210, 255, 0.03);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 210, 255, 0.15);
   padding: 40px;
   border-radius: 30px;
 }
@@ -162,7 +162,7 @@
   left: 0;
   width: 50%;
   height: 2px;
-  background: #a855f7;
+  background: #00d2ff;
 }
 
 .links-grid {
@@ -183,12 +183,12 @@
 .links-grid span:hover {
   color: #fff;
   transform: translateX(10px);
-  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
 }
 
 .footer-bottom {
   padding-top: 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 210, 255, 0.15);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -205,7 +205,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 210, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,8 +214,8 @@
 }
 
 .footer-socials span:hover {
-  background: var(--glow-purple);
-  color: #fff;
+  background: #00d2ff;
+  color: #000;
   transform: translateY(-5px);
 }
 

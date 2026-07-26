@@ -245,7 +245,7 @@ export default function AdminDashboard() {
                   {spec.branchStats && (
                     <div className={styles.branchBreakdown}>
                       <div className={styles.branchStat}>
-                        <span className={styles.branchStatDot} style={{ background: '#a855f7' }}></span>
+                        <span className={styles.branchStatDot} style={{ background: '#00d2ff' }}></span>
                         <span className={styles.branchStatLabel}>SW: {spec.branchStats.software}</span>
                       </div>
                       <div className={styles.branchStat}>

@@ -1,100 +1,100 @@
-import { motion, useMotionValue, useTransform, animate, useAnimationFrame } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './InfiniteMenu.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 /**
- * InfiniteMenu - قائمة كروية ثلاثية الأبعاد تدعم السحب (Drag to Rotate)
+ * InfiniteMenu - Scroll-triggered vertical list with alternating tilts
  */
 export default function InfiniteMenu({ items, onItemClick, className = '' }) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const containerRef = useRef(null);
-  const isInteracting = useRef(false);
-  
-  // Motion value for smooth rotation tracking
-  const rotationY = useMotionValue(0);
+  const cardsRef = useRef([]);
 
-  // Auto-rotation effect
-  useAnimationFrame((time, delta) => {
-    // Only auto-rotate if the user isn't dragging
-    if (!isInteracting.current) {
-      // Rotate 360 degrees over 40 seconds = 9 degrees per second
-      // delta is in ms, so delta / 1000 is seconds
-      rotationY.set(rotationY.get() - (9 * (delta / 1000)));
-    }
-  });
-
-  const handleDragEnd = (event, info) => {
-    isInteracting.current = false;
-    // Calculate how far to spin based on drag velocity
-    const velocity = info.velocity.x;
-    const currentRotation = rotationY.get();
+  useEffect(() => {
+    // Check if we are on mobile to simplify animation slightly
+    const isMobile = window.innerWidth <= 768;
     
-    // Snap to nearest 60 degrees (since 360 / 6 items = 60, adjust for exact item count)
-    const anglePerItem = 360 / items.length;
-    const targetRotation = currentRotation + velocity * 0.1;
-    const snappedRotation = Math.round(targetRotation / anglePerItem) * anglePerItem;
+    let ctx = gsap.context(() => {
+      cardsRef.current.forEach((card, index) => {
+        if (!card) return;
 
-    animate(rotationY, snappedRotation, {
-      type: "spring",
-      stiffness: 50,
-      damping: 15,
-      mass: 1,
-      onComplete: () => {
-        // We don't need to do anything here because useAnimationFrame will pick up the new value automatically
-      }
-    });
+        // Hand of cards (fan) effect from center
+        const centerIndex = Math.floor(items.length / 2);
+        const distanceFromCenter = index - centerIndex;
+        
+        // Calculate fan positions
+        const tiltAngle = distanceFromCenter * (isMobile ? 10 : 20); // slightly less tilt on mobile
+        const finalX = distanceFromCenter * (isMobile ? 65 : 300); // Tighter spread on mobile to prevent overflow
+        const finalY = Math.abs(distanceFromCenter) * (isMobile ? 20 : 50); // Less drop on mobile
 
-    // Update selected index based on snapped rotation
-    const steps = Math.round(snappedRotation / anglePerItem);
-    // Wrap index around properly handling negative steps
-    const newIndex = ((-steps % items.length) + items.length) % items.length;
-    setSelectedIndex(newIndex);
-  };
+        // Initial state before scroll (all stacked in the center)
+        gsap.set(card, { 
+          opacity: 0, 
+          y: isMobile ? 80 : 150, // Don't start too far down on mobile
+          x: 0,
+          rotationZ: 0,
+          transformOrigin: "bottom center",
+          zIndex: items.length - Math.abs(distanceFromCenter) // Center card on top
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%", // Start when the container is 80% into the viewport
+            end: "bottom top", // End when the container leaves the viewport (slower animation)
+            scrub: 2, // Slower, smoother scrub
+          }
+        });
+
+        tl.to(card, {
+          opacity: 1,
+          y: 0,
+          duration: 0.3, // 30% of the scroll distance is spent fading in and moving to base stacked position
+          ease: "power1.out"
+        })
+        .to(card, {
+          y: finalY,
+          x: finalX,
+          rotationZ: tiltAngle,
+          duration: 0.7, // 70% of the scroll distance is spent fanning out
+          ease: "power2.out"
+        });
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [items]);
 
   return (
-    <div className={`infinite-menu ${className}`} ref={containerRef}>
-      <div className="infinite-menu-tilt-wrapper">
-        <motion.div
-          className="infinite-menu-circle"
-          style={{ rotateY: rotationY }}
-          onPanStart={() => {
-            isInteracting.current = true;
-          }}
-          onPan={(e, info) => {
-            rotationY.set(rotationY.get() + info.delta.x * 0.5);
-          }}
-          onPanEnd={handleDragEnd}
-          whileTap={{ cursor: "grabbing" }}
+    <div className={`infinite-menu-horizontal ${className}`} ref={containerRef}>
+      {items.map((item, index) => (
+        <div 
+          key={index}
+          className="infinite-menu-card-wrapper"
+          ref={(el) => cardsRef.current[index] = el}
         >
-        {items.map((item, index) => {
-          const angle = (360 / items.length) * index;
-          const isActive = index === selectedIndex;
-          
-          return (
-            <motion.div
-              key={index}
-              className={`infinite-menu-item ${isActive ? 'active' : ''}`}
-              style={{
-                transform: `rotateY(${angle}deg) translateZ(350px)`, // Increased distance for 3D rounded shape
-              }}
-              onClick={() => {
-                setSelectedIndex(index);
-                onItemClick?.(item, index);
-              }}
-            >
-              <div className="infinite-menu-card">
-                {item.image && <img src={item.image} alt={item.label} className="infinite-menu-img" />}
-                <div className="infinite-menu-overlay">
-                  {item.icon && <div className="infinite-menu-icon">{item.icon}</div>}
-                  <div className="infinite-menu-label">{item.label}</div>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-        </motion.div>
-      </div>
+          <div 
+            className="infinite-menu-card"
+            onClick={() => onItemClick?.(item, index)}
+            style={{ cursor: onItemClick ? 'pointer' : 'default' }}
+          >
+            <div className="infinite-menu-img-container">
+              {item.image && (
+                <img 
+                  src={item.image} 
+                  alt={item.label} 
+                  className="infinite-menu-img" 
+                />
+              )}
+            </div>
+            <div className="infinite-menu-overlay">
+              <div className="infinite-menu-label">{item.label}</div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
-

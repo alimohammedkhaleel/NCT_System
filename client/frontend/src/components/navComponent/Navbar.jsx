@@ -2,31 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faSignOutAlt, faHome, faInfoCircle, faEnvelope, faCogs, faChartBar } from '@fortawesome/free-solid-svg-icons';
-import { gsap } from 'gsap';
 import { useAuth } from '../../context/AuthContext';
+import logoImg from '../../assets/originalLogo.png';
 import './Navbar.css';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
-    const navbarRef = useRef(null);
-    const logoRef = useRef(null);
-    const hamburgerRef = useRef(null);
-
-    useEffect(() => {
-        const tl = gsap.timeline();
-        gsap.set(navbarRef.current, { opacity: 0, y: -100, filter: 'blur(10px)' });
-        gsap.set(logoRef.current, { opacity: 0, x: -50, scale: 0.5 });
-        tl.to(navbarRef.current, {
-            opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, ease: 'elastic.out(1, 0.5)',
-        }).to(logoRef.current, {
-            opacity: 1, x: 0, scale: 1, duration: 0.6, ease: 'back.out(1.7)',
-        }, '-=0.4');
-    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,7 +20,7 @@ const Navbar = () => {
             setIsScrolled(scrollY > 50);
             setIsCollapsed(scrollY > 300);
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -52,13 +38,10 @@ const Navbar = () => {
     const handleNavigation = (path) => { navigate(path); setIsMenuOpen(false); setShowProfile(false); };
 
     return (
-        <nav
-            className={`navbar ${isCollapsed ? 'collapsed' : ''} ${isScrolled ? 'scrolled' : ''}`}
-            ref={navbarRef}
-        >
+        <nav className={`navbar navbar-animate ${isCollapsed ? 'collapsed' : ''} ${isScrolled ? 'scrolled' : ''}`}>
             <div className="navbar-container">
-                <a href="/" className="logo" onClick={(e) => { e.preventDefault(); navigate('/'); }} ref={logoRef}>
-                    <span className="logo-text">NCTU</span>
+                <a href="/" className="logo" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
+                    <img src={logoImg} alt="NCT - New Cairo Technological University" className="logo-img" />
                 </a>
 
                 <div className={`nav-user-menu ${isMenuOpen ? 'open' : ''}`}>
@@ -83,7 +66,7 @@ const Navbar = () => {
                         )}
 
                         {user?.role === 'professor' && (
-                            <button className="nav-menu-item" style={{ color: 'var(--purple-light)' }} onClick={() => handleNavigation('/professor/dashboard')}>
+                            <button className="nav-menu-item" style={{ color: '#00d2ff' }} onClick={() => handleNavigation('/professor/dashboard')}>
                                 <FontAwesomeIcon icon={faChartBar} />لوحة التحكم
                             </button>
                         )}
@@ -119,7 +102,7 @@ const Navbar = () => {
                                             <p className="profile-name">{user?.full_name || user?.username || 'Guest'}</p>
                                             <p className="profile-email">{user?.email || ''}</p>
                                             <p className="profile-role">
-                                                {user?.role === 'admin' ? '👨‍💼 مسؤول' : 
+                                                {user?.role === 'admin' ? '👨‍💼 مسؤول' :
                                                  user?.role === 'student' ? '🎓 طالب' :
                                                  user?.role === 'professor' ? '👨‍🏫 دكتور' :
                                                  user?.role === 'accountant' ? '💰 محاسب' : '👤 مستخدم'}
@@ -146,7 +129,6 @@ const Navbar = () => {
                 <button
                     className={`hamburger ${isMenuOpen ? 'open' : ''}`}
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    ref={hamburgerRef}
                     aria-label="Toggle menu"
                 >
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} className="hamburger-icon" />

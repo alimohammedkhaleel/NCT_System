@@ -13,21 +13,22 @@
 }
 
 .backBtn {
-  background: rgba(179, 110, 255, 0.15);
-  border: 1px solid rgba(179, 110, 255, 0.3);
+  background: rgba(0, 210, 255, 0.15);
+  border: 1px solid rgba(0, 210, 255, 0.3);
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--purple-light);
+  color: #00d2ff;
   cursor: pointer;
   transition: all 0.2s;
   margin-bottom: 16px;
 }
 
 .backBtn:hover {
-  background: rgba(179, 110, 255, 0.25);
-  border-color: var(--purple-primary);
+  background: #00d2ff;
+  border-color: #00e5ff;
+  color: #000000 !important;
   transform: translateX(-4px);
 }
 
@@ -59,13 +60,13 @@
 
 /* ── Info Card ── */
 .infoCard {
-  background: rgba(17, 1, 23, 0.4);
+  background: rgba(10, 15, 29, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(179, 110, 255, 0.3);
+  border: 1px solid rgba(0, 210, 255, 0.3);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(179, 110, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 210, 255, 0.1);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
@@ -87,7 +88,7 @@
 .infoValue {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--purple-primary);
+  color: #00d2ff;
 }
 
 /* ── Section Headers ── */
@@ -266,8 +267,8 @@
 }
 
 .backButton {
-  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-  color: var(--white);
+  background: #0072ff;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 12px 24px;
@@ -275,13 +276,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(179, 110, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
 }
 
 .backButton:hover {
-  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
+  background: #00d2ff;
+  color: #000000 !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
 }
 
 @media (max-width: 640px) {

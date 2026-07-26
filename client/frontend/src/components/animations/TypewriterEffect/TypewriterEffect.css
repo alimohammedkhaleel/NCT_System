@@ -11,10 +11,10 @@
   font-weight: 700;
   font-size: 1.1em;
   letter-spacing: 0.02em;
-  color: #b36eff;
+  color: #00d2ff;
   text-shadow: 
-    0 0 10px rgba(179, 110, 255, 0.7),
-    0 0 20px rgba(179, 110, 255, 0.3);
+    0 0 10px rgba(0, 210, 255, 0.7),
+    0 0 20px rgba(0, 210, 255, 0.3);
 }
 
 .typewriter-cursor {
@@ -22,20 +22,20 @@
   width: 2px;
   height: 1.1em;
   margin-left: 2px;
-  background: #4ecdc4;
-  box-shadow: 0 0 10px rgba(78, 205, 196, 0.8);
+  background: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
   vertical-align: text-top;
   animation: typewriter-cursor-blink 1s step-end infinite;
 }
 
 @keyframes typewriter-cursor-blink {
   0%, 49% {
-    color: #4ecdc4;
-    box-shadow: 0 0 10px rgba(78, 205, 196, 0.8);
+    color: #00e5ff;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
   }
   50%, 100% {
     color: transparent;
-    box-shadow: 0 0 10px rgba(78, 205, 196, 0);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0);
   }
 }
 
@@ -43,11 +43,11 @@
 .spring-text {
   display: inline-block;
   font-weight: 700;
-  background: linear-gradient(135deg, #b36eff, #4ecdc4);
+  background: linear-gradient(135deg, #00d2ff, #00e5ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 20px rgba(179, 110, 255, 0.3);
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
 }
 
 /* Stagger Container */

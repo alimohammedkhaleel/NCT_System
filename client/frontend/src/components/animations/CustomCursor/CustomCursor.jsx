@@ -7,7 +7,7 @@ import './CustomCursor.css';
  */
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isMoving, setIsMoving] = useState(false);
+  const [isMoving, setIsMoving] = useState(true);
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
   const pointsRef = useRef([]);

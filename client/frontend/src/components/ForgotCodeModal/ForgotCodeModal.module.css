@@ -1,4 +1,4 @@
-/* ForgotCodeModal - Unified Purple Theme */
+/* ForgotCodeModal - Cyan & Black Theme */
 
 /* Overlay */
 .overlay {
@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(10, 4, 60, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -19,17 +19,17 @@
 
 /* Modal Container */
 .modal {
-  background: var(--glass-bg);
+  background: rgba(10, 15, 29, 0.95);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(0, 210, 255, 0.3);
   border-radius: 16px;
-  box-shadow: var(--glass-shadow);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 210, 255, 0.2);
   width: 100%;
   max-width: 480px;
   padding: 2rem;
   position: relative;
-  color: var(--white);
+  color: #ffffff;
 }
 
 /* Close Button */
@@ -37,9 +37,9 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: rgba(179, 110, 255, 0.1);
-  border: 1px solid var(--glass-border);
-  color: var(--white);
+  background: rgba(0, 210, 255, 0.1);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  color: #ffffff;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -53,9 +53,10 @@
 }
 
 .closeButton:hover:not(:disabled) {
-  background: var(--purple-primary);
+  background: #00d2ff;
+  color: #000000;
   transform: rotate(90deg);
-  box-shadow: 0 0 15px rgba(179, 110, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
 }
 
 .closeButton:disabled {
@@ -87,9 +88,9 @@
 .title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--white);
+  color: #ffffff;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--purple-light), var(--purple-primary));
+  background: linear-gradient(135deg, #00e5ff, #0072ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -97,7 +98,7 @@
 
 .subtitle {
   font-size: 0.95rem;
-  color: var(--white-dim);
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
 }
 
@@ -136,7 +137,7 @@
 .label {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--white);
+  color: #ffffff;
   margin-bottom: 0.25rem;
 }
 
@@ -150,10 +151,10 @@
 .input {
   width: 100%;
   padding: 0.875rem 3rem 0.875rem 1rem;
-  background: rgba(17, 1, 23, 0.6);
-  border: 1px solid var(--glass-border);
+  background: rgba(10, 15, 29, 0.6);
+  border: 1px solid rgba(0, 210, 255, 0.3);
   border-radius: 10px;
-  color: var(--white);
+  color: #ffffff;
   font-size: 1rem;
   transition: all 0.3s ease;
   outline: none;
@@ -165,9 +166,9 @@
 }
 
 .input:focus {
-  border-color: var(--purple-primary);
-  box-shadow: 0 0 0 3px rgba(179, 110, 255, 0.1);
-  background: rgba(17, 1, 23, 0.8);
+  border-color: #00d2ff;
+  box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+  background: rgba(10, 15, 29, 0.9);
 }
 
 .input:disabled {
@@ -203,25 +204,26 @@
 .submitButton {
   width: 100%;
   padding: 0.875rem 1.5rem;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #0072ff, #00d2ff);
   border: none;
   border-radius: 10px;
-  color: var(--white);
+  color: #000000;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
   font-family: inherit;
 }
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
+  background: linear-gradient(135deg, #0088ff, #00e5ff);
 }
 
 .submitButton:active:not(:disabled) {
@@ -247,8 +249,8 @@
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: var(--white);
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #000000;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -264,9 +266,9 @@
   width: 100%;
   padding: 0.875rem 1.5rem;
   background: transparent;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(0, 210, 255, 0.3);
   border-radius: 10px;
-  color: var(--white-dim);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -275,9 +277,9 @@
 }
 
 .cancelButton:hover:not(:disabled) {
-  background: rgba(179, 110, 255, 0.1);
-  border-color: var(--purple-primary);
-  color: var(--white);
+  background: rgba(0, 210, 255, 0.1);
+  border-color: #00d2ff;
+  color: #ffffff;
 }
 
 .cancelButton:disabled {
@@ -295,66 +297,66 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 1.5rem;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #0072ff, #00d2ff);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  color: var(--white);
-  box-shadow: 0 8px 25px rgba(179, 110, 255, 0.4);
+  color: #000000;
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4);
   animation: successPulse 1.5s ease-in-out infinite;
 }
 
 @keyframes successPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 8px 25px rgba(179, 110, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 12px 35px rgba(179, 110, 255, 0.6);
+    box-shadow: 0 12px 35px rgba(0, 210, 255, 0.6);
   }
 }
 
 .successTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--white);
+  color: #ffffff;
   margin-bottom: 1.5rem;
 }
 
 /* Code Display */
 .codeDisplay {
-  background: rgba(17, 1, 23, 0.6);
-  border: 2px solid var(--purple-primary);
+  background: rgba(10, 15, 29, 0.8);
+  border: 2px solid #00d2ff;
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  box-shadow: 0 0 20px rgba(179, 110, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
 }
 
 .codeLabel {
   font-size: 0.9rem;
-  color: var(--white-dim);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
 
 .codeValue {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--purple-light);
+  color: #00d2ff;
   letter-spacing: 2px;
   font-family: 'Courier New', monospace;
-  text-shadow: 0 0 10px rgba(179, 110, 255, 0.5);
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
 }
 
 .successMessage {
   font-size: 0.95rem;
-  color: var(--white-dim);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -363,21 +365,21 @@
 .doneButton {
   width: 100%;
   padding: 0.875rem 1.5rem;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #0072ff, #00d2ff);
   border: none;
   border-radius: 10px;
-  color: var(--white);
+  color: #000000;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(179, 110, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
   font-family: inherit;
 }
 
 .doneButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(179, 110, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
 }
 
 .doneButton:active {

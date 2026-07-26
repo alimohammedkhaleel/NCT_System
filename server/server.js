@@ -190,7 +190,7 @@ const startServer = async () => {
     console.log('✅ Database connection established successfully.');
 
     // Check if tables exist, if not sync with force
-    const [results] = await sequelize.query("SHOW TABLES");
+    const results = await sequelize.getQueryInterface().showAllTables();
     if (results.length === 0) {
       await sequelize.sync({ force: true });
       console.log('✅ Database tables created successfully.');

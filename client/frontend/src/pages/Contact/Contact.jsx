@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import Navbar from '../../components/navComponent/Navbar';
+import ModernFooter from '../../components/common/ModernFooter';
 import { ScrollTube, TypewriterEffect } from '../../components/animations';
 import toast from 'react-hot-toast';
 import './Contact.css';
@@ -35,6 +37,10 @@ const Contact = () => {
 
   return (
     <>
+      <Helmet>
+        <title>تواصل معنا - نظام NCTU</title>
+        <meta name="description" content="تواصل مع جامعة القاهرة التكنولوجية الجديدة (NCTU) لأي استفسارات أو دعم." />
+      </Helmet>
       <Navbar />
       <div className="contact-page-modern">
         <div className="contact-layout-wrapper">
@@ -189,6 +195,7 @@ const Contact = () => {
           </section>
         </div>
       </div>
+      <ModernFooter />
     </>
   );
 };

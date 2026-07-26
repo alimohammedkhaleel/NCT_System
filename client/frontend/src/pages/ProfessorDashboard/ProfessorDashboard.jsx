@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../components/navComponent/Navbar';
 import api from '../../services/apiService';
 import toast from 'react-hot-toast';
 import styles from './ProfessorDashboard.module.css';
@@ -88,7 +87,6 @@ const ProfessorDashboard = () => {
 
   return (
     <>
-      <Navbar />
       <div className={styles.dashboard}>
       {/* Header */}
       <div className={styles.header}>

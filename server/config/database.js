@@ -4,32 +4,30 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME || 'nctu_erp',
-  process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || '',
-  {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 3306,
-    dialect: 'mysql',
-    dialectOptions: {
-      charset: 'utf8mb4'
-    },
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    define: {
-      timestamps: true,
-      underscored: true,
-      paranoid: false,
-      charset: 'utf8mb4'
+// Connect using Neon connection string or fallback to individual env variables
+const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_y6KiBodv3hwg@ep-wandering-mountain-avtn6o0l-pooler.c-11.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+
+const sequelize = new Sequelize(connectionString, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Required for some hosted PostgreSQL like Neon
     }
+  },
+  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+  define: {
+    timestamps: true,
+    underscored: true,
+    paranoid: false
   }
-);
+});
 
 // Test connection
 const testConnection = async () => {

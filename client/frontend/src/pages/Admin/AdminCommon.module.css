@@ -1,6 +1,5 @@
 /* 
- * Shared Admin Page Styles
- * استخدم هذه الأنماط في جميع صفحات الـ Admin لضمان التناسق
+ * Shared Admin Page Styles - Infinity / NCTVPN Theme
  */
 
 /* ── Page Container ── */
@@ -10,45 +9,43 @@
   position: relative;
   z-index: 1;
   min-height: calc(100vh - 80px);
-  background: var(--body-page);
+  background: #000000;
+  color: #FFFFFF;
 }
 
 .pageHeader {
   margin-bottom: var(--spacing-xl);
   padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--border-purple);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.2);
 }
 
 .pageTitle {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--white);
+  color: #FFFFFF;
   margin: 0 0 8px;
-  text-shadow: 0 2px 10px var(--glow-purple);
 }
 
 .pageSubtitle {
-  color: var(--white-dim);
+  color: #94a3b8;
   font-size: 0.95rem;
   margin: 0;
 }
 
 /* ── Cards ── */
 .card {
-  background: rgba(17, 1, 23, 0.5);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 2px solid rgba(179, 110, 255, 0.3);
+  background: #0a0f1d;
+  border: 1px solid rgba(0, 210, 255, 0.2);
   border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(179, 110, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.15);
   transition: all 0.2s ease;
 }
 
 .card:hover {
-  border-color: var(--purple-light);
+  border-color: rgba(0, 210, 255, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px var(--glow-purple);
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
 }
 
 .cardHeader {
@@ -57,15 +54,14 @@
   align-items: center;
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--border-purple);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.2);
 }
 
 .cardTitle {
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--white);
+  color: #00d2ff;
   margin: 0;
-  text-shadow: 0 2px 8px var(--glow-purple);
 }
 
 /* ── Buttons ── */
@@ -80,28 +76,29 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px var(--glow-purple);
+  box-shadow: 0 2px 8px rgba(0, 210, 255, 0.3);
 }
 
 .btnPrimary {
-  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-  color: var(--white);
+  background: linear-gradient(135deg, #0072ff, #00d2ff);
+  color: #FFFFFF;
 }
 
 .btnPrimary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px var(--glow-purple);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.5);
 }
 
 .btnSecondary {
-  background: var(--purple-transparent);
-  border: 2px solid var(--border-purple);
-  color: var(--white);
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  color: #00d2ff;
 }
 
 .btnSecondary:hover {
-  background: rgba(179, 110, 255, 0.2);
-  border-color: var(--purple-light);
+  background: rgba(0, 210, 255, 0.2);
+  border-color: #00d2ff;
+  color: #FFFFFF;
 }
 
 .btnDanger {
@@ -127,37 +124,33 @@
 /* ── Tables ── */
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: rgba(17, 1, 23, 0.5);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(179, 110, 255, 0.3);
+  border-collapse: collapse;
+  background: #0a0f1d;
+  border: 1px solid rgba(0, 210, 255, 0.2);
   border-radius: 12px;
   overflow: hidden;
 }
 
 .table thead {
-  background: transparent;
+  background: rgba(0, 210, 255, 0.08);
 }
 
 .table th {
   padding: 14px 16px;
   text-align: right;
   font-weight: 700;
-  color: var(--white);
+  color: #00d2ff;
   font-size: 0.9rem;
-  border-bottom: 2px solid rgba(179,110,255,0.08);
-  text-shadow: 0 1px 6px rgba(179,110,255,0.08);
+  border-bottom: 2px solid #00d2ff;
   background: transparent;
 }
 
 .table td {
   padding: 12px 16px;
   text-align: right;
-  color: var(--white-dim);
+  color: #FFFFFF;
   font-size: 0.875rem;
-  border-bottom: 1px solid rgba(179,110,255,0.06);
+  border-bottom: 1px solid rgba(0, 210, 255, 0.15);
   background: transparent;
 }
 
@@ -166,7 +159,7 @@
 }
 
 .table tbody tr:hover {
-  background: transparent;
+  background: rgba(0, 210, 255, 0.08);
 }
 
 .table tbody tr:last-child td {
@@ -182,7 +175,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: var(--white);
+  color: #FFFFFF;
   font-size: 0.9rem;
 }
 
@@ -191,27 +184,26 @@
 .textarea {
   width: 100%;
   padding: 12px 16px;
-  background: var(--purple-transparent);
-  border: 2px solid var(--border-purple);
+  background: #0a0f1d;
+  border: 1.5px solid rgba(0, 210, 255, 0.3);
   border-radius: 10px;
-  color: var(--white);
+  color: #FFFFFF;
   font-size: 0.9rem;
   transition: all 0.2s ease;
-  backdrop-filter: blur(20px);
 }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
   outline: none;
-  border-color: var(--purple-light);
-  box-shadow: 0 0 0 3px rgba(179, 110, 255, 0.2);
+  border-color: #00d2ff;
+  box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.3);
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: var(--white-dim);
-  opacity: 0.6;
+  color: #94a3b8;
+  opacity: 1;
 }
 
 /* ── Loading ── */
@@ -227,11 +219,11 @@
 .spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid var(--purple-transparent);
-  border-top-color: var(--purple-primary);
+  border: 4px solid rgba(0, 210, 255, 0.15);
+  border-top-color: #00d2ff;
   border-radius: 50%;
   animation: spin 1.4s linear infinite;
-  box-shadow: 0 0 20px var(--glow-purple);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.35);
 }
 
 @keyframes spin {
@@ -239,7 +231,7 @@
 }
 
 .loadingText {
-  color: var(--white-dim);
+  color: #94a3b8;
   font-size: 0.95rem;
 }
 
@@ -247,7 +239,7 @@
 .emptyState {
   text-align: center;
   padding: 60px 20px;
-  color: var(--white-dim);
+  color: #94a3b8;
 }
 
 .emptyStateIcon {
@@ -259,12 +251,12 @@
 .emptyStateText {
   font-size: 1.1rem;
   margin-bottom: 8px;
-  color: var(--white);
+  color: #00d2ff;
 }
 
 .emptyStateSubtext {
   font-size: 0.9rem;
-  color: var(--white-dim);
+  color: #94a3b8;
 }
 
 /* ── Badges ── */
@@ -298,15 +290,15 @@
 }
 
 .badgeInfo {
-  background: rgba(6, 182, 212, 0.2);
-  color: #06b6d4;
-  border: 1px solid #06b6d4;
+  background: rgba(0, 210, 255, 0.2);
+  color: #00d2ff;
+  border: 1px solid #00d2ff;
 }
 
 .badgePrimary {
-  background: var(--purple-transparent);
-  color: var(--purple-light);
-  border: 1px solid var(--border-purple);
+  background: rgba(0, 210, 255, 0.15);
+  color: #00d2ff;
+  border: 1px solid rgba(0, 210, 255, 0.4);
 }
 
 /* ── Grid Layouts ── */
@@ -380,9 +372,9 @@
 }
 
 .alertInfo {
-  background: rgba(6, 182, 212, 0.15);
-  border: 1px solid #06b6d4;
-  color: #06b6d4;
+  background: rgba(0, 210, 255, 0.15);
+  border: 1px solid #00d2ff;
+  color: #00d2ff;
 }
 
 .alertIcon {

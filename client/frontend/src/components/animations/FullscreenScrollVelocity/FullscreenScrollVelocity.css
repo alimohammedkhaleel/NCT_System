@@ -22,13 +22,13 @@
 /* 1. Hero Intro */
 /* ============================================ */
 .nctu-hero-intro {
-  width: 100vw; /* يأخذ مساحة الشاشة كاملة لتصبح كشاشة مستقلة تماماً */
+  width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
-  padding: 0 10vw; /* مسافة متساوية من اليمين واليسار */
+  padding: 0 10vw;
   flex-shrink: 0;
-  position: relative; /* ضروري جداً لكي تبقى الأشكال العائمة داخل هذا السكشن فقط */
+  position: relative;
 }
 
 .hero-wrapper {
@@ -42,19 +42,19 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(65, 16, 106, 0.7);
+  background-color: rgba(0, 210, 255, 0.12);
   padding: 8px 20px;
   border-radius: 25px;
-  box-shadow: 0 4px 20px rgba(123, 31, 162, 0.6), inset 0 0 10px rgba(179, 136, 255, 0.4);
-  border: 1px solid rgba(179, 136, 255, 0.3);
-  color: #f0d9ff;
+  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  color: #00d2ff;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   width: fit-content;
   backdrop-filter: blur(5px);
 }
 
-.rocket-icon { color: #b388ff; }
+.rocket-icon { color: #00d2ff; }
 
 .main-title {
   display: flex;
@@ -68,8 +68,8 @@
 
 .text-white { color: white; }
 .text-purple { 
-  color: #7a5af8; 
-  text-shadow: 0 0 15px rgba(122, 90, 248, 0.6);
+  color: #00d2ff; 
+  text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
 }
 
 /* أنيميشن Typewriter المتكرر */
@@ -81,7 +81,7 @@
 
 @keyframes blink-caret {
   from, to { border-color: transparent; }
-  50% { border-color: white; }
+  50% { border-color: #00d2ff; }
 }
 
 .typewriter-sub {
@@ -92,7 +92,7 @@
   animation: 
     typing-rewrite 6s steps(25, end) infinite,
     blink-caret 0.75s step-end infinite;
-  border-right: 3px solid white;
+  border-right: 3px solid #00d2ff;
   width: 25ch;
   font-size: 1.1rem; 
   color: white;
@@ -114,13 +114,14 @@
 }
 
 .tech-pill {
-  color: white;
-  background-color: #540874;
+  color: #00d2ff;
+  background-color: rgba(0, 210, 255, 0.1);
   padding: 8px 20px;
   border-radius: 25px;
-  box-shadow: 0 4px 20px rgba(123, 31, 162, 0.5), inset 0 0 10px rgba(179, 136, 255, 0.3);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .social-links-row {
@@ -129,15 +130,16 @@
 }
 
 .s-icon {
-  color: #b388ff;
+  color: #00d2ff;
   width: 35px;
   height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(31, 3, 53, 0.8);
+  background-color: rgba(0, 210, 255, 0.08);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(123, 31, 162, 0.6), inset 0 0 10px rgba(179, 136, 255, 0.4);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
   transition: transform 0.3s ease;
 }
 
@@ -156,20 +158,20 @@
   z-index: 0;
 }
 
-/* 1. Green Dome */
+/* 1. Cyan Dome */
 .shape-dome {
   position: absolute;
   bottom: 0;
   right: 5%;
   width: 450px;
   height: 225px;
-  background: radial-gradient(circle at 50% 0%, #10b981 0%, #064e3b 100%);
+  background: radial-gradient(circle at 50% 0%, #00d2ff 0%, #003366 100%);
   border-radius: 250px 250px 0 0;
   box-shadow: inset 0 20px 40px rgba(255,255,255,0.15);
   animation: float-dome 8s ease-in-out infinite alternate;
 }
 
-/* 2. Pink Flower (Clover) */
+/* 2. Light Blue Flower */
 .shape-flower {
   position: absolute;
   top: 20%;
@@ -178,14 +180,14 @@
   height: 140px;
   animation: float-flower 10s ease-in-out infinite alternate;
   z-index: 2;
-  filter: drop-shadow(0 15px 25px rgba(219, 39, 119, 0.4));
+  filter: drop-shadow(0 15px 25px rgba(0, 210, 255, 0.4));
 }
 .shape-flower::before {
   content: '';
   position: absolute;
   top: 0; left: 35px;
   width: 70px; height: 140px;
-  background: linear-gradient(180deg, #f472b6, #db2777);
+  background: linear-gradient(180deg, #67e8f9, #00d2ff);
   border-radius: 50px;
   box-shadow: inset -5px -5px 15px rgba(0,0,0,0.2), inset 5px 5px 15px rgba(255,255,255,0.4);
 }
@@ -194,7 +196,7 @@
   position: absolute;
   top: 35px; left: 0;
   width: 140px; height: 70px;
-  background: linear-gradient(90deg, #f472b6, #db2777);
+  background: linear-gradient(90deg, #67e8f9, #00d2ff);
   border-radius: 50px;
   box-shadow: inset -5px -5px 15px rgba(0,0,0,0.2), inset 5px 5px 15px rgba(255,255,255,0.4);
 }
@@ -207,12 +209,12 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  border: 25px solid #60a5fa;
+  border: 25px solid #38bdf8;
   filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.4)) drop-shadow(-2px -2px 5px rgba(255,255,255,0.1));
   animation: float-ring 7s ease-in-out infinite alternate;
 }
 
-/* 4. Purple Hourglass */
+/* 4. Cyan Hourglass */
 .shape-hourglass {
   position: absolute;
   top: 45%;
@@ -221,22 +223,22 @@
   height: 0; 
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
-  border-top: 40px solid #c084fc;
-  border-bottom: 40px solid #9333ea;
-  filter: drop-shadow(0px 10px 15px rgba(147,51,234,0.5));
+  border-top: 40px solid #38bdf8;
+  border-bottom: 40px solid #0072ff;
+  filter: drop-shadow(0px 10px 15px rgba(0,210,255,0.5));
   animation: float-hourglass 6s ease-in-out infinite alternate;
 }
 
-/* 5. Orange Diamond */
+/* 5. Electric Blue Diamond */
 .shape-diamond {
   position: absolute;
   top: 50%;
   right: 8%;
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #fbbf24, #d97706);
+  background: linear-gradient(135deg, #00e5ff, #0072ff);
   border-radius: 8px;
-  box-shadow: inset 5px 5px 10px rgba(255,255,255,0.4), inset -5px -5px 10px rgba(0,0,0,0.3), 0 10px 15px rgba(217, 119, 6, 0.4);
+  box-shadow: inset 5px 5px 10px rgba(255,255,255,0.4), inset -5px -5px 10px rgba(0,0,0,0.3), 0 10px 15px rgba(0, 210, 255, 0.4);
   animation: float-diamond 5s ease-in-out infinite alternate;
 }
 
@@ -267,7 +269,7 @@
 .velocity-text-stream {
   display: flex;
   align-items: center;
-  padding-left: 0; /* تم التحكم بالمسافة عن طريق عرض الـ hero */
+  padding-left: 0;
   padding-right: 20vw;
   height: 100vh;
   position: relative;
@@ -277,11 +279,11 @@
   font-size: clamp(2rem, 6vw, 4.5rem); 
   font-weight: 900;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9); /* لم يعد خلفية باهتة بل نص صلب */
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.2;
   white-space: nowrap;
   margin: 0;
-  position: relative; /* ضروري لتمركز الأيقونات العائمة */
+  position: relative;
 }
 
 /* تنسيق الكلمات التي ستتحرك */
@@ -290,7 +292,6 @@
   color: white;
   margin: 0 0.1em;
   will-change: transform, opacity;
-  /* GSAP يتولى تحريك الألوان، لا حاجة للـ transition */
 }
 
 /* تنسيق الأيقونات العائمة (Lucide React) */
@@ -298,15 +299,47 @@
   position: absolute;
   display: inline-block;
   will-change: transform, opacity;
-  z-index: 10; /* لتكون فوق الكلام */
+  z-index: 10;
   filter: drop-shadow(0 0 15px currentColor);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nctu-hero-intro { padding: 10vh 5vw; justify-content: center; text-align: center; width: 100vw; }
+  .nctu-full-experience { 
+    height: auto; 
+    overflow: visible; 
+  }
+  .horizontal-content-wrapper { 
+    flex-direction: column; 
+    height: auto; 
+    width: 100vw; 
+  }
+  .nctu-hero-intro { 
+    padding: 10vh 5vw; 
+    justify-content: center; 
+    text-align: center; 
+    width: 100vw; 
+  }
   .hero-wrapper { align-items: center; }
   .main-title { font-size: 2.2rem; }
-  .epic-sentence { font-size: 2.5rem; }
-  .velocity-text-stream { padding-left: 10vw; } /* إعادة المسافة في الجوال لتجنب التداخل */
+  
+  .velocity-text-stream { 
+    padding: 50px 20px; 
+    height: auto; 
+    align-items: flex-start;
+  }
+  .epic-sentence { 
+    font-size: 2rem; 
+    white-space: normal; 
+    line-height: 1.5; 
+  }
+  
+  .creative-icon {
+    position: relative;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin: 10px;
+    display: inline-flex;
+  }
 }

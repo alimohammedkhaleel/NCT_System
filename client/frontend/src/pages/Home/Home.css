@@ -35,7 +35,7 @@
   font-size: clamp(4rem, 10vw, 8rem);
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 2px #b388ff;
+  -webkit-text-stroke: 2px #00d2ff;
   letter-spacing: -2px;
   line-height: 1;
 }

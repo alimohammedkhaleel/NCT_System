@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../../services/apiService';
 import { useAuth } from '../../context/AuthContext';
-import Navbar from '../../components/navComponent/Navbar';
 import { ClickSpark } from '../../components/animations';
 import toast from 'react-hot-toast';
 import './ProfessorGrades.css';
@@ -404,7 +403,6 @@ const ProfessorGrades = () => {
 
   return (
     <>
-      <Navbar />
       <ClickSpark />
       <motion.div
         className="professor-grades"

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { RoundedBox, Environment, Float, Cylinder } from '@react-three/drei';
+import { RoundedBox, Float, Cylinder } from '@react-three/drei';
 import * as THREE from 'three';
 
 const ComputerMonitor = () => {
@@ -117,10 +117,10 @@ export default function Computer3D() {
   return (
     <div style={{ width: '100%', height: '100%', cursor: 'pointer' }}>
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 5, 5]} intensity={1.5} />
-        <pointLight position={[-5, -5, 5]} color="#a855f7" intensity={2} />
-        <Environment preset="studio" />
+        <ambientLight intensity={0.8} />
+        <directionalLight position={[5, 5, 5]} intensity={1.8} />
+        <directionalLight position={[-5, 5, -5]} intensity={0.6} color="#00d2ff" />
+        <pointLight position={[-5, -5, 5]} color="#00d2ff" intensity={2.5} />
         <ComputerMonitor />
       </Canvas>
     </div>

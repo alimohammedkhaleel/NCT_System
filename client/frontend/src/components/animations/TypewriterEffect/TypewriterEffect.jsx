@@ -90,7 +90,7 @@ export const StaggerItem = ({ children, className = '' }) => {
 /**
  * SpringText - نص مع تأثير Spring
  */
-export const SpringText = ({ text = '', color = '#b36eff' }) => {
+export const SpringText = ({ text = '', color = '#00d2ff' }) => {
   return (
     <motion.div
       className="spring-text"

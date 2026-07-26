@@ -1,11 +1,11 @@
 /* BranchSelectionModal Component Styles */
-/* Uses the NCTU ERP purple theme */
+/* NCTU ERP Cyan/Black theme */
 
 /* Overlay - covers entire screen, non-dismissible */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 4, 60, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -17,14 +17,14 @@
 
 /* Modal Container */
 .modal {
-  background: linear-gradient(145deg, rgba(17, 1, 23, 0.95), rgba(28, 6, 46, 0.95));
-  border: 1px solid rgba(179, 110, 255, 0.4);
+  background: linear-gradient(145deg, rgba(10, 15, 29, 0.98), rgba(5, 11, 20, 0.98));
+  border: 1px solid rgba(0, 210, 255, 0.4);
   border-radius: 20px;
   padding: 36px 32px;
   width: 100%;
   max-width: 480px;
-  box-shadow: 0 20px 60px rgba(179, 110, 255, 0.2),
-              0 0 0 1px rgba(179, 110, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 210, 255, 0.25),
+              0 0 0 1px rgba(0, 210, 255, 0.15);
   direction: rtl;
   text-align: right;
   animation: modalEnter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -56,20 +56,20 @@
 .title {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--white, #ffffff);
+  color: #ffffff;
   margin: 0 0 4px 0;
 }
 
 .subtitle {
   font-size: 0.85rem;
-  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
 }
 
 /* Student Info */
 .studentInfo {
-  background: rgba(179, 110, 255, 0.08);
-  border: 1px solid rgba(179, 110, 255, 0.2);
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.2);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
@@ -86,14 +86,14 @@
 
 .infoLabel {
   font-size: 0.82rem;
-  color: var(--white-dim, rgba(255, 255, 255, 0.6));
+  color: rgba(255, 255, 255, 0.6);
   min-width: 90px;
   flex-shrink: 0;
 }
 
 .infoValue {
   font-size: 0.9rem;
-  color: var(--white, #ffffff);
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -104,7 +104,7 @@
 
 .descAr {
   font-size: 0.9rem;
-  color: var(--white-dim, rgba(255, 255, 255, 0.8));
+  color: rgba(255, 255, 255, 0.8);
   margin: 0 0 6px 0;
   line-height: 1.6;
 }
@@ -126,12 +126,12 @@
 .submitBtn {
   width: 100%;
   padding: 14px 24px;
-  background: linear-gradient(135deg, #7e39b6, #b36eff);
+  background: linear-gradient(135deg, #0072ff, #00d2ff);
   border: none;
   border-radius: 12px;
-  color: #ffffff;
+  color: #000000;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.25s ease;
   margin-bottom: 16px;
@@ -143,8 +143,8 @@
 
 .submitBtn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(179, 110, 255, 0.4);
-  background: linear-gradient(135deg, #9448b5, #c07fff);
+  box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
+  background: linear-gradient(135deg, #0088ff, #00e5ff);
 }
 
 .submitBtn:disabled {
@@ -163,8 +163,8 @@
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #000000;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   flex-shrink: 0;

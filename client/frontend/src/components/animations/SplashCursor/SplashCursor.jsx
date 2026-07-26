@@ -903,8 +903,78 @@ function SplashCursor({
       return delta;
     }
 
+    function isOverBlueElement(clientX, clientY) {
+      try {
+        let el = document.elementFromPoint(clientX, clientY);
+        if (!el) return false;
+
+        // Helper: parse all rgb/rgba in a string
+        function parseAllRGB(str) {
+          if (!str) return [];
+          const regex = /rgba?\s*\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/g;
+          const colors = [];
+          let match;
+          while ((match = regex.exec(str)) !== null) {
+            colors.push({ r: parseFloat(match[1]), g: parseFloat(match[2]), b: parseFloat(match[3]) });
+          }
+          return colors;
+        }
+        
+        // Check if a color is "blue/cyan dominant"
+        function isBluish(c) {
+          if (!c) return false;
+          // Blue/cyan: b or g channel significantly dominates r
+          return (c.b > 100 && c.b > c.r * 1.5) ||
+                 (c.g > 150 && c.b > 100 && c.r < 80);
+        }
+
+        while (el && el !== document.body && el !== document.documentElement) {
+          const style = window.getComputedStyle(el);
+          const bg = style.backgroundColor || '';
+          const bgImg = style.backgroundImage || '';
+          const color = style.color || '';
+          
+          const textColors = parseAllRGB(color);
+          const bgColors = parseAllRGB(bg).concat(parseAllRGB(bgImg)); // Include gradients
+          
+          // If text is explicitly blue
+          if (textColors.some(isBluish)) return true;
+          
+          // If background has color/gradient, check if it contains blue
+          if (bgColors.length > 0 && !bg.includes('rgba(0, 0, 0, 0)') || bgImg !== 'none') {
+            if (bgColors.some(isBluish)) return true;
+            // If background is solid and NOT blue, we shouldn't turn black
+            if (bgColors.length > 0 && bg.indexOf('rgba(0, 0, 0, 0)') === -1 && bgImg === 'none') {
+               // Only break if it's a solid non-transparent background (not a gradient)
+               break; 
+            }
+          }
+
+          // Check by class/id/tag hints just in case
+          const classStr = ((el.className && typeof el.className === 'string' ? el.className : '') + ' ' + (el.id || '')).toLowerCase();
+          if (/blue|cyan|primary|btn|button/i.test(classStr)) return true;
+          if (el.tagName === 'BUTTON') return true;
+
+          el = el.parentElement;
+        }
+
+        return false;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Last known mouse position for color detection
+    let _lastMouseX = 0;
+    let _lastMouseY = 0;
+
     function generateColor() {
-      let c = HSVtoRGB(Math.random(), 1.0, 1.0);
+      // If cursor is over a blue/cyan element, return dark/black so splash is visible
+      if (isOverBlueElement(_lastMouseX, _lastMouseY)) {
+        return { r: 0.0, g: 0.0, b: 0.0 };
+      }
+      // Otherwise: cyan to light-blue range
+      let c = HSVtoRGB(0.5 + Math.random() * 0.1, 1.0, 1.0);
       c.r *= 0.15;
       c.g *= 0.15;
       c.b *= 0.15;
@@ -987,6 +1057,8 @@ function SplashCursor({
 
     // Named event handlers for proper cleanup
     function handleMouseDown(e) {
+      _lastMouseX = e.clientX;
+      _lastMouseY = e.clientY;
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -996,6 +1068,8 @@ function SplashCursor({
 
     let firstMouseMoveHandled = false;
     function handleMouseMove(e) {
+      _lastMouseX = e.clientX;
+      _lastMouseY = e.clientY;
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -1012,6 +1086,8 @@ function SplashCursor({
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
+        _lastMouseX = touches[i].clientX;
+        _lastMouseY = touches[i].clientY;
         let posX = scaleByPixelRatio(touches[i].clientX);
         let posY = scaleByPixelRatio(touches[i].clientY);
         updatePointerDownData(pointer, touches[i].identifier, posX, posY);
@@ -1022,6 +1098,8 @@ function SplashCursor({
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
+        _lastMouseX = touches[i].clientX;
+        _lastMouseY = touches[i].clientY;
         let posX = scaleByPixelRatio(touches[i].clientX);
         let posY = scaleByPixelRatio(touches[i].clientY);
         updatePointerMoveData(pointer, posX, posY, pointer.color);
@@ -1045,25 +1123,23 @@ function SplashCursor({
 
     // Force hide cursor on scroll and other events
     function preventCursor(e) {
-      document.documentElement.style.cursor = 'none !important';
-      document.body.style.cursor = 'none !important';
+      document.documentElement.style.setProperty('cursor', 'none', 'important');
+      document.body.style.setProperty('cursor', 'none', 'important');
     }
 
     // Set initial cursor to none
-    document.documentElement.style.cursor = 'none !important';
-    document.body.style.cursor = 'none !important';
+    document.documentElement.style.setProperty('cursor', 'none', 'important');
+    document.body.style.setProperty('cursor', 'none', 'important');
 
     // Add listeners for various events that might show cursor
     window.addEventListener('scroll', preventCursor, { passive: true });
     window.addEventListener('wheel', preventCursor, { passive: true });
-    window.addEventListener('mousemove', (e) => {
-      preventCursor();
-    });
+    window.addEventListener('mousemove', preventCursor);
     
     // Monitor dom mutations to prevent cursor from appearing
     const observer = new MutationObserver(() => {
-      document.documentElement.style.cursor = 'none !important';
-      document.body.style.cursor = 'none !important';
+      document.documentElement.style.setProperty('cursor', 'none', 'important');
+      document.body.style.setProperty('cursor', 'none', 'important');
     });
     
     observer.observe(document.documentElement, {
@@ -1107,7 +1183,7 @@ function SplashCursor({
         position: 'fixed',
         top: 0,
         left: 0,
-        zIndex: 50,
+        zIndex: 100000,
         pointerEvents: 'none',
         width: '100%',
         height: '100%'

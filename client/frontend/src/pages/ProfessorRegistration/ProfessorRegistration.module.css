@@ -165,7 +165,7 @@
   box-shadow: 0 0 0 3px rgba(179, 110, 255, 0.2);
   background: rgba(17, 1, 23, 0.7);
 }
-.input option { background: #1c062e; color: var(--white); }
+.input option { background: #0a0f1d; color: var(--white); }
 
 .actions {
   display: flex;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { MotionProvider } from './context/MotionContext';
 import { Toaster } from 'react-hot-toast';
 
 // Modern Styles
-import './styles/glassomorphism.css';
-import './styles/modern-design.css';
+// removed missing imports
 
 // Animations
 import { CustomCursor, ClickSpark, SplashCursor } from './components/animations';
@@ -206,43 +206,45 @@ const AppContent = () => {
 // Main App Component
 function App() {
   return (
-    <AuthProvider>
-      <MotionProvider>
-        <Router>
-          {/* Background animations & Effects */}
-          <CustomCursor />
-          <SplashCursor />
-          
-          <AppContent />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: 'var(--purple-dark)',
-                color: 'var(--white)',
-                border: '1px solid var(--border-purple)',
-                boxShadow: 'var(--shadow-glow)',
-              },
-              success: {
-                duration: 3000,
-                iconTheme: {
-                  primary: '#10B981',
-                  secondary: '#fff',
+    <HelmetProvider>
+      <AuthProvider>
+        <MotionProvider>
+          <Router>
+            {/* Background animations & Effects */}
+            <CustomCursor />
+            <SplashCursor />
+            
+            <AppContent />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#0a0f1d',
+                  color: '#ffffff',
+                  border: '1px solid rgba(0, 210, 255, 0.3)',
+                  boxShadow: '0 0 25px rgba(0, 210, 255, 0.25)',
                 },
-              },
-              error: {
-                duration: 5000,
-                iconTheme: {
-                  primary: '#EF4444',
-                  secondary: '#fff',
+                success: {
+                  duration: 3000,
+                  iconTheme: {
+                    primary: '#10B981',
+                    secondary: '#fff',
+                  },
                 },
-              },
-            }}
-          />
-        </Router>
-      </MotionProvider>
-    </AuthProvider>
+                error: {
+                  duration: 5000,
+                  iconTheme: {
+                    primary: '#EF4444',
+                    secondary: '#fff',
+                  },
+                },
+              }}
+            />
+          </Router>
+        </MotionProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

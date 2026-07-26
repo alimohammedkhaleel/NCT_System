@@ -62,21 +62,25 @@ const GsapScrollParallax = () => {
         tl.to(el, { height: originalHeight, ease: "power2.out", duration: 0.2 }, 0);
       });
 
+      const isMobile = window.innerWidth <= 768;
+
       // 2. Creative Stacking Animation for the text sections
       sectionsRef.current.forEach((section, i) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          pin: true,
-          pinSpacing: false, // This makes the next section scroll over this one
-          id: `section-${i}`
-        });
+        if (!isMobile) {
+          ScrollTrigger.create({
+            trigger: section,
+            start: "top top",
+            pin: true,
+            pinSpacing: false, // This makes the next section scroll over this one
+            id: `section-${i}`
+          });
+        }
 
         // Add a fade out / scale down effect when covered by the next section
         if (i < sectionsRef.current.length - 1) {
           gsap.to(section, {
             scale: 0.9,
-            opacity: 0,
+            opacity: isMobile ? 0.3 : 0,
             ease: "none",
             scrollTrigger: {
               trigger: sectionsRef.current[i + 1],
@@ -140,35 +144,6 @@ const GsapScrollParallax = () => {
           </div>
         ))}
       </div>
-
-      {/* Footer Section */}
-      <footer className="parallax-footer">
-        <div className="footer-content">
-          <div className="footer-top-grid">
-            <div className="footer-brand">
-              <h2>NCTU<br/>Future</h2>
-              <p>Leading the next generation of technological innovation and practical engineering education.</p>
-            </div>
-            <div className="footer-links">
-              <h3 className="footer-heading">Quick Links</h3>
-              <div className="links-grid" style={{ display: 'flex', gap: '20px' }}>
-                <a href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</a>
-                <a href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>About Us</a>
-                <a href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>Services</a>
-                <a href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Contact</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2026 New Cairo Technological University. All Rights Reserved.</p>
-            <div className="footer-socials">
-              <span>Fb</span>
-              <span>In</span>
-              <span>Tw</span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

@@ -231,7 +231,7 @@ export default function ResultsPublishing() {
             <div className={styles.progressBar}>
               <div 
                 className={styles.progressFill} 
-                style={{ width: `${percent}%`, backgroundColor: percent === 100 ? '#10b981' : '#a855f7' }}
+                style={{ width: `${percent}%`, backgroundColor: percent === 100 ? '#10b981' : '#00d2ff' }}
               ></div>
             </div>
             <span className={styles.progressText}>{percent}%</span>

@@ -39,50 +39,67 @@ export default function FullscreenScrollVelocity() {
         gsap.set(el, { opacity: 0 });
       });
 
-      // حركة التمرير الأفقي الشاملة
-      gsap.to(wrapper, {
-        x: () => -getAmountToScroll(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,
-          scrub: 1, 
-          start: "top top",
-          end: () => `+=${getAmountToScroll()}`, 
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            animatedElements.forEach(el => {
-              const type = el.dataset.type;
-              const rect = el.getBoundingClientRect();
-              const center = rect.left + (rect.width / 2);
-              const viewportCenter = window.innerWidth / 2;
-              
-              let dist = (center - viewportCenter) / (window.innerWidth / 2);
-              let p = 1 - Math.abs(dist);
-              p = Math.max(0, Math.min(1, p));
+      const isMobile = window.innerWidth <= 768;
 
-              if (p > 0.4) {
-                const focus = (p - 0.4) / 0.6;
-                // ظهور الكلمات والأيقونات (تتجسد من العدم)
-                if (type === "scale") gsap.to(el, { scale: 1, opacity: 1, color: "#a855f7", duration: 0.15 });
-                else if (type === "drop") gsap.to(el, { y: 0, opacity: 1, color: "#3b82f6", duration: 0.15 });
-                else if (type === "slide-in-rtl") gsap.to(el, { x: 0, opacity: 1, color: "#10b981", duration: 0.15 });
-                else if (type === "slide-in-ltr") gsap.to(el, { x: 0, opacity: 1, color: "#f59e0b", duration: 0.15 });
-                else if (type === "icon-float-up") gsap.to(el, { y: -20, x: 0, opacity: 1, rotate: 15, duration: 0.15 });
-                else if (type === "icon-float-down") gsap.to(el, { y: 20, x: 0, opacity: 1, rotate: -15, duration: 0.15 });
-              } else {
-                // إخفاء الكلمات والأيقونات قبل أو بعد المركز
-                if (type === "scale") gsap.to(el, { scale: 0, opacity: 0, duration: 0.2 });
-                else if (type === "drop") gsap.to(el, { y: -60, opacity: 0, duration: 0.2 });
-                else if (type === "slide-in-rtl") gsap.to(el, { x: 100, opacity: 0, duration: 0.2 });
-                else if (type === "slide-in-ltr") gsap.to(el, { x: -100, opacity: 0, duration: 0.2 });
-                else if (type === "icon-float-up") gsap.to(el, { y: 0, x: -100, opacity: 0, rotate: 0, duration: 0.2 });
-                else if (type === "icon-float-down") gsap.to(el, { y: 0, x: 100, opacity: 0, rotate: 0, duration: 0.2 });
-              }
-            });
+      if (isMobile) {
+        // Mobile simple fade-in, no horizontal pinning
+        animatedElements.forEach(el => {
+          gsap.fromTo(el, { opacity: 0, y: 20, scale: 0.8 }, {
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            color: "#00d2ff",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            }
+          });
+        });
+      } else {
+        // Desktop horizontal scrolling and floating animation
+        gsap.to(wrapper, {
+          x: () => -getAmountToScroll(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            pin: true,
+            scrub: 1, 
+            start: "top top",
+            end: () => `+=${getAmountToScroll()}`, 
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              animatedElements.forEach(el => {
+                const type = el.dataset.type;
+                const rect = el.getBoundingClientRect();
+                const center = rect.left + (rect.width / 2);
+                const viewportCenter = window.innerWidth / 2;
+                
+                let dist = (center - viewportCenter) / (window.innerWidth / 2);
+                let p = 1 - Math.abs(dist);
+                p = Math.max(0, Math.min(1, p));
+
+                if (p > 0.4) {
+                  const focus = (p - 0.4) / 0.6;
+                  if (type === "scale") gsap.to(el, { scale: 1, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                  else if (type === "drop") gsap.to(el, { y: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                  else if (type === "slide-in-rtl") gsap.to(el, { x: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                  else if (type === "slide-in-ltr") gsap.to(el, { x: 0, opacity: 1, color: "#00d2ff", duration: 0.15 });
+                  else if (type === "icon-float-up") gsap.to(el, { y: -20, x: 0, opacity: 1, rotate: 15, duration: 0.15 });
+                  else if (type === "icon-float-down") gsap.to(el, { y: 20, x: 0, opacity: 1, rotate: -15, duration: 0.15 });
+                } else {
+                  if (type === "scale") gsap.to(el, { scale: 0, opacity: 0, duration: 0.2 });
+                  else if (type === "drop") gsap.to(el, { y: -60, opacity: 0, duration: 0.2 });
+                  else if (type === "slide-in-rtl") gsap.to(el, { x: 100, opacity: 0, duration: 0.2 });
+                  else if (type === "slide-in-ltr") gsap.to(el, { x: -100, opacity: 0, duration: 0.2 });
+                  else if (type === "icon-float-up") gsap.to(el, { y: 0, x: -100, opacity: 0, rotate: 0, duration: 0.2 });
+                  else if (type === "icon-float-down") gsap.to(el, { y: 0, x: 100, opacity: 0, rotate: 0, duration: 0.2 });
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }
       
       // Force refresh after a short delay to ensure fonts and layout are fully calculated
       const timeoutId = setTimeout(() => {
@@ -127,7 +144,7 @@ export default function FullscreenScrollVelocity() {
             <div className="title-block">
               <h1 className="main-title">
                 <span className="text-white">New Cairo</span>
-                <span className="text-purple">Technological University</span>
+                <span className="text-purple" style={{ color: '#00d2ff' }}>Technological University</span>
               </h1>
               <p className="typewriter-sub">IT & Engineering Excellence</p>
             </div>
@@ -155,10 +172,10 @@ export default function FullscreenScrollVelocity() {
         <section className="velocity-text-stream">
           <h2 className="epic-sentence">
             {/* الأيقونات العائمة فوق وتحت الجملة */}
-            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-15%', left: '10%' }}><Cpu size={50} color="#a855f7"/></span>
-            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-15%', left: '35%' }}><Zap size={50} color="#3b82f6"/></span>
-            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-20%', left: '60%' }}><Layers size={50} color="#10b981"/></span>
-            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-10%', left: '85%' }}><Sparkles size={50} color="#f59e0b"/></span>
+            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-15%', left: '10%' }}><Cpu size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-15%', left: '35%' }}><Zap size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-up" style={{ top: '-20%', left: '60%' }}><Layers size={50} color="#00d2ff"/></span>
+            <span className="creative-icon" data-type="icon-float-down" style={{ bottom: '-10%', left: '85%' }}><Sparkles size={50} color="#00d2ff"/></span>
 
             Whether you are mastering <span className="creative-span" data-type="drop">Mechanical Systems</span> 
             {" "}in our <span className="creative-span" data-type="scale">Mechatronics Labs</span> 
