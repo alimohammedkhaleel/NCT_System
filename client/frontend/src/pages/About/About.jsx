@@ -127,12 +127,20 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>عن الجامعة - NCT جامعة القاهرة الجديدة التكنولوجية</title>
-        <meta name="description" content="تعرف على جامعة القاهرة الجديدة التكنولوجية (NCTU) ورؤيتها ورسالتها في تطوير التعليم التكنولوجي التطبيقي في مصر." />
+        <title>كليات وتخصصات جامعة القاهرة الجديدة التكنولوجية</title>
+        <meta name="description" content="دليلك الشامل لجميع كليات وبرامج جامعة القاهرة الجديدة التكنولوجية. تعرف على تخصصات تكنولوجيا المعلومات، الميكاترونكس، والأوتوترونكس ومجالات العمل." />
       </Helmet>
       <div ref={containerRef} style={{ position: 'relative' }}>
         <Navbar />
         <div className="about-page">
+          {/* SEO Hidden Headings */}
+          <div className="sr-only">
+            <h1>كليات جامعة القاهرة الجديدة التكنولوجية والبرامج الدراسية</h1>
+            <h2>كلية تكنولوجيا الصناعة والطاقة</h2>
+            <h3>برنامج الميكاترونكس (Mechatronics)</h3>
+            <h3>برنامج الأوتوترونكس (Autotronics)</h3>
+            <h3>برنامج تكنولوجيا المعلومات (IT)</h3>
+          </div>
           {/* Floating 3D Computer Character Controlled by GSAP */}
           <div
             ref={computerRef}

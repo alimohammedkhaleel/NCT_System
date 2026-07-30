@@ -20,7 +20,8 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <meta name="description" content="الصفحة الرئيسية للنظام الجامعي المتكامل لجامعة القاهرة الجديدة التكنولوجية (NCTU)." />
+        <title>جامعة القاهرة الجديدة التكنولوجية | مستقبلك يبدأ هنا</title>
+        <meta name="description" content="اكتشف تخصصات وكليات جامعة القاهرة الجديدة التكنولوجية. تعرف على شروط القبول، المصاريف، وتنسيق العام الجديد لبدء رحلتك نحو التميز المهني وسوق العمل." />
       </Helmet>
       {/* Presentation */}
       {!introCompleted && <NCTPresentation onComplete={() => setIntroCompleted(true)} />}
@@ -30,6 +31,14 @@ const Home = () => {
         <>
           <Navbar />
           <main className="home-page">
+            {/* SEO Hidden Headings */}
+            <div className="sr-only">
+              <h1>جامعة القاهرة الجديدة التكنولوجية: طريقك نحو الابتكار والريادة</h1>
+              <h2>كليات وتخصصات الجامعة التكنولوجية بالقاهرة الجديدة</h2>
+              <h2>دليلك الشامل: شروط القبول واختبار القدرات</h2>
+              <h3>ما هي مصاريف جامعة القاهرة الجديدة التكنولوجية؟</h3>
+              <h3>لماذا تختار التعليم التكنولوجي في مصر؟</h3>
+            </div>
             <section className="images-section">
               <ImagesArcAnimation />
             </section>
